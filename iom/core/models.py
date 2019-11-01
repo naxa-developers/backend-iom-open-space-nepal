@@ -102,7 +102,7 @@ class OpenSpace(models.Model):
                               blank=True, null=True)
     maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
-    space = PolygonField()
+    space = PolygonField(null=True, blank=True)
 
     @property
     def latitude(self):
