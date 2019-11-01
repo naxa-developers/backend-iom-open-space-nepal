@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from django.contrib.gis.db.models import PointField
 
 # Create your models here.
 
@@ -10,3 +12,129 @@ class Slider(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Province(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class District(models.Model):
+    name = models.CharField(max_length=50)
+    province = models.ForeignKey('Province', related_name='district',
+                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Municipality(models.Model):
+    name = models.CharField(max_length=50)
+    district = models.ForeignKey('District', related_name='municipality',
+                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class SuggestedUse(models.Model):
+    name = models.CharField(max_length=100)
+    open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
+                                   on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Services(models.Model):
+    name = models.CharField(max_length=100)
+    open_space = models.ForeignKey('OpenSpace', related_name='services',
+                                   on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class OpenSpace(models.Model):
+    title = models.CharField(max_length=100)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    province = models.ForeignKey('Province', related_name='open_space',
+                                 on_delete=models.SET_NULL, blank=True,
+                                 null=True)
+    district = models.ForeignKey('District', related_name='open_space',
+                                 on_delete=models.SET_NULL,blank=True,
+                                 null=True)
+    municipality = models.ForeignKey('Municipality', related_name='open_space',
+                                     on_delete=models.SET_NULL, blank=True,
+                                     null=True)
+    capacity = models.BigIntegerField(blank=True, null=True)
+    total_area = models.IntegerField(blank=True, null=True)
+    usable_area = models.IntegerField(blank=True, null=True)
+    image = models.ImageField(upload_to='space',
+                              blank=True, null=True)
+    maps = models.ImageField(upload_to='maps', blank=True, null=True)
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
+
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
+
+    def __str__(self):
+        return self.title
+
+
+class Report(models.Model):
+    URGENCY_CHOICES = (
+        (0, 'High'),
+        (1, 'Medium'),
+        (2, 'Low')
+    )
+
+    STATUS_CHOICES = (
+        (0, 'Pending'),
+        (1, 'Replied')
+    )
+
+    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    urgency = models.IntegerField(choices=URGENCY_CHOICES, default=0)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   related_name='report')
+    reported_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    related_name="reported_by",
+                                    on_delete=models.SET_NULL,
+                                    blank=True, null=True)
+    image = models.ImageField(upload_to='space',
+                              blank=True, null=True)
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
+
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
+
+    def __str__(self):
+        return self.title
+
+
+# class Resource(models.Model):
+
+
+
+
