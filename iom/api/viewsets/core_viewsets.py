@@ -1,6 +1,7 @@
 from rest_framework import viewsets
-from core.models import Slider
-from api.serializers.core_serializers import SliderSerializer
+from core.models import Slider, CreateOpenSpace
+from api.serializers.core_serializers import SliderSerializer,\
+    CreateOpenSpaceSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -8,6 +9,12 @@ from rest_framework.response import Response
 class SliderViewSet(viewsets.ModelViewSet):
     serializer_class = SliderSerializer
     queryset = Slider.objects.all()
+    permission_classes = []
+
+
+class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
+    serializer_class = CreateOpenSpaceSerializer
+    queryset = CreateOpenSpace.objects.all()
     permission_classes = []
 
 

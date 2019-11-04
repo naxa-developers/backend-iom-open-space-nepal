@@ -83,6 +83,11 @@ class OpenSpace(models.Model):
     current_land_use = models.TextField(blank=True, null=True)
     catchment_area = models.CharField(max_length=200, blank=True, null=True)
     ownership = models.CharField(max_length=100, blank=True, null=True)
+    elevation = models.DecimalField(max_digits=15, decimal_places=10,
+                                    null=True, blank=True)
+    access_to_site = models.CharField(max_length=100, null=True, blank=True)
+    special_feature = models.TextField(blank=True, null=True)
+
     address = models.CharField(max_length=200, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='open_space',
                                  on_delete=models.SET_NULL, blank=True,
@@ -102,7 +107,7 @@ class OpenSpace(models.Model):
                               blank=True, null=True)
     maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
-    space = PolygonField(null=True, blank=True)
+    polygon = PolygonField(null=True, blank=True)
 
     @property
     def latitude(self):
@@ -159,6 +164,10 @@ class Report(models.Model):
     def __str__(self):
         return self.title
 
+
+class CreateOpenSpace(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='identify_open_space')
 
 # class Resource(models.Model):
 #     audio = models.FileField(upload_to='audio', null=True, blank=True)
