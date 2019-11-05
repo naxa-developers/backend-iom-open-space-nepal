@@ -169,10 +169,39 @@ class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='identify_open_space')
 
+
+class NearbyAmenities(models.Model):
+    title = models.CharField(max_length=100)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   related_name='amenities')
+
+    def __str__(self):
+        return self.title
+
+
+class EducationFacility(models.Model):
+    name = models.CharField(max_length=100)
+    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
+                                related_name='education_facility')
+
+    def __str__(self):
+        return self.name
+
+
+class HealthFacility(models.Model):
+    name = models.CharField(max_length=100)
+    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
+                                related_name='health_facility')
+
+    def __str__(self):
+        return self.name
+
+
 # class Resource(models.Model):
 #     audio = models.FileField(upload_to='audio', null=True, blank=True)
 #     video = models.FileField(upload_to='video', null=True, blank=True)
-#     animation = models.FileField(upload_to='animation', null=True, blank=True)
+#     animation = models.FileField(upload_to='animation',null=True, blank=True)
+
 
 
 
