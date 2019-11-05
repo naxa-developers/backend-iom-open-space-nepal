@@ -6,6 +6,7 @@ from core.models import Slider, Province, District, Municipality, Ward,\
 # Register your models here.
 
 admin.site.register(Slider)
+admin.site.register(Province)
 admin.site.register(District)
 admin.site.register(Municipality)
 admin.site.register(Ward)
