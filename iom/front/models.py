@@ -13,6 +13,7 @@ class Header(models.Model):
         return self.title
 
 
+
 class OpenSpaceDef(models.Model):
     title = models.TextField(blank=True, null=True)
     title_nep = models.TextField(blank=True, null=True)

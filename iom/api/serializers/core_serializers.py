@@ -8,6 +8,7 @@ class SliderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class CreateOpenSpaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreateOpenSpace

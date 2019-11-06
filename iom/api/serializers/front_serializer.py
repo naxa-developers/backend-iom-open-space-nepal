@@ -14,6 +14,7 @@ class OpenSpaceDefSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class OpenSpaceIdeSerializer(serializers.ModelSerializer):
     class Meta:
         model = OpenSpaceIde

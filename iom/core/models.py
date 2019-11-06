@@ -165,6 +165,7 @@ class Report(models.Model):
         return self.title
 
 
+
 class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='identify_open_space')
