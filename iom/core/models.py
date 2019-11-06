@@ -197,10 +197,35 @@ class HealthFacility(models.Model):
         return self.name
 
 
-# class Resource(models.Model):
-#     audio = models.FileField(upload_to='audio', null=True, blank=True)
-#     video = models.FileField(upload_to='video', null=True, blank=True)
-#     animation = models.FileField(upload_to='animation',null=True, blank=True)
+class Resource(models.Model):
+    CATEGORY_CHOICES = (
+        (0, 'Plans and Policies'),
+        (1, 'Research'),
+        (2, 'Multimedia')
+    )
+
+    DOCUMENT_TYPE_CHOICES = (
+        (0, 'publication'),
+        (1, 'audio'),
+        (2, 'video')
+
+    )
+    title = models.TextField()
+    description = models.TextField()
+    image = models.ImageField(upload_to='resource_image',
+                              null=True, blank=True)
+    audio = models.FileField(upload_to='audio', null=True, blank=True)
+    video = models.FileField(upload_to='video', null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    publication = models.FileField(upload_to='publication', null=True,
+                                   blank=True)
+    category = models.IntegerField(choices=CATEGORY_CHOICES, default=0)
+    document_type = models.IntegerField(choices=DOCUMENT_TYPE_CHOICES,
+                                        default=0)
+
+    def __str__(self):
+        return self.title
+
 
 
 
