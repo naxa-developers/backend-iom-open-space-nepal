@@ -18,6 +18,7 @@ class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
+
 class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     queryset = Resource.objects.all()
