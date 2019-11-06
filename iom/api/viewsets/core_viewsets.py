@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from core.models import Slider, CreateOpenSpace
+from core.models import Slider, CreateOpenSpace, Resource
 from api.serializers.core_serializers import SliderSerializer,\
-    CreateOpenSpaceSerializer
+    CreateOpenSpaceSerializer, ResourceSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -18,7 +18,22 @@ class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
-@api_view(['GET',])
+class ResourceViewSet(viewsets.ModelViewSet):
+    serializer_class = ResourceSerializer
+    queryset = Resource.objects.all()
+    permission_classes = []
+
+    def get_queryset(self):
+        category = self.request.query_params.get('category')
+        document_type = self.request.query_params.get('document_type')
+
+        if category and document_type:
+            return self.queryset.filter(category=category,
+                                        document_type=document_type)
+
+
+
+@api_view(['GET', ])
 def dummy_api_view(request):
     data = {
         "open_space": 192929,
