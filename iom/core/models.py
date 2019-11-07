@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.gis.db.models import PointField, PolygonField
+from django.contrib.gis.db.models import PointField, MultiPolygonField
 
 # Create your models here.
 
@@ -16,6 +16,7 @@ class Slider(models.Model):
 
 class Province(models.Model):
     name = models.CharField(max_length=50)
+    code = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -23,6 +24,7 @@ class Province(models.Model):
 
 class District(models.Model):
     name = models.CharField(max_length=50)
+    code = models.IntegerField(null=True, blank=True)
     province = models.ForeignKey('Province', related_name='district',
                                  on_delete=models.CASCADE)
 
@@ -107,7 +109,7 @@ class OpenSpace(models.Model):
                               blank=True, null=True)
     maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
-    polygon = PolygonField(null=True, blank=True)
+    polygons = MultiPolygonField(null=True, blank=True)
 
     @property
     def latitude(self):
