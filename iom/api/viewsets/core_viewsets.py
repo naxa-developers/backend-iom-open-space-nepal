@@ -18,19 +18,21 @@ class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
-
 class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     queryset = Resource.objects.all()
     permission_classes = []
 
-    def get_queryset(self):
+    def filter_queryset(self, queryset):
         category = self.request.query_params.get('category')
         document_type = self.request.query_params.get('document_type')
 
         if category and document_type:
             return self.queryset.filter(category=category,
                                         document_type=document_type)
+        else:
+            return self.queryset
+
 
 
 
