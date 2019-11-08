@@ -29,13 +29,14 @@ class ResourceViewSet(viewsets.ModelViewSet):
         content = self.request.query_params.get('content')
 
         if content:
-            return self.queryset.filter(title__icontains=content)
+            return Resource.objects.filter(title__icontains=content)
 
         elif category and document_type:
-            return self.queryset.filter(category=category,
-                                        document_type=document_type)
+            return Resource.objects.filter(category=category,
+                                           document_type=document_type)
 
-        return self.queryset
+        else:
+            return Resource.objects.all()
 
 
 
