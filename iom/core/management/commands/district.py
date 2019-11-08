@@ -24,7 +24,7 @@ class Command(BaseCommand):
             district = [
                 District(
                     province=Province.objects.get(
-                        province_code=(df['Province_id'][row])),
+                        code=(df['Province_id'][row])),
                     #
                     # district=District.objects.get(
                     #     district_code=(df['District_id'][row])),
@@ -34,19 +34,19 @@ class Command(BaseCommand):
                     # gn_type_en=(df['Type_en'][row]).capitalize().strip(),
                     #
                     # gn_type_np=(df['Type'][row]).capitalize().strip(),
-                    name=df['name'][row],
-                    code=df['district_id'][row],
+                    name=df['District_name'][row],
+                    code=df['District_id'][row],
 
-                    boundary=GEOSGeometry(df['geom'][row]),
+                    # boundary=GEOSGeometry(df['geom'][row]),
                     # p_code=df['ADMIN2P_CODE'][row],
 
                 ) for row in range(0, upper_range)
 
             ]
 
-            open_space_data = District.objects.bulk_create(district)
+            district_data = District.objects.bulk_create(district)
 
-            if open_space_data:
+            if district_data:
                 self.stdout.write('Successfully  updated data ..')
 
         except Exception as e:
