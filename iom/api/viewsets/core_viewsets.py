@@ -1,6 +1,7 @@
 from rest_framework import viewsets
-from core.models import Slider
-from api.serializers.core_serializers import SliderSerializer
+from core.models import Slider, CreateOpenSpace, Resource
+from api.serializers.core_serializers import SliderSerializer,\
+    CreateOpenSpaceSerializer, ResourceSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -11,7 +12,36 @@ class SliderViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
-@api_view(['GET',])
+class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
+    serializer_class = CreateOpenSpaceSerializer
+    queryset = CreateOpenSpace.objects.all()
+    permission_classes = []
+
+
+class ResourceViewSet(viewsets.ModelViewSet):
+    serializer_class = ResourceSerializer
+    queryset = Resource.objects.all()
+    permission_classes = []
+
+    # def filter_queryset(self, queryset):
+    #     category = self.request.query_params.get('category')
+    #     document_type = self.request.query_params.get('document_type')
+    #     content = self.request.query_params.get('content')
+    #
+    #     if category and document_type:
+    #         return self.queryset.filter(category=category,
+    #                                     document_type=document_type)
+    #
+    #     elif content:
+    #         print('abc')
+    #         return self.queryset.filter(title__icontains=content)
+    #
+    #     return self.queryset
+
+
+
+
+@api_view(['GET', ])
 def dummy_api_view(request):
     data = {
         "open_space": 192929,

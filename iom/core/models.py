@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.gis.db.models import PointField, PolygonField
+from django.contrib.gis.db.models import PointField, MultiPolygonField
 
 # Create your models here.
 
@@ -16,6 +16,7 @@ class Slider(models.Model):
 
 class Province(models.Model):
     name = models.CharField(max_length=50)
+    code = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -23,8 +24,10 @@ class Province(models.Model):
 
 class District(models.Model):
     name = models.CharField(max_length=50)
+    code = models.IntegerField(null=True, blank=True)
     province = models.ForeignKey('Province', related_name='district',
                                  on_delete=models.CASCADE)
+    boundary = MultiPolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -34,19 +37,11 @@ class Municipality(models.Model):
     name = models.CharField(max_length=50)
     district = models.ForeignKey('District', related_name='municipality',
                                  on_delete=models.CASCADE)
+    hlcit_code = models.CharField(max_length=100, blank=True, null=True)
+    boundary = MultiPolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-
-class Ward(models.Model):
-    ward_num = models.IntegerField()
-    municipality = models.ForeignKey('Municipality',
-                                     related_name='ward',
-                                     on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.ward_num
 
 
 class SuggestedUse(models.Model):
@@ -83,6 +78,11 @@ class OpenSpace(models.Model):
     current_land_use = models.TextField(blank=True, null=True)
     catchment_area = models.CharField(max_length=200, blank=True, null=True)
     ownership = models.CharField(max_length=100, blank=True, null=True)
+    elevation = models.DecimalField(max_digits=15, decimal_places=10,
+                                    null=True, blank=True)
+    access_to_site = models.CharField(max_length=100, null=True, blank=True)
+    special_feature = models.TextField(blank=True, null=True)
+
     address = models.CharField(max_length=200, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='open_space',
                                  on_delete=models.SET_NULL, blank=True,
@@ -93,8 +93,7 @@ class OpenSpace(models.Model):
     municipality = models.ForeignKey('Municipality', related_name='open_space',
                                      on_delete=models.SET_NULL, blank=True,
                                      null=True)
-    ward = models.ForeignKey('Ward', related_name='open_space',
-                             on_delete=models.SET_NULL, blank=True, null=True)
+    ward = models.IntegerField(blank=True, null=True)
     capacity = models.BigIntegerField(blank=True, null=True)
     total_area = models.IntegerField(blank=True, null=True)
     usable_area = models.IntegerField(blank=True, null=True)
@@ -102,7 +101,7 @@ class OpenSpace(models.Model):
                               blank=True, null=True)
     maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
-    space = PolygonField(null=True, blank=True)
+    polygons = MultiPolygonField(null=True, blank=True)
 
     @property
     def latitude(self):
@@ -160,10 +159,68 @@ class Report(models.Model):
         return self.title
 
 
-# class Resource(models.Model):
-#     audio = models.FileField(upload_to='audio', null=True, blank=True)
-#     video = models.FileField(upload_to='video', null=True, blank=True)
-#     animation = models.FileField(upload_to='animation', null=True, blank=True)
+class CreateOpenSpace(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='identify_open_space')
+
+
+class NearbyAmenities(models.Model):
+    title = models.CharField(max_length=100)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   related_name='amenities')
+
+    def __str__(self):
+        return self.title
+
+
+class EducationFacility(models.Model):
+    name = models.CharField(max_length=100)
+    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
+                                related_name='education_facility')
+
+    def __str__(self):
+        return self.name
+
+
+class HealthFacility(models.Model):
+    name = models.CharField(max_length=100)
+    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
+                                related_name='health_facility')
+
+    def __str__(self):
+        return self.name
+
+
+class Resource(models.Model):
+    CATEGORY_CHOICES = (
+        (0, 'Plans and Policies'),
+        (1, 'Research'),
+        (2, 'Multimedia')
+    )
+
+    DOCUMENT_TYPE_CHOICES = (
+        (0, 'publication'),
+        (1, 'audio'),
+        (2, 'video')
+
+    )
+    title = models.TextField()
+    description = models.TextField()
+    image = models.ImageField(upload_to='resource_image',
+                              null=True, blank=True)
+    audio = models.FileField(upload_to='audio', null=True, blank=True)
+    video = models.FileField(upload_to='video', null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    publication = models.FileField(upload_to='publication', null=True,
+                                   blank=True)
+    category = models.IntegerField(choices=CATEGORY_CHOICES, default=0)
+    document_type = models.IntegerField(choices=DOCUMENT_TYPE_CHOICES,
+                                        default=0)
+
+    def __str__(self):
+        return self.title
+
+
 
 
 
