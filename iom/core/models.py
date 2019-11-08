@@ -27,6 +27,7 @@ class District(models.Model):
     code = models.IntegerField(null=True, blank=True)
     province = models.ForeignKey('Province', related_name='district',
                                  on_delete=models.CASCADE)
+    boundary = MultiPolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -36,19 +37,11 @@ class Municipality(models.Model):
     name = models.CharField(max_length=50)
     district = models.ForeignKey('District', related_name='municipality',
                                  on_delete=models.CASCADE)
+    hlcit_code = models.CharField(max_length=100, blank=True, null=True)
+    boundary = MultiPolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-
-class Ward(models.Model):
-    ward_num = models.IntegerField()
-    municipality = models.ForeignKey('Municipality',
-                                     related_name='ward',
-                                     on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.ward_num
 
 
 class SuggestedUse(models.Model):
@@ -100,8 +93,7 @@ class OpenSpace(models.Model):
     municipality = models.ForeignKey('Municipality', related_name='open_space',
                                      on_delete=models.SET_NULL, blank=True,
                                      null=True)
-    ward = models.ForeignKey('Ward', related_name='open_space',
-                             on_delete=models.SET_NULL, blank=True, null=True)
+    ward = models.IntegerField(blank=True, null=True)
     capacity = models.BigIntegerField(blank=True, null=True)
     total_area = models.IntegerField(blank=True, null=True)
     usable_area = models.IntegerField(blank=True, null=True)
