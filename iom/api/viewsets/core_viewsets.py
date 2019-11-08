@@ -26,10 +26,16 @@ class ResourceViewSet(viewsets.ModelViewSet):
     def filter_queryset(self, queryset):
         category = self.request.query_params.get('category')
         document_type = self.request.query_params.get('document_type')
+        content = self.request.query_params.get('content')
 
         if category and document_type:
             return self.queryset.filter(category=category,
                                         document_type=document_type)
+
+        elif content:
+            print('abc')
+            return self.queryset.filter(title__icontains=content)
+
         else:
             return self.queryset
 

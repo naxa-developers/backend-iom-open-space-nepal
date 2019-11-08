@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Slider, Province, District, Municipality, Ward,\
+from core.models import Slider, Province, District, Municipality,\
     SuggestedUse, Services, Question, OpenSpace, Report, CreateOpenSpace,\
     NearbyAmenities, EducationFacility, HealthFacility, Resource
 
@@ -10,7 +10,6 @@ admin.site.register(Slider)
 admin.site.register(Province)
 admin.site.register(District)
 admin.site.register(Municipality)
-admin.site.register(Ward)
 admin.site.register(SuggestedUse)
 admin.site.register(Services)
 admin.site.register(Question)
