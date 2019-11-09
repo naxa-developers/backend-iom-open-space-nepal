@@ -1,7 +1,11 @@
 from rest_framework import viewsets
-from core.models import Slider, CreateOpenSpace, Resource
+from core.models import Slider, CreateOpenSpace, Resource, Province, District,\
+    Municipality, SuggestedUse, Services, Question, OpenSpace, Report
 from api.serializers.core_serializers import SliderSerializer,\
-    CreateOpenSpaceSerializer, ResourceSerializer
+    CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer,\
+    DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer,\
+    ServiceSerializer, QuestionSerializer, OpenSpaceSerializer,\
+    ReportSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -39,6 +43,52 @@ class ResourceViewSet(viewsets.ModelViewSet):
             return Resource.objects.all()
 
 
+class ProvinceViewSet(viewsets.ModelViewSet):
+    serializer_class = ProvinceSerializer
+    queryset = Province.objects.all()
+    permission_classes = []
+
+
+class DistrictViewSet(viewsets.ModelViewSet):
+    serializer_class = DistrictSerializer
+    queryset = District.objects.all()
+    permission_classes = []
+
+
+class SuggestedUseViewSet(viewsets.ModelViewSet):
+    serializer_class = SuggestedUseSerializer
+    queryset = SuggestedUse.objects.all()
+    permission_classes = []
+
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    serializer_class = ServiceSerializer
+    queryset = Services.objects.all()
+    permission_classes = []
+
+
+class MunicipalityViewSet(viewsets.ModelViewSet):
+    serializer_class = MunicipalitySerializer
+    queryset = Municipality.objects.all()
+    permission_classes = []
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
+    serializer_class = QuestionSerializer
+    queryset = Question.objects.all()
+    permission_classes = []
+
+
+class OpenSpaceViewSet(viewsets.ModelViewSet):
+    serializer_class = OpenSpaceSerializer
+    queryset = OpenSpace.objects.all()
+    permission_classes = []
+
+
+class ReportViewSet(viewsets.ModelViewSet):
+    serializer_class = ReportSerializer
+    queryset = Report.objects.all()
+    permission_classes = []
 
 
 @api_view(['GET', ])
