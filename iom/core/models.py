@@ -84,19 +84,23 @@ class OpenSpace(models.Model):
     special_feature = models.TextField(blank=True, null=True)
 
     address = models.CharField(max_length=200, blank=True, null=True)
-    province = models.ForeignKey('Province', related_name='open_space',
+    province = models.ForeignKey('Province', related_name='province',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
-    district = models.ForeignKey('District', related_name='open_space',
+    district = models.ForeignKey('District', related_name='district',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
-    municipality = models.ForeignKey('Municipality', related_name='open_space',
-                                     on_delete=models.SET_NULL, blank=True,
-                                     null=True)
+    municipality = models.ForeignKey('Municipality',
+                                     related_name='municipality',
+                                     on_delete=models.SET_NULL,
+                                     blank=True, null=True)
     ward = models.IntegerField(blank=True, null=True)
-    capacity = models.BigIntegerField(blank=True, null=True)
-    total_area = models.IntegerField(blank=True, null=True)
-    usable_area = models.IntegerField(blank=True, null=True)
+    capacity = models.DecimalField(max_digits=25, decimal_places=10,
+                                   blank=True, null=True)
+    total_area = models.DecimalField(max_digits=25, decimal_places=10,
+                                     blank=True, null=True)
+    usable_area = models.DecimalField(max_digits=25, decimal_places=10,
+                                      blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
     maps = models.ImageField(upload_to='maps', blank=True, null=True)

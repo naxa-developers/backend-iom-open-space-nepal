@@ -9,6 +9,7 @@ from api.serializers.core_serializers import SliderSerializer,\
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Sum
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -208,8 +209,8 @@ class ProvinceApi(APIView):
 #         open_space = OpenSpace.objects.all()
 #         district = District.objects.all().count()
 #         municipality = Municipality.objects.all().count()
-#         total_area =
-#         total_capacity =
+#         total_area = OpenSpace.objects.aggregate(Sum('total_area'))
+#         total_capacity = OpenSpace.objects.aggregate(Sum('capacity'))
 
 
 
