@@ -121,7 +121,7 @@ class OpenSpaceLandingApi(APIView):
                         "district": open_space.district.name,
                         "municipality": open_space.municipality.name,
                         "address": open_space.address,
-                        "image": open_space.image.url,
+                        "image": open_space.image,
                         "latitude": open_space.latitude,
                         "longitude": open_space.longitude
                     }
@@ -200,14 +200,19 @@ class ProvinceApi(APIView):
         return Response({"data": data})
 
 
-
-
 # class GlimpseOfOpenSpace(APIView):
 #     authentication_classes = []
 #     permission_classes = []
 #
-#     def get(self):
+#     def get(self, request):
 #         open_space = OpenSpace.objects.all()
+#         district = District.objects.all().count()
+#         municipality = Municipality.objects.all().count()
+#         total_area =
+#         total_capacity =
+
+
+
 
 
 
