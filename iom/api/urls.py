@@ -25,4 +25,8 @@ router.register(r'open_space_def', front_viewset.OpenSpaceDefViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('dummy_api', core_viewsets.dummy_api_view),
+    path('open_space_landing', core_viewsets.OpenSpaceLandingApi.as_view()),
+    path('district_api', core_viewsets.DistrictApi.as_view()),
+    path('municipality_api', core_viewsets.MunicipalityApi.as_view()),
+    path('province_api', core_viewsets.ProvinceApi.as_view())
 ]
