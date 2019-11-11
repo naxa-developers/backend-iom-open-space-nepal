@@ -120,7 +120,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province,
                         "district": open_space.district,
                         "municipality": open_space.municipality,
-                        "address": open_space.address,
+                        "address": open_space.address, 
                         "image": open_space.image.url,
                         "latitude": open_space.latitude,
                         "longitude": open_space.longitude
