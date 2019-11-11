@@ -117,10 +117,10 @@ class OpenSpaceLandingApi(APIView):
                 data.append(
                     {
                         "title": open_space.title,
-                        "province": open_space.province,
-                        "district": open_space.district,
-                        "municipality": open_space.municipality,
-                        "address": open_space.address, 
+                        "province": open_space.province.name,
+                        "district": open_space.district.name,
+                        "municipality": open_space.municipality.name,
+                        "address": open_space.address,
                         "image": open_space.image.url,
                         "latitude": open_space.latitude,
                         "longitude": open_space.longitude
@@ -130,9 +130,9 @@ class OpenSpaceLandingApi(APIView):
                 data.append(
                     {
                         "title": open_space.title,
-                        "province": open_space.province,
-                        "district": open_space.district,
-                        "municipality": open_space.municipality,
+                        "province": open_space.province.name,
+                        "district": open_space.district.name,
+                        "municipality": open_space.municipality.name,
                         "address": open_space.address,
                         "image": None,
                         "latitude": open_space.latitude,
