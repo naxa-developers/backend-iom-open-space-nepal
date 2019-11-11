@@ -113,18 +113,32 @@ class OpenSpaceLandingApi(APIView):
         data = []
         open_spaces = OpenSpace.objects.all()
         for open_space in open_spaces:
-            data.append(
-                {
-                    "title": open_space.title,
-                    "province": open_space.province,
-                    "district": open_space.district,
-                    "municipality": open_space.municipality,
-                    "address": open_space.address,
-                    "image": open_space.image.url,
-                    "latitude": open_space.latitude,
-                    "longitude": open_space.longitude
-                }
-            )
+            if open_space.image:
+                data.append(
+                    {
+                        "title": open_space.title,
+                        "province": open_space.province,
+                        "district": open_space.district,
+                        "municipality": open_space.municipality,
+                        "address": open_space.address,
+                        "image": open_space.image.url,
+                        "latitude": open_space.latitude,
+                        "longitude": open_space.longitude
+                    }
+                )
+            else:
+                data.append(
+                    {
+                        "title": open_space.title,
+                        "province": open_space.province,
+                        "district": open_space.district,
+                        "municipality": open_space.municipality,
+                        "address": open_space.address,
+                        "image": None,
+                        "latitude": open_space.latitude,
+                        "longitude": open_space.longitude
+                    }
+                )
 
         return Response({"data": data})
 
