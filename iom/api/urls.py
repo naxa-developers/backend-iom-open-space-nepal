@@ -22,6 +22,10 @@ router.register(r'header', front_viewset.HeaderViewSet)
 router.register(r'open_space_ide', front_viewset.OpenSpaceIdeViewSet)
 router.register(r'open_space_def', front_viewset.OpenSpaceDefViewSet)
 
+router.register(r'contact', front_viewset.ContactViewSet)
+router.register(r'open_space_app', front_viewset.OpenSpaceAppViewSet)
+
+
 urlpatterns = [
     path('', include(router.urls)),
     path('dummy_api', core_viewsets.dummy_api_view),

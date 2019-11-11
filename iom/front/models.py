@@ -32,3 +32,18 @@ class OpenSpaceIde(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Contact(models.Model):
+    title = models.CharField(max_length=300)
+    num1 = models.IntegerField()
+    num2 = models.IntegerField()
+    email = models.EmailField()
+    description = models.TextField()
+
+
+class OpenSpaceApp(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="app")
+    icon = models.ImageField(upload_to="icon")
+    description = models.TextField()
