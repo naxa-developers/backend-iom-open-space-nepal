@@ -9,6 +9,8 @@ from api.serializers.core_serializers import SliderSerializer,\
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.core.serializers import serialize
+import json
 from django.db.models import Sum
 
 
@@ -211,6 +213,29 @@ class ProvinceApi(APIView):
 #         municipality = Municipality.objects.all().count()
 #         total_area = OpenSpace.objects.aggregate(Sum('total_area'))
 #         total_capacity = OpenSpace.objects.aggregate(Sum('capacity'))
+
+
+class OpenSpaceGeojsonViewSet(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        serializers = serialize('geojson', OpenSpace.objects.all(),
+                                geometry_field='polygons',
+                                fields=('pk', 'title', 'description', 'status',
+                                        'catchment_area', 'ownership',
+                                        'elevation', 'access_to_site',
+                                        'special_feature', 'address',
+                                        'province', 'district',
+                                        'municipality', 'ward', 'capacity',
+                                        'total_area', 'usable_area', 'image',
+                                        'maps', ))
+
+        # print(serializers)
+
+        OpenSpaceGeoJson = json.loads(serializers)
+        return Response(OpenSpaceGeoJson)
+
+
 
 
 

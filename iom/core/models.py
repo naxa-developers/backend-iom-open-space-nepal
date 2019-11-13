@@ -84,7 +84,7 @@ class OpenSpace(models.Model):
     special_feature = models.TextField(blank=True, null=True)
 
     address = models.CharField(max_length=200, blank=True, null=True)
-    province = models.ForeignKey('Province', related_name='province',
+    province = models.ForeignKey('Province', related_name='open_province',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
     district = models.ForeignKey('District', related_name='district',
@@ -181,6 +181,17 @@ class EducationFacility(models.Model):
     name = models.CharField(max_length=100)
     amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
                                 related_name='education_facility')
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
+
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
 
     def __str__(self):
         return self.name
@@ -190,6 +201,17 @@ class HealthFacility(models.Model):
     name = models.CharField(max_length=100)
     amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
                                 related_name='health_facility')
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
+
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
 
     def __str__(self):
         return self.name
