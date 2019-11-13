@@ -196,9 +196,12 @@ class GlimpseOfOpenSpace(APIView):
     def get(self, request):
         open_space = OpenSpace.objects.all().count()
         district = OpenSpace.objects.values('district').distinct().count()
-        municipality = OpenSpace.objects.values('municipality').distinct().count()
-        total_area = OpenSpace.objects.aggregate(Sum('total_area')).get('total_area__sum')
-        total_capacity = OpenSpace.objects.aggregate(Sum('capacity')).get('capacity__sum')
+        municipality = OpenSpace.objects.values(
+            'municipality').distinct().count()
+        total_area = OpenSpace.objects.aggregate(
+            Sum('total_area')).get('total_area__sum')
+        total_capacity = OpenSpace.objects.aggregate(
+            Sum('capacity')).get('capacity__sum')
 
         data = {
             "open_space": open_space,
