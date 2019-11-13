@@ -93,6 +93,10 @@ class ReportViewSet(viewsets.ModelViewSet):
     queryset = Report.objects.all()
     permission_classes = []
 
+    def perform_create(self, serializer):
+        location = self.queryset.open_space.location
+        serializer.save(location=location)
+
 
 class OpenSpaceLandingApi(APIView):
     authentication_classes = []
