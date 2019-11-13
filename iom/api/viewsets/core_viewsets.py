@@ -1,17 +1,16 @@
 from rest_framework import viewsets
-from core.models import Slider, CreateOpenSpace, Resource, Province, District,\
+from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     Municipality, SuggestedUse, Services, Question, OpenSpace, Report
-from api.serializers.core_serializers import SliderSerializer,\
-    CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer,\
-    DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer,\
-    ServiceSerializer, QuestionSerializer, OpenSpaceSerializer,\
+from api.serializers.core_serializers import SliderSerializer, \
+    CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
+    DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
+    ServiceSerializer, QuestionSerializer, OpenSpaceSerializer, \
     ReportSerializer
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Count, Sum
 from django.core.serializers import serialize
 import json
-from django.db.models import Sum
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -93,19 +92,6 @@ class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer
     queryset = Report.objects.all()
     permission_classes = []
-
-
-@api_view(['GET', ])
-def dummy_api_view(request):
-    data = {
-        "open_space": 192929,
-        "district": 34,
-        "municipality": 78,
-        "total_area": 3737229,
-        "total_capacity": 89393,
-
-    }
-    return Response({"data": data})
 
 
 class OpenSpaceLandingApi(APIView):
@@ -203,16 +189,27 @@ class ProvinceApi(APIView):
         return Response({"data": data})
 
 
-# class GlimpseOfOpenSpace(APIView):
-#     authentication_classes = []
-#     permission_classes = []
-#
-#     def get(self, request):
-#         open_space = OpenSpace.objects.all()
-#         district = District.objects.all().count()
-#         municipality = Municipality.objects.all().count()
-#         total_area = OpenSpace.objects.aggregate(Sum('total_area'))
-#         total_capacity = OpenSpace.objects.aggregate(Sum('capacity'))
+class GlimpseOfOpenSpace(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        open_space = OpenSpace.objects.all().count()
+        district = OpenSpace.objects.values('district').distinct().count()
+        municipality = OpenSpace.objects.values('municipality').distinct().count()
+        total_area = OpenSpace.objects.aggregate(Sum('total_area')).get('total_area__sum')
+        total_capacity = OpenSpace.objects.aggregate(Sum('capacity')).get('capacity__sum')
+
+        data = {
+            "open_space": open_space,
+            "district": district,
+            "municipality": municipality,
+            "total_area": total_area,
+            "total_capacity": total_capacity,
+
+        }
+
+        return Response({"data": data})
 
 
 class OpenSpaceGeojsonViewSet(APIView):
@@ -228,19 +225,9 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'province', 'district',
                                         'municipality', 'ward', 'capacity',
                                         'total_area', 'usable_area', 'image',
-                                        'maps', ))
+                                        'maps',))
 
         # print(serializers)
 
         OpenSpaceGeoJson = json.loads(serializers)
         return Response(OpenSpaceGeoJson)
-
-
-
-
-
-
-
-
-
-

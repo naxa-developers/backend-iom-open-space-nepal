@@ -28,7 +28,7 @@ router.register(r'open_space_app', front_viewset.OpenSpaceAppViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('dummy_api', core_viewsets.dummy_api_view),
+    path('glimpse_of_open_space', core_viewsets.GlimpseOfOpenSpace.as_view()),
     path('open_space_landing', core_viewsets.OpenSpaceLandingApi.as_view()),
     path('district_api', core_viewsets.DistrictApi.as_view()),
     path('municipality_api', core_viewsets.MunicipalityApi.as_view()),
