@@ -33,5 +33,12 @@ urlpatterns = [
     path('district_api', core_viewsets.DistrictApi.as_view()),
     path('municipality_api', core_viewsets.MunicipalityApi.as_view()),
     path('province_api', core_viewsets.ProvinceApi.as_view()),
-    path('open_space_geo_json', core_viewsets.OpenSpaceGeojsonViewSet.as_view())
+    path('open_space_geo_json',
+         core_viewsets.OpenSpaceGeojsonViewSet.as_view()),
+    path('single_open_geo_json',
+         core_viewsets.SingleOpenSpaceGeojsonViewSet.as_view()),
+    path('district_geo_json',
+         core_viewsets.DistrictGeojsonViewSet.as_view()),
+    path('municipality_geo_json',
+         core_viewsets.MunicipalityGeojsonViewSet.as_view())
 ]
