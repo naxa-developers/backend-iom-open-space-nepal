@@ -148,7 +148,8 @@ class DistrictApi(APIView):
             data.append(
                 {
                     "id": district.id,
-                    "name": district.name
+                    "name": district.name,
+                    "province": district.province.name
                 }
             )
 
@@ -167,7 +168,8 @@ class MunicipalityApi(APIView):
             data.append(
                 {
                     "id": municipality.id,
-                    "name": municipality.name
+                    "name": municipality.name,
+                    "district": municipality.district.name
                 }
             )
 
