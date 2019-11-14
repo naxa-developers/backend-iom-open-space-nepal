@@ -237,19 +237,20 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'maps', 'location'))
 
         # print(serializers)
-        a = OpenSpace.objects.filter(id=4)
-        print(a[0].polygons.centroid.x)
+        # a = OpenSpace.objects.filter(id=4)
+        # print(a[0].polygons.centroid.x)
 
         OpenSpaceGeoJson = json.loads(serializers)
         return Response(OpenSpaceGeoJson)
 
 
-class DistrictGeojsonViewSet(APIView):
+class SingleOpenSpaceGeojsonViewSet(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        serializers = serialize('geojson', Report.objects.all(),
-                                geometry_field=('polygons', 'location'),
+        open_id = self.request.query_params.get('id')
+        serializers = serialize('geojson', OpenSpace.objects.filter(id=open_id),
+                                geometry_field='polygons',
                                 fields=('pk', 'title', 'description', 'status',
                                         'catchment_area', 'ownership',
                                         'elevation', 'access_to_site',
@@ -257,9 +258,36 @@ class DistrictGeojsonViewSet(APIView):
                                         'province', 'district',
                                         'municipality', 'ward', 'capacity',
                                         'total_area', 'usable_area', 'image',
-                                        'maps',))
+                                        'maps', 'location'))
 
-        # print(serializers)
+        open_space_geo_json = json.loads(serializers)
+        return Response(open_space_geo_json)
 
-        OpenSpaceGeoJson = json.loads(serializers)
-        return Response(OpenSpaceGeoJson)
+
+class DistrictGeojsonViewSet(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        district_id = self.request.query_params.get('id')
+        serializers = serialize('geojson', District.objects.filter(id=district_id),
+                                geometry_field='boundary',
+                                fields=('pk', 'name', 'province'))
+
+        district_geo_json = json.loads(serializers)
+        return Response(district_geo_json)
+
+
+class MunicipalityGeojsonViewSet(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        municipality_id = self.request.query_params.get('id')
+        serializers = serialize('geojson', Municipality.objects.filter(
+            id=municipality_id), geometry_field='boundary',
+                                fields=('pk', 'name', 'district'))
+
+        district_geo_json = json.loads(serializers)
+        return Response(district_geo_json)
+
+
+
