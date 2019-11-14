@@ -62,14 +62,22 @@ class Services(models.Model):
         return self.name
 
 
-class Question(models.Model):
-    question = models.TextField()
-    ans = models.BooleanField(default=True)
-    open_space = models.ForeignKey('OpenSpace', related_name='questions',
-                                   on_delete=models.CASCADE)
+class QuestionTitle(models.Model):
+    title = models.TextField()
 
     def __str__(self):
-        return self.question
+        return self.title
+
+
+class Question(models.Model):
+    question = models.ForeignKey('QuestionTitle', on_delete=models.CASCADE,
+                                 blank=True, null=True)
+    ans = models.BooleanField(default=True)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   blank=True, null=True)
+
+    def __str__(self):
+        return self.question.title
 
 
 class OpenSpace(models.Model):

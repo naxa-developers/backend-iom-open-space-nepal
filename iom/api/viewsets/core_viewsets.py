@@ -232,6 +232,29 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'province', 'district',
                                         'municipality', 'ward', 'capacity',
                                         'total_area', 'usable_area', 'image',
+                                        'maps', 'location'))
+
+        # print(serializers)
+        a = OpenSpace.objects.filter(id=4)
+        print(a[0].polygons.centroid.x)
+
+        OpenSpaceGeoJson = json.loads(serializers)
+        return Response(OpenSpaceGeoJson)
+
+
+class DistrictGeojsonViewSet(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        serializers = serialize('geojson', Report.objects.all(),
+                                geometry_field=('polygons', 'location'),
+                                fields=('pk', 'title', 'description', 'status',
+                                        'catchment_area', 'ownership',
+                                        'elevation', 'access_to_site',
+                                        'special_feature', 'address',
+                                        'province', 'district',
+                                        'municipality', 'ward', 'capacity',
+                                        'total_area', 'usable_area', 'image',
                                         'maps',))
 
         # print(serializers)
