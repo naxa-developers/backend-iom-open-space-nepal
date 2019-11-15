@@ -64,8 +64,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class OpenSpaceSerializer(serializers.ModelSerializer):
-    suggested_use = SuggestedUseSerializer(many=True)
-    services = ServiceSerializer(many=True)
+    suggested_use = SuggestedUseSerializer(many=True, required=False)
+    services =  sServiceSerializer(many=True, required=False)
 
     class Meta:
         model = OpenSpace
