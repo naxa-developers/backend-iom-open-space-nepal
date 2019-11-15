@@ -1,5 +1,5 @@
 from core.models import Slider, CreateOpenSpace, Resource, Province, District,\
-    Municipality, SuggestedUse, Services, OpenSpace, Report
+    Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData
 from rest_framework import serializers
 
 
@@ -51,10 +51,10 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class QuestionSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Questions
-#         fields = '__all__'
+class QuestionDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuestionsData
+        fields = '__all__'
 
 
 # class FacilitySerializer(serializers.ModelSerializer):
@@ -64,16 +64,17 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class OpenSpaceSerializer(serializers.ModelSerializer):
-    suggested_use = SuggestedUseSerializer(many=True, required=False)
-    services = ServiceSerializer(many=True, required=False)
+    # suggested_use = SuggestedUseSerializer(many=True, required=False)
+    # services = ServiceSerializer(many=True, required=False)
+    data_collect = ServiceSerializer(many=True, required=False)
 
     class Meta:
         model = OpenSpace
-        fields = ('id', 'suggested_use', 'services', 'title', 'description',
+        fields = ('id', 'suggested_use', 'services', 'data_collect', 'title',
                   'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
-                  'usable_area', 'image', 'maps')
+                  'usable_area', 'image', 'maps', 'description')
 
 
 class ReportSerializer(serializers.ModelSerializer):
