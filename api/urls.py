@@ -14,7 +14,7 @@ router.register(r'municipality', core_viewsets.MunicipalityViewSet)
 
 router.register(r'suggested_use', core_viewsets.SuggestedUseViewSet)
 router.register(r'service', core_viewsets.ServiceViewSet)
-router.register(r'question', core_viewsets.QuestionViewSet)
+# router.register(r'question', core_viewsets.QuestionViewSet)
 router.register(r'open_space', core_viewsets.OpenSpaceViewSet)
 router.register(r'report', core_viewsets.ReportViewSet)
 

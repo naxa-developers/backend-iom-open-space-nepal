@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.gis.db.models import PointField, MultiPolygonField
 
+
 # Create your models here.
 
 
@@ -62,15 +63,15 @@ class Services(models.Model):
         return self.name
 
 
-class QuestionTitle(models.Model):
+class QuestionList(models.Model):
     title = models.TextField()
 
     def __str__(self):
         return self.title
 
 
-class Question(models.Model):
-    question = models.ForeignKey('QuestionTitle', on_delete=models.CASCADE,
+class QuestionsData(models.Model):
+    question = models.ForeignKey('QuestionList', on_delete=models.CASCADE,
                                  blank=True, null=True)
     ans = models.BooleanField(default=True)
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
@@ -255,12 +256,36 @@ class Resource(models.Model):
         return self.title
 
 
+class AvailableFacility(models.Model):
+    TYPE_CHOICES = (
+        (0, 'Health Facility'),
+        (1, 'Education Facility'),
+        (2, 'Security'),
+        (3, 'Fire Brigade')
+    )
+    name = models.CharField(max_length=100)
+    type = models.IntegerField(choices=TYPE_CHOICES, default=0)
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+    province = models.ForeignKey('Province', related_name='facility_province',
+                                 on_delete=models.SET_NULL, blank=True,
+                                 null=True)
+    district = models.ForeignKey('District', related_name='facility_district',
+                                 on_delete=models.SET_NULL, blank=True,
+                                 null=True)
+    municipality = models.ForeignKey('Municipality',
+                                     related_name='facility_municipality',
+                                     on_delete=models.SET_NULL,
+                                     blank=True, null=True)
 
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
 
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
 
-
-
-
-
-
-
+    def __str__(self):
+        return self.name

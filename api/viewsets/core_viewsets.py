@@ -1,10 +1,10 @@
 from rest_framework import viewsets
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUse, Services, Question, OpenSpace, Report
+    Municipality, SuggestedUse, Services, OpenSpace, Report
 from api.serializers.core_serializers import SliderSerializer, \
     CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
-    ServiceSerializer, QuestionSerializer, OpenSpaceSerializer, \
+    ServiceSerializer, OpenSpaceSerializer, \
     ReportSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -76,10 +76,10 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    serializer_class = QuestionSerializer
-    queryset = Question.objects.all()
-    permission_classes = []
+# class QuestionViewSet(viewsets.ModelViewSet):
+#     serializer_class = QuestionSerializer
+#     queryset = Questions.objects.all()
+#     permission_classes = []
 
 
 class OpenSpaceViewSet(viewsets.ModelViewSet):
@@ -249,7 +249,8 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
         open_id = self.request.query_params.get('id')
-        serializers = serialize('geojson', OpenSpace.objects.filter(id=open_id),
+        serializers = serialize('geojson',
+                                OpenSpace.objects.filter(id=open_id),
                                 geometry_field='polygons',
                                 fields=('pk', 'title', 'description', 'status',
                                         'catchment_area', 'ownership',
@@ -269,7 +270,8 @@ class DistrictGeojsonViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
         district_id = self.request.query_params.get('id')
-        serializers = serialize('geojson', District.objects.filter(id=district_id),
+        serializers = serialize('geojson',
+                                District.objects.filter(id=district_id),
                                 geometry_field='boundary',
                                 fields=('pk', 'name', 'province'))
 
@@ -288,6 +290,3 @@ class MunicipalityGeojsonViewSet(APIView):
 
         district_geo_json = json.loads(serializers)
         return Response(district_geo_json)
-
-
-
