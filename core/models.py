@@ -258,13 +258,39 @@ class Resource(models.Model):
 
 class AvailableFacility(models.Model):
     TYPE_CHOICES = (
-        (0, 'Health Facility'),
-        (1, 'Education Facility'),
-        (2, 'Security'),
-        (3, 'Fire Brigade')
+        (1, 'Health Facility'),
+        (2, 'Education Facility'),
+        (3, 'Security Force'),
+        (4, 'Place Of Worship'),
+        (5, 'Financial Institution')
     )
+    EDUCATION_TYPE_CHOICES = (
+        (1, 'School'),
+        (2, 'College'),
+        (3, 'Kinder Garden'),
+        (4, 'Driving School')
+    )
+
+    FINANCIAL_INSTITUTION_CHOICES = (
+        (1, 'bank'),
+        (2, 'atm'),
+        (3, 'bureau_de_change')
+    )
+
+    HEALTH_FACILITY_CHOICES = (
+        (1, 'Hospital'),
+        (2, 'Veterinary'),
+        (3, 'Clinic'),
+        (4, 'Dentist'),
+        (5, 'Pharmacy'),
+        (6, 'Health Post'),
+        (7, 'Social Facility'),
+        (8, 'Doctors')
+    )
+
     name = models.CharField(max_length=100)
     type = models.IntegerField(choices=TYPE_CHOICES, default=0)
+    address = models.TextField(null=True, blank=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='facility_province',
                                  on_delete=models.SET_NULL, blank=True,
@@ -272,10 +298,20 @@ class AvailableFacility(models.Model):
     district = models.ForeignKey('District', related_name='facility_district',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
+    email = models.EmailField(blank=True,null=True)
     municipality = models.ForeignKey('Municipality',
                                      related_name='facility_municipality',
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
+    opening_hours = models.CharField(max_length=200, null=True, blank=True)
+    education_type = models.IntegerField(choices=EDUCATION_TYPE_CHOICES,
+                                         null=True, blank=True)
+    financial_type = models.IntegerField(choices=FINANCIAL_INSTITUTION_CHOICES,
+                                         null=True, blank=True)
+    health_type = models.IntegerField(choices=HEALTH_FACILITY_CHOICES,
+                                      null=True, blank=True)
+    comments = models.TextField(blank=True, null=True)
+    website = models.TextField(blank=True, null=True)
 
     @property
     def latitude(self):
