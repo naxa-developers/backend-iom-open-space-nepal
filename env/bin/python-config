@@ -1,4 +1,4 @@
-#!/home/anjol/work/IOM-Backend-Django/env/bin/python
+#!/home/sandip/work/IOM-Backend-Django/env/bin/python
 
 import sys
 import getopt
