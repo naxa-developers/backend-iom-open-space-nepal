@@ -109,6 +109,7 @@ class OpenSpaceLandingApi(APIView):
             if open_space.image:
                 data.append(
                     {
+                        "id": open_space.id,
                         "title": open_space.title,
                         "province": open_space.province.name,
                         "district": open_space.district.name,
@@ -122,6 +123,7 @@ class OpenSpaceLandingApi(APIView):
             else:
                 data.append(
                     {
+                        "id": open_space.id,
                         "title": open_space.title,
                         "province": open_space.province.name,
                         "district": open_space.district.name,
