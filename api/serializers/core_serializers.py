@@ -67,6 +67,7 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     suggested_use = SuggestedUseSerializer(many=True, required=False)
     services = ServiceSerializer(many=True, required=False)
     question_data = QuestionDataSerializer(many=True, required=False)
+    centroid = serializers.SerializerMethodField()
 
     class Meta:
         model = OpenSpace
@@ -74,7 +75,10 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
-                  'usable_area', 'image', 'maps', 'description')
+                  'usable_area', 'image', 'maps', 'description', 'centroid')
+
+    def get_centroid(self, obj):
+        return obj.polygons.centroid
 
 
 class ReportSerializer(serializers.ModelSerializer):
