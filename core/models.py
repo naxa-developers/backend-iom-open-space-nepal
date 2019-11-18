@@ -75,7 +75,8 @@ class QuestionsData(models.Model):
                                  blank=True, null=True)
     ans = models.BooleanField(default=True)
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
-                                   blank=True, null=True)
+                                   blank=True, null=True,
+                                   related_name='question_data')
 
     def __str__(self):
         return self.question.title

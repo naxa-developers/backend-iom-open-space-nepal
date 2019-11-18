@@ -64,13 +64,13 @@ class QuestionDataSerializer(serializers.ModelSerializer):
 
 
 class OpenSpaceSerializer(serializers.ModelSerializer):
-    # suggested_use = SuggestedUseSerializer(many=True, required=False)
-    # services = ServiceSerializer(many=True, required=False)
-    data_collect = ServiceSerializer(many=True, required=False)
+    suggested_use = SuggestedUseSerializer(many=True, required=False)
+    services = ServiceSerializer(many=True, required=False)
+    question_data = QuestionDataSerializer(many=True, required=False)
 
     class Meta:
         model = OpenSpace
-        fields = ('id', 'suggested_use', 'services', 'data_collect', 'title',
+        fields = ('id', 'suggested_use', 'question_data', 'services', 'title',
                   'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
