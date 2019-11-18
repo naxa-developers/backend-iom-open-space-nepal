@@ -137,7 +137,7 @@ class OpenSpace(models.Model):
         return center
 
     def __str__(self):
-        return self.title
+        return self.id
 
 
 class Report(models.Model):

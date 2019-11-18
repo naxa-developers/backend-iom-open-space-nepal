@@ -1,16 +1,23 @@
 from rest_framework import viewsets
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUse, Services, OpenSpace, Report
+    Municipality, SuggestedUse, Services, OpenSpace, Report, AvailableFacility
 from api.serializers.core_serializers import SliderSerializer, \
     CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
     ServiceSerializer, OpenSpaceSerializer, \
-    ReportSerializer
+    ReportSerializer, AvailableFacilitySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Sum
 from django.core.serializers import serialize
 import json
+from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.measure import D
+from rest_framework.parsers import JSONParser
+import io
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -292,3 +299,30 @@ class MunicipalityGeojsonViewSet(APIView):
 
         district_geo_json = json.loads(serializers)
         return Response(district_geo_json)
+
+
+class NearByMeViewSet(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        api_json = {}
+        open_space_id = self.request.query_params.get('id')
+        distance = self.request.query_params.get('distance')
+        count = int(self.request.query_params.get('count'))
+        open_space = OpenSpace.objects.get(id=open_space_id)
+        longitude = open_space.centroid[0]
+        latitude = open_space.centroid[1]
+        openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
+        resource_queryset = AvailableFacility.objects \
+                               .filter(location__distance_lte=(openspace_location, D(km=distance))) \
+                               .annotate(distance=Distance('location', openspace_location)) \
+                               .order_by('distance')[0:count]
+        print(resource_queryset)
+        resource_json = AvailableFacilitySerializer(resource_queryset, many=True)
+        json = JSONRenderer().render(resource_json.data)
+        stream = io.BytesIO(json)
+        data = JSONParser().parse(stream)
+        api_json['facility'] = data
+
+        return Response(api_json)
