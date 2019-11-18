@@ -105,11 +105,11 @@ class OpenSpace(models.Model):
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
     ward = models.IntegerField(blank=True, null=True)
-    capacity = models.DecimalField(max_digits=25, decimal_places=10,
+    capacity = models.DecimalField(max_digits=20, decimal_places=3,
                                    blank=True, null=True)
-    total_area = models.DecimalField(max_digits=25, decimal_places=10,
+    total_area = models.DecimalField(max_digits=20, decimal_places=3,
                                      blank=True, null=True)
-    usable_area = models.DecimalField(max_digits=25, decimal_places=10,
+    usable_area = models.DecimalField(max_digits=20, decimal_places=3,
                                       blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
