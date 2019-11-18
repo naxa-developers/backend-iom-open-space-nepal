@@ -78,7 +78,12 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'usable_area', 'image', 'maps', 'description', 'centroid')
 
     def get_centroid(self, obj):
-        return obj.polygons.centroid
+        center = []
+        long=obj.polygons.centroid.x
+        lat=obj.polygons.centroid.y
+        center.append(long)
+        center.append(lat)
+        return center
 
 
 class ReportSerializer(serializers.ModelSerializer):
