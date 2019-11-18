@@ -40,5 +40,6 @@ urlpatterns = [
     path('district_geo_json',
          core_viewsets.DistrictGeojsonViewSet.as_view()),
     path('municipality_geo_json',
-         core_viewsets.MunicipalityGeojsonViewSet.as_view())
+         core_viewsets.MunicipalityGeojsonViewSet.as_view()),
+    path('near_by_me', core_viewsets.NearByMeViewSet.as_view())
 ]
