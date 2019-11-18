@@ -1,4 +1,4 @@
-from core.models import Slider, CreateOpenSpace, Resource, Province, District,\
+from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData
 from rest_framework import serializers
 
@@ -67,7 +67,8 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     suggested_use = SuggestedUseSerializer(many=True, required=False)
     services = ServiceSerializer(many=True, required=False)
     question_data = QuestionDataSerializer(many=True, required=False)
-    centroid = serializers.SerializerMethodField()
+
+    # centroid = serializers.SerializerMethodField()
 
     class Meta:
         model = OpenSpace
@@ -75,20 +76,18 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
-                  'usable_area', 'image', 'maps', 'description', 'centroid')
+                  'usable_area', 'image', 'maps', 'description', 'centroid', )
 
-    def get_centroid(self, obj):
-        center = []
-        long=obj.polygons.centroid.x
-        lat=obj.polygons.centroid.y
-        center.append(long)
-        center.append(lat)
-        return center
+    # def get_centroid(self, obj):
+    #     center = []
+    #     long=obj.polygons.centroid.x
+    #     lat=obj.polygons.centroid.y
+    #     center.append(long)
+    #     center.append(lat)
+    #     return center
 
 
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = '__all__'
-
-

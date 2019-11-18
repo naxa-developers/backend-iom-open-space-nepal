@@ -135,7 +135,6 @@ class OpenSpaceLandingApi(APIView):
                     }
                 )
 
-
         return Response({"data": data})
 
 
@@ -237,7 +236,7 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'province', 'district',
                                         'municipality', 'ward', 'capacity',
                                         'total_area', 'usable_area', 'image',
-                                        'maps', 'location'))
+                                        'maps', 'location', 'centroid', 'latitude'))
 
         # print(serializers)
         # a = OpenSpace.objects.filter(id=4)

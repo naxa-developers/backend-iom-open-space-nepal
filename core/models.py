@@ -127,6 +127,15 @@ class OpenSpace(models.Model):
         if self.location:
             return self.location.x
 
+    @property
+    def centroid(self):
+        center = []
+        long = self.polygons.centroid.x
+        lat = self.polygons.centroid.y
+        center.append(long)
+        center.append(lat)
+        return center
+
     def __str__(self):
         return self.title
 
