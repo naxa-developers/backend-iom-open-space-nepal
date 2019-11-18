@@ -135,6 +135,7 @@ class OpenSpaceLandingApi(APIView):
                     }
                 )
 
+
         return Response({"data": data})
 
 
