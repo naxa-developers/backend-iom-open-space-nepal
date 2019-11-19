@@ -40,8 +40,8 @@ class OpenSpaceIde(models.Model):
 
 class Contact(models.Model):
     title = models.CharField(max_length=300)
-    num1 = models.IntegerField()
-    num2 = models.IntegerField()
+    num1 = models.CharField(max_length=14)
+    num2 = models.CharField(max_length=14)
     email = models.EmailField()
     description = models.TextField()
 
