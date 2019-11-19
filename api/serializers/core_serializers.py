@@ -1,5 +1,5 @@
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData, AvailableFacility
+    Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery
 from rest_framework import serializers
 
 
@@ -60,6 +60,12 @@ class QuestionDataSerializer(serializers.ModelSerializer):
 class AvailableFacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableFacility
+        fields = '__all__'
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gallery
         fields = '__all__'
 
 

@@ -1,11 +1,13 @@
 from rest_framework import viewsets
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUse, Services, OpenSpace, Report, AvailableFacility
+    Municipality, SuggestedUse, Services, OpenSpace, Report, AvailableFacility, \
+    Gallery
 from api.serializers.core_serializers import SliderSerializer, \
     CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
     ServiceSerializer, OpenSpaceSerializer, \
-    ReportSerializer, AvailableFacilitySerializer
+    ReportSerializer, AvailableFacilitySerializer, \
+    GallerySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Sum
@@ -96,6 +98,12 @@ class OpenSpaceViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
+class GalleryViewSet(viewsets.ModelViewSet):
+    serializer_class = GallerySerializer
+    queryset = Gallery.objects.all()
+    permission_classes = []
+
+
 class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer
     queryset = Report.objects.all()
@@ -116,8 +124,6 @@ class ReportViewSet(viewsets.ModelViewSet):
 
         else:
             return queryset
-
-
 
 
 class OpenSpaceLandingApi(APIView):

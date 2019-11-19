@@ -24,6 +24,7 @@ router.register(r'open_space_def', front_viewset.OpenSpaceDefViewSet)
 
 router.register(r'contact', front_viewset.ContactViewSet)
 router.register(r'open_space_app', front_viewset.OpenSpaceAppViewSet)
+router.register(r'gallery', core_viewsets.GalleryViewSet)
 
 
 urlpatterns = [

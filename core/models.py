@@ -82,6 +82,16 @@ class QuestionsData(models.Model):
         return self.question.title
 
 
+class Gallery(models.Model):
+    image = models.ImageField(upload_to='open_image',
+                              blank=True, null=True)
+    maps = models.ImageField(upload_to='open_maps',
+                             blank=True, null=True)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   blank=True, null=True,
+                                   related_name='gallery')
+
+
 class OpenSpace(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -113,7 +123,6 @@ class OpenSpace(models.Model):
                                       blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
-    maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
 
