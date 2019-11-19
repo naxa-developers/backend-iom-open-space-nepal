@@ -49,6 +49,7 @@ class SuggestedUse(models.Model):
     name = models.CharField(max_length=100)
     open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
                                    on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to='suggest', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -58,6 +59,7 @@ class Services(models.Model):
     name = models.CharField(max_length=100)
     open_space = models.ForeignKey('OpenSpace', related_name='services',
                                    on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to='service', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -80,6 +82,16 @@ class QuestionsData(models.Model):
 
     def __str__(self):
         return self.question.title
+
+
+class Gallery(models.Model):
+    image = models.ImageField(upload_to='open_image',
+                              blank=True, null=True)
+    maps = models.ImageField(upload_to='open_maps',
+                             blank=True, null=True)
+    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
+                                   blank=True, null=True,
+                                   related_name='gallery')
 
 
 class OpenSpace(models.Model):
@@ -113,7 +125,6 @@ class OpenSpace(models.Model):
                                       blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
-    maps = models.ImageField(upload_to='maps', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
 
