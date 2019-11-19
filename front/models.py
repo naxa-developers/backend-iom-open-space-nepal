@@ -4,8 +4,12 @@ from django.db import models
 
 
 class Header(models.Model):
-    title = models.TextField(blank=True, null=True)
-    title_nep = models.TextField(blank=True, null=True)
+    title1 = models.TextField(blank=True, null=True)
+    title2 = models.TextField(blank=True, null=True)
+    title3 = models.TextField(blank=True, null=True)
+    title_nep1 = models.TextField(blank=True, null=True)
+    title_nep2 = models.TextField(blank=True, null=True)
+    title_nep3 = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     description_nep = models.TextField(blank=True, null=True)
 

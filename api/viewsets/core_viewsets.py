@@ -18,6 +18,7 @@ from rest_framework.parsers import JSONParser
 import io
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
+from datetime import datetime, timedelta
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -103,6 +104,20 @@ class ReportViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         location = self.queryset.open_space.location
         serializer.save(location=location)
+
+    def filter_queryset(self, queryset):
+        print(queryset)
+        reports = Report.objects.filter(date__gte=datetime.now()-timedelta(days=7))
+        status = self.request.query_params.get('status')
+        urgency = self.request.query_params.get('urgency')
+
+        if status and urgency:
+            return reports.filter(status=status, urgency=urgency)
+
+        else:
+            return queryset
+
+
 
 
 class OpenSpaceLandingApi(APIView):

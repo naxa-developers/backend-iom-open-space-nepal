@@ -137,29 +137,29 @@ class OpenSpace(models.Model):
         return center
 
     def __str__(self):
-        return self.id
+        return self.title
 
 
 class Report(models.Model):
     URGENCY_CHOICES = (
-        (0, 'High'),
-        (1, 'Medium'),
-        (2, 'Low')
+        ('high', 'HIGH'),
+        ('medium', 'MEDIUM'),
+        ('low', 'LOW')
     )
 
     STATUS_CHOICES = (
-        (0, 'Pending'),
-        (1, 'Replied')
+        ('pending', 'PENDING'),
+        ('replied', 'REPLIED')
     )
 
     title = models.CharField(max_length=100)
     name = models.CharField(max_length=100, null=True, blank=True)
     message = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True)
-    urgency = models.IntegerField(choices=URGENCY_CHOICES, default=0)
-    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    date = models.DateTimeField(auto_now_add=True,  null=True, blank=True)
+    urgency = models.CharField(choices=URGENCY_CHOICES, max_length=15, default='high')
+    status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
-                                   related_name='report')
+                                   related_name='report', blank=True, null=True)
     reported_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     related_name="reported_by",
                                     on_delete=models.SET_NULL,
@@ -179,7 +179,7 @@ class Report(models.Model):
             return self.location.x
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class CreateOpenSpace(models.Model):
