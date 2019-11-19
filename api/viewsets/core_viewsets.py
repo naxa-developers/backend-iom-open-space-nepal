@@ -347,3 +347,9 @@ class NearByMeViewSet(APIView):
         api_json['facility'] = data
 
         return Response(api_json)
+
+
+class AvailableFacilityViewSet(viewsets.ModelViewSet):
+    serializer_class = AvailableFacilitySerializer
+    queryset = AvailableFacility.objects.all()
+    authentication_classes = []

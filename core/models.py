@@ -49,6 +49,7 @@ class SuggestedUse(models.Model):
     name = models.CharField(max_length=100)
     open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
                                    on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to='suggest', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -58,6 +59,7 @@ class Services(models.Model):
     name = models.CharField(max_length=100)
     open_space = models.ForeignKey('OpenSpace', related_name='services',
                                    on_delete=models.CASCADE)
+    icon = models.ImageField(upload_to='service', blank=True, null=True)
 
     def __str__(self):
         return self.name
