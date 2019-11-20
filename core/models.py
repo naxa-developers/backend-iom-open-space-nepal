@@ -190,7 +190,7 @@ class Report(models.Model):
             return self.location.x
 
     def __str__(self):
-        return self.name
+        return self.titile
 
 
 class CreateOpenSpace(models.Model):
