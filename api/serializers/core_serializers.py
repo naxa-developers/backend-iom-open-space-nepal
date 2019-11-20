@@ -82,7 +82,7 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
-                  'usable_area', 'image', 'maps', 'description', 'centroid', )
+                  'usable_area', 'image', 'description', 'centroid', )
 
     # def get_centroid(self, obj):
     #     center = []
