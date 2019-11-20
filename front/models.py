@@ -14,7 +14,7 @@ class Header(models.Model):
     description_nep = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.title1
 
 
 class OpenSpaceDef(models.Model):
