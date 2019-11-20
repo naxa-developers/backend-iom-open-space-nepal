@@ -21,6 +21,7 @@ import io
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 from datetime import datetime, timedelta
+from rest_framework_swagger.views import get_swagger_view
 
 
 class SliderViewSet(viewsets.ModelViewSet):
