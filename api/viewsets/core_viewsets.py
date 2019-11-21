@@ -332,12 +332,13 @@ class NearByMeViewSet(APIView):
         open_space_id = self.request.query_params.get('id')
         distance = self.request.query_params.get('distance')
         count = int(self.request.query_params.get('count'))
+        type = self.request.query_params.get('type')
         open_space = OpenSpace.objects.get(id=open_space_id)
         longitude = open_space.centroid[0]
         latitude = open_space.centroid[1]
         openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
         resource_queryset = AvailableFacility.objects \
-                               .filter(location__distance_lte=(openspace_location, D(km=distance))) \
+                               .filter(location__distance_lte=(openspace_location, D(km=distance)), type=type) \
                                .annotate(distance=Distance('location', openspace_location)) \
                                .order_by('distance')[0:count]
         print(resource_queryset)

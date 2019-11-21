@@ -41,6 +41,7 @@ class ResourceSerializer(serializers.ModelSerializer):
         else:
             return 'one document type must be selected'
 
+
 class ProvinceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Province
