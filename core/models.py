@@ -279,38 +279,57 @@ class Resource(models.Model):
 
 class AvailableFacility(models.Model):
     TYPE_CHOICES = (
-        (1, 'Health Facility'),
-        (2, 'Education Facility'),
-        (3, 'Security Force'),
-        (4, 'Place Of Worship'),
-        (5, 'Financial Institution')
+        ('health facility', 'Health Facility'),
+        ('education facility', 'Education Facility'),
+        ('security force', 'Security Force'),
+        ('place of worship', 'Place Of Worship'),
+        ('financial institution', 'Financial Institution')
     )
     EDUCATION_TYPE_CHOICES = (
-        (1, 'School'),
-        (2, 'College'),
-        (3, 'Kinder Garden'),
-        (4, 'Driving School')
+        ('school', 'School'),
+        ('college', 'College'),
+        ('kindergarten', 'Kinder Garten'),
+        ('driving_school', 'Driving School'),
+        ('library', 'Library')
+    )
+
+    OPERATOR_TYPE = (
+        ('private', 'Private'),
+        ('community', 'Community'),
+        ('government', 'Government'),
+        ('public', 'Public')
     )
 
     FINANCIAL_INSTITUTION_CHOICES = (
-        (1, 'bank'),
-        (2, 'atm'),
-        (3, 'bureau_de_change')
+        ('bank', 'bank'),
+        ('atm', 'atm'),
+        ('bureau_de_change', 'bureau_de_change')
     )
 
     HEALTH_FACILITY_CHOICES = (
-        (1, 'Hospital'),
-        (2, 'Veterinary'),
-        (3, 'Clinic'),
-        (4, 'Dentist'),
-        (5, 'Pharmacy'),
-        (6, 'Health Post'),
-        (7, 'Social Facility'),
-        (8, 'Doctors')
+        ('hospital', 'Hospital'),
+        ('veterinary', 'Veterinary'),
+        ('clinic', 'Clinic'),
+        ('dentist', 'Dentist'),
+        ('pharmacy', 'Pharmacy'),
+        ('health post', 'Health Post'),
+        ('social facility', 'Social Facility'),
+        ('doctors', 'Doctors')
+    )
+
+    BANK_TYPE = (
+        ('development', 'Development'),
+        ('commercial', 'Commercial'),
+        ('finance companies', 'Finance Companies'),
+        ('micro finance', 'Micro Finance'),
+        ('co-operative', 'Co-operative')
     )
 
     name = models.CharField(max_length=100)
-    type = models.IntegerField(choices=TYPE_CHOICES, default=0)
+    type = models.CharField(choices=TYPE_CHOICES, max_length=30,
+                            null=True, blank=True)
+    operator_type = models.CharField(choices=OPERATOR_TYPE,
+                                     max_length=30, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='facility_province',
@@ -325,14 +344,19 @@ class AvailableFacility(models.Model):
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
     opening_hours = models.CharField(max_length=200, null=True, blank=True)
-    education_type = models.IntegerField(choices=EDUCATION_TYPE_CHOICES,
-                                         null=True, blank=True)
-    financial_type = models.IntegerField(choices=FINANCIAL_INSTITUTION_CHOICES,
-                                         null=True, blank=True)
-    health_type = models.IntegerField(choices=HEALTH_FACILITY_CHOICES,
-                                      null=True, blank=True)
+    education_type = models.CharField(choices=EDUCATION_TYPE_CHOICES,
+                                      max_length=30, null=True, blank=True)
+    financial_type = models.CharField(choices=FINANCIAL_INSTITUTION_CHOICES,
+                                      max_length=30, null=True, blank=True)
+    bank_type = models.CharField(choices=BANK_TYPE, max_length=30,
+                                 null=True, blank=True)
+    health_type = models.CharField(choices=HEALTH_FACILITY_CHOICES,
+                                   max_length=30, null=True, blank=True)
+
+    phone_number = models.CharField(max_length=300, null=True, blank=True)
     comments = models.TextField(blank=True, null=True)
     website = models.TextField(blank=True, null=True)
+    bank_network = models.CharField(max_length=500, blank=True, null=True)
 
     @property
     def latitude(self):
