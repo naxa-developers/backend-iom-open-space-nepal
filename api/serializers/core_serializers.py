@@ -16,30 +16,9 @@ class CreateOpenSpaceSerializer(serializers.ModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-    download_url = serializers.SerializerMethodField()
-
     class Meta:
         model = Resource
-        fields = ('title', 'description', 'image', 'audio',
-                  'video', 'date', 'publication', 'category',
-                  'document_type', 'download_url')
-
-    def get_download_url(self, instance):
-        audio = instance.audio
-        video = instance.video
-        publication = instance.publication
-
-        if audio and video is None:
-            return publication
-
-        elif audio and publication is None:
-            return video
-
-        elif video and publication is None:
-            return audio
-
-        else:
-            return 'one document type must be selected'
+        fields = '__all__'
 
 
 class ProvinceSerializer(serializers.ModelSerializer):
