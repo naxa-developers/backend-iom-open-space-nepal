@@ -116,7 +116,7 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         print(queryset)
-        reports = Report.objects.filter(date__gte=datetime.now()-timedelta(days=7))
+        reports = Report.objects.filter(date__gte=datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
         urgency = self.request.query_params.get('urgency')
 
@@ -338,9 +338,9 @@ class NearByMeViewSet(APIView):
         latitude = open_space.centroid[1]
         openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
         resource_queryset = AvailableFacility.objects \
-                               .filter(location__distance_lte=(openspace_location, D(km=distance)), type=type) \
-                               .annotate(distance=Distance('location', openspace_location)) \
-                               .order_by('distance')[0:count]
+                                .filter(location__distance_lte=(openspace_location, D(km=distance)), type=type) \
+                                .annotate(distance=Distance('location', openspace_location)) \
+                                .order_by('distance')[0:count]
         print(resource_queryset)
         resource_json = AvailableFacilitySerializer(resource_queryset, many=True)
         json = JSONRenderer().render(resource_json.data)
