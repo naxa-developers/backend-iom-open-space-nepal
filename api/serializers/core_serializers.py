@@ -38,6 +38,8 @@ class ResourceSerializer(serializers.ModelSerializer):
         elif video and publication is None:
             return audio
 
+        else:
+            return 'one document type must be selected'
 
 class ProvinceSerializer(serializers.ModelSerializer):
     class Meta:
