@@ -50,5 +50,5 @@ class Contact(models.Model):
 class OpenSpaceApp(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to="app")
-    icon = models.ImageField(upload_to="icon")
+    icon = models.FileField(upload_to="icon")
     description = models.TextField()
