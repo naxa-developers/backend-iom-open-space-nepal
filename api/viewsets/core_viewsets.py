@@ -119,12 +119,17 @@ class ReportViewSet(viewsets.ModelViewSet):
         reports = Report.objects.filter(date__gte=datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
         urgency = self.request.query_params.get('urgency')
+        openspace = self.request.query_params.get('id')
 
         if status and urgency:
             return reports.filter(status=status, urgency=urgency)
 
+        if openspace:
+            return queryset.filter(open_space=openspace)
+
         else:
             return queryset
+
 
 
 class OpenSpaceLandingApi(APIView):
