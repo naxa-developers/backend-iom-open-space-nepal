@@ -131,7 +131,6 @@ class ReportViewSet(viewsets.ModelViewSet):
             return queryset
 
 
-
 class OpenSpaceLandingApi(APIView):
     authentication_classes = []
     permission_classes = []
@@ -353,6 +352,31 @@ class NearByMeViewSet(APIView):
         data = JSONParser().parse(stream)
         api_json['facility'] = data
 
+        return Response(api_json)
+
+
+class NearByMeOpenSpace(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        api_json = {}
+        count = int(self.request.query_params.get('count'))
+        distance = self.request.query_params.get('distance')
+        latitude = self.request.query_params.get('latitude')
+        longitude = self.request.query_params.get('longitude')
+        user_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
+
+        resource_queryset = OpenSpace.objects \
+                                .filter(polygons__distance_lte=(user_location, D(km=distance))) \
+                                .annotate(distance=Distance('polygons', user_location)) \
+                                .order_by('distance')[0:count]
+        print(resource_queryset)
+        resource_json = OpenSpaceSerializer(resource_queryset, many=True)
+        json = JSONRenderer().render(resource_json.data)
+        stream = io.BytesIO(json)
+        data = JSONParser().parse(stream)
+        api_json['facility'] = data
         return Response(api_json)
 
 
