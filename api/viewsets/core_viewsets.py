@@ -22,6 +22,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 from datetime import datetime, timedelta
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.decorators import api_view
+from django.http import Http404, HttpResponse
+from django.db import connection
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -149,8 +152,8 @@ class OpenSpaceLandingApi(APIView):
                         "municipality": open_space.municipality.name,
                         "address": open_space.address,
                         "image": open_space.image.url,
-                        "latitude": open_space.latitude,
-                        "longitude": open_space.longitude
+                        "latitude": open_space.polygons.centroid.y,
+                        "longitude": open_space.polygons.centroid.x
                     }
                 )
             else:
@@ -163,8 +166,8 @@ class OpenSpaceLandingApi(APIView):
                         "municipality": open_space.municipality.name,
                         "address": open_space.address,
                         "image": None,
-                        "latitude": open_space.latitude,
-                        "longitude": open_space.longitude
+                        "latitude": open_space.polygons.centroid.y,
+                        "longitude": open_space.polygons.centroid.x
                     }
                 )
 
@@ -384,3 +387,31 @@ class AvailableFacilityViewSet(viewsets.ModelViewSet):
     serializer_class = AvailableFacilitySerializer
     queryset = AvailableFacility.objects.all()
     authentication_classes = []
+
+
+@api_view(['GET'])
+def district_tile(request, zoom, x, y):
+    """
+    Custom view to serve Mapbox Vector Tiles for the custom polygon model.
+    """
+    if len(request.GET) == 0:
+        sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, province_id, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_district) AS tile"
+    else:
+        try:
+            dist = request.GET['district']
+            sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, province_id, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_district where id = " + dist + ") AS tile"
+        except:
+            print("")
+        try:
+            prov = request.GET['province']
+            sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, province_id, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_district where province_id_id = " + prov + ") AS tile"
+        except:
+            print("")
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql_data, [zoom, x, y])
+        tile = bytes(cursor.fetchone()[0])
+        # return HttpResponse(len(tile))
+        if not len(tile):
+            raise Http404()
+    return HttpResponse(tile, content_type="application/x-protobuf")
