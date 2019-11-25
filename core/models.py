@@ -18,6 +18,7 @@ class Slider(models.Model):
 class Province(models.Model):
     name = models.CharField(max_length=50)
     code = models.IntegerField(null=True, blank=True)
+    boundary = MultiPolygonField(null=True, blank=True)
 
     def __str__(self):
         return self.name
