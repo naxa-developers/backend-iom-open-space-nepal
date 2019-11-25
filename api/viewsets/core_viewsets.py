@@ -376,7 +376,7 @@ class NearByMeOpenSpace(APIView):
         json = JSONRenderer().render(resource_json.data)
         stream = io.BytesIO(json)
         data = JSONParser().parse(stream)
-        api_json['facility'] = data
+        api_json['open_space'] = data
         return Response(api_json)
 
 
