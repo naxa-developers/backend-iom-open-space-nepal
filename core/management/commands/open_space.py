@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import Province, District, OpenSpace, Municipality
+from core.models import Province, District, OpenSpace, Municipality, SuggestedUse
 
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -20,9 +20,15 @@ class Command(BaseCommand):
 
         print("Wait Data is being Loaded")
 
-        try:
-            open_space = [
-                OpenSpace(
+        for row in range(0, upper_range):
+            data = []
+            # print(df['Suggested Use'][row])
+            data.append(df['Suggested Use'][row])
+            print(data)
+
+        for row in range(0, upper_range)
+            try:
+                open_space = OpenSpace.objects.create(
                     province=Province.objects.get(
                         province_code=(df['Province'][row])),
                     #
@@ -48,18 +54,17 @@ class Command(BaseCommand):
                     issue=df['Issues'][row],
                     ownership=df['Ownership'][row],
                     polygons=GEOSGeometry(df['geom'][row]),
+                )
 
-                    # p_code=df['ADMIN2P_CODE'][row],
+                data = []
+                data.append(df['Suggested Use'][row])
+                for i in data:
+                    SuggestedUse.objects.create(name=i, open_space=open_space.id)
 
-                ) for row in range(0, upper_range)
+                open_space_data = OpenSpace.objects.bulk_create(open_space)
 
-            ]
+                if open_space_data:
+                    self.stdout.write('Successfully  updated data ..')
 
-            open_space_data = OpenSpace.objects.bulk_create(open_space)
-
-            if open_space_data:
-                self.stdout.write('Successfully  updated data ..')
-
-        except Exception as e:
-            print(e)
-
+            except Exception as e:
+                print(e)

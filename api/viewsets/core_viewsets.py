@@ -89,7 +89,7 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
     queryset = Municipality.objects.all()
     permission_classes = []
 
-
+#
 # class QuestionViewSet(viewsets.ModelViewSet):
 #     serializer_class = QuestionSerializer
 #     queryset = Questions.objects.all()
@@ -308,11 +308,16 @@ class ProvinceGeojsonViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
         province_id = self.request.query_params.get('id')
-        serializers = serialize('geojson',
-                                Province.objects.filter(id=province_id),
-                                geometry_field='boundary',
-                                fields=('pk', 'name', 'code'))
-
+        if province_id:
+            serializers = serialize('geojson',
+                                    Province.objects.filter(id=province_id),
+                                    geometry_field='boundary',
+                                    fields=('pk', 'name', 'code'))
+        else:
+            serializers = serialize('geojson',
+                                    Province.objects.all(),
+                                    geometry_field='boundary',
+                                    fields=('pk', 'name', 'code'))
         province_geo_json = json.loads(serializers)
         return Response(province_geo_json)
 
