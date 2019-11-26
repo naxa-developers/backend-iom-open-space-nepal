@@ -49,7 +49,7 @@ class Municipality(models.Model):
 
 
 class SuggestedUse(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=500)
     open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
                                    on_delete=models.CASCADE)
     icon = models.FileField(upload_to='suggest', blank=True, null=True)
@@ -59,7 +59,7 @@ class SuggestedUse(models.Model):
 
 
 class Services(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=500)
     description = models.TextField(blank=True, null=True)
     open_space = models.ForeignKey('OpenSpace', related_name='services',
                                    on_delete=models.CASCADE)
@@ -99,18 +99,18 @@ class Gallery(models.Model):
 
 
 class OpenSpace(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.TextField()
     description = models.TextField(blank=True, null=True)
     issue = models.TextField(blank=True, null=True)
     current_land_use = models.TextField(blank=True, null=True)
-    catchment_area = models.CharField(max_length=200, blank=True, null=True)
-    ownership = models.CharField(max_length=100, blank=True, null=True)
+    catchment_area = models.CharField(max_length=500, blank=True, null=True)
+    ownership = models.CharField(max_length=500, blank=True, null=True)
     elevation = models.DecimalField(max_digits=15, decimal_places=10,
                                     null=True, blank=True)
-    access_to_site = models.CharField(max_length=100, null=True, blank=True)
+    access_to_site = models.CharField(max_length=500, null=True, blank=True)
     special_feature = models.TextField(blank=True, null=True)
 
-    address = models.CharField(max_length=200, blank=True, null=True)
+    address = models.CharField(max_length=500, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='open_province',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
