@@ -303,6 +303,20 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
         return Response(open_space_geo_json)
 
 
+class ProvinceGeojsonViewSet(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        province_id = self.request.query_params.get('id')
+        serializers = serialize('geojson',
+                                Province.objects.filter(id=province_id),
+                                geometry_field='boundary',
+                                fields=('pk', 'name', 'code'))
+
+        province_geo_json = json.loads(serializers)
+        return Response(province_geo_json)
+
+
 class DistrictGeojsonViewSet(APIView):
     permission_classes = []
 
@@ -387,6 +401,36 @@ class AvailableFacilityViewSet(viewsets.ModelViewSet):
     serializer_class = AvailableFacilitySerializer
     queryset = AvailableFacility.objects.all()
     authentication_classes = []
+
+
+@api_view(['GET'])
+def province_tile(request, zoom, x, y):
+    """
+    Custom view to serve Mapbox Vector Tiles for the custom polygon model.
+    """
+    if len(request.GET) == 0:
+        sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_province) AS tile"
+    else:
+        try:
+            dist = request.GET['district']
+            sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_province where id = " + dist + ") AS tile"
+
+        except:
+            print("")
+        try:
+            prov = request.GET['province']
+            sql_data = "SELECT ST_AsMVT(tile) FROM (SELECT id, name, code, ST_AsMVTGeom(boundary, TileBBox(%s, %s, %s, 4326)) FROM  core_province where province_id_id = " + prov + ") AS tile"
+        except:
+            print("")
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql_data, [zoom, x, y])
+        tile = bytes(cursor.fetchone()[0])
+        # return HttpResponse(len(tile))
+        if not len(tile):
+            raise Http404()
+    return HttpResponse(tile, content_type="application/x-protobuf")
+
 
 
 @api_view(['GET'])
