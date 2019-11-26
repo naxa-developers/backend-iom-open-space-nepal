@@ -2,7 +2,7 @@ from django.contrib import admin
 from core.models import Slider, Province, District, Municipality,\
     SuggestedUse, Services, OpenSpace, Report, CreateOpenSpace,\
     NearbyAmenities, EducationFacility, HealthFacility, Resource, \
-    QuestionList, QuestionsData, AvailableFacility, Gallery
+    QuestionList, QuestionsData, AvailableFacility, Gallery , ProvinceDummy
 
 # Register your models here.
 
@@ -24,3 +24,4 @@ admin.site.register(NearbyAmenities)
 admin.site.register(EducationFacility)
 admin.site.register(HealthFacility)
 admin.site.register(Gallery)
+admin.site.register(ProvinceDummy)

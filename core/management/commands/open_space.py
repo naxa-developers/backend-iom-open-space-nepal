@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import Province, District, OpenSpace
+from core.models import Province, District, OpenSpace, Municipality
 
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -23,11 +23,14 @@ class Command(BaseCommand):
         try:
             open_space = [
                 OpenSpace(
-                    # province=Province.objects.get(
-                    #     province_code=(df['Province_id'][row])),
+                    province=Province.objects.get(
+                        province_code=(df['Province'][row])),
                     #
-                    # district=District.objects.get(
-                    #     district_code=(df['District_id'][row])),
+                    district=District.objects.get(
+                        district_code=(df['District'][row])),
+
+                    municipality=Municipality.objects.get(
+                        hlcit_code=(df['Municipality'][row])),
                     #
                     # name=(df['Name'][row]).capitalize().strip(),
                     #
@@ -35,7 +38,17 @@ class Command(BaseCommand):
                     #
                     # gn_type_np=(df['Type'][row]).capitalize().strip(),
                     title=df['name'][row],
+                    current_land_use=df['Current Land Use'][row],
+                    total_area=df['Total Area'][row],
+                    usable_area=df['Usable Open Space Area'][row],
+                    capacity=df['Capacity'][row],
+                    catchment_area=df['Catchment Area'][row],
+                    access_to_site=df['Access to Site'][row],
+                    special_feature=df['Special features'][row],
+                    issue=df['Issues'][row],
+                    ownership=df['Ownership'][row],
                     polygons=GEOSGeometry(df['geom'][row]),
+
                     # p_code=df['ADMIN2P_CODE'][row],
 
                 ) for row in range(0, upper_range)

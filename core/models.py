@@ -37,6 +37,8 @@ class District(models.Model):
 
 class Municipality(models.Model):
     name = models.CharField(max_length=50)
+    province = models.ForeignKey('Province', related_name='municipality',
+                                 on_delete=models.CASCADE, blank=True, null=True)
     district = models.ForeignKey('District', related_name='municipality',
                                  on_delete=models.CASCADE)
     hlcit_code = models.CharField(max_length=100, blank=True, null=True)
@@ -98,6 +100,7 @@ class Gallery(models.Model):
 class OpenSpace(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
+    issue = models.TextField(blank=True, null=True)
     current_land_use = models.TextField(blank=True, null=True)
     catchment_area = models.CharField(max_length=200, blank=True, null=True)
     ownership = models.CharField(max_length=100, blank=True, null=True)
@@ -371,3 +374,9 @@ class AvailableFacility(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ProvinceDummy(models.Model):
+    province_id = models.IntegerField(blank=True, null=True)
+    geom_char = models.TextField(blank=True, null=True)
+
