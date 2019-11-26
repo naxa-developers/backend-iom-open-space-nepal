@@ -60,6 +60,7 @@ class SuggestedUse(models.Model):
 
 class Services(models.Model):
     name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
     open_space = models.ForeignKey('OpenSpace', related_name='services',
                                    on_delete=models.CASCADE)
     icon = models.FileField(upload_to='service', blank=True, null=True)
