@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import Province, District, OpenSpace, Municipality, SuggestedUse
+from core.models import Province, District, OpenSpace, Municipality, SuggestedUse, Services
 
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -21,19 +21,13 @@ class Command(BaseCommand):
         print("Wait Data is being Loaded")
 
         for row in range(0, upper_range):
-            data = []
-            # print(df['Suggested Use'][row])
-            data.append(df['Suggested Use'][row])
-            print(data)
-
-        for row in range(0, upper_range)
             try:
                 open_space = OpenSpace.objects.create(
                     province=Province.objects.get(
-                        province_code=(df['Province'][row])),
+                        code=(df['Province'][row])),
                     #
                     district=District.objects.get(
-                        district_code=(df['District'][row])),
+                        code=(df['District'][row])),
 
                     municipality=Municipality.objects.get(
                         hlcit_code=(df['Municipality'][row])),
@@ -45,9 +39,9 @@ class Command(BaseCommand):
                     # gn_type_np=(df['Type'][row]).capitalize().strip(),
                     title=df['name'][row],
                     current_land_use=df['Current Land Use'][row],
-                    total_area=df['Total Area'][row],
-                    usable_area=df['Usable Open Space Area'][row],
-                    capacity=df['Capacity'][row],
+                    total_area=float((df['Total Area'][row]).replace(',', '')),
+                    usable_area=float((df['Usable Open Space Area'][row]).replace(',', '')),
+                    capacity=float((df['Capacity'][row]).replace(',', '')),
                     catchment_area=df['Catchment Area'][row],
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
@@ -59,12 +53,24 @@ class Command(BaseCommand):
                 data = []
                 data.append(df['Suggested Use'][row])
                 for i in data:
-                    SuggestedUse.objects.create(name=i, open_space=open_space.id)
+                    SuggestedUse.objects.create(name=i, open_space=open_space)
 
-                open_space_data = OpenSpace.objects.bulk_create(open_space)
+                description = df['WASH Facilities'][row]
+                wash_facility = Services.objects.create(name='WASH Facilities', description=description, open_space=open_space)
 
-                if open_space_data:
-                    self.stdout.write('Successfully  updated data ..')
+                wifi_des = df['Wi-Fi'][row]
+                wifi_facility = Services.objects.create(name='Wi-Fi', description=wifi_des, open_space=open_space)
+
+                boundry_wall_des = df['Boundary Wall'][row]
+                boundry_facility = Services.objects.create(name='Boundary Wall', description=boundry_wall_des, open_space=open_space)
+
+                electricity_des = df['Electricity Line'][row]
+                electricity_facility = Services.objects.create(name='Electricity Line', description=electricity_des, open_space=open_space)
+
+                tree = df['Trees & Vegetation'][row]
+                wash_facility = Services.objects.create(name='Trees & Vegetation',
+                                                        description=tree,
+                                                        open_space=open_space)
 
             except Exception as e:
                 print(e)
