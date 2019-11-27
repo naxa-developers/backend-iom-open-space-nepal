@@ -150,7 +150,8 @@ class OpenSpaceLandingApi(APIView):
                         "address": open_space.address,
                         "image": open_space.image.url,
                         "latitude": open_space.polygons.centroid.y,
-                        "longitude": open_space.polygons.centroid.x
+                        "longitude": open_space.polygons.centroid.x,
+                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
                     }
                 )
             else:
@@ -164,7 +165,8 @@ class OpenSpaceLandingApi(APIView):
                         "address": open_space.address,
                         "image": None,
                         "latitude": open_space.polygons.centroid.y,
-                        "longitude": open_space.polygons.centroid.x
+                        "longitude": open_space.polygons.centroid.x,
+                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
                     }
                 )
 
