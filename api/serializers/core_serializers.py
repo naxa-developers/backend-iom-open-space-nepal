@@ -85,7 +85,7 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = OpenSpace
         fields = ('id', 'suggested_use', 'question_data', 'services', 'title',
-                  'current_land_use', 'ownership', 'elevation',
+                  'current_land_use', 'ownership', 'elevation', 'district',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
                   'usable_area', 'image', 'description', 'centroid', )
@@ -104,7 +104,7 @@ class OpenSpaceAttributeSerializer(serializers.ModelSerializer):
         model = OpenSpace
         fields = ('id', 'title', 'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
-                  'municipality', 'ward', 'capacity', 'total_area',
+                  'municipality', 'ward', 'capacity', 'total_area', 'district',
                   'usable_area', 'image', 'description', 'centroid', )
 
 
