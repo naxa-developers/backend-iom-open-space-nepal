@@ -7,7 +7,7 @@ from api.serializers.core_serializers import SliderSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
     ServiceSerializer, OpenSpaceSerializer, \
     ReportSerializer, AvailableFacilitySerializer, \
-    GallerySerializer
+    GallerySerializer, OpenSpaceAttributeSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Sum
@@ -393,7 +393,7 @@ class NearByMeOpenSpace(APIView):
                                 .annotate(distance=Distance('polygons', user_location)) \
                                 .order_by('distance')[0:count]
         print(resource_queryset)
-        resource_json = OpenSpaceSerializer(resource_queryset, many=True)
+        resource_json = OpenSpaceAttributeSerializer(resource_queryset, many=True)
         json = JSONRenderer().render(resource_json.data)
         stream = io.BytesIO(json)
         data = JSONParser().parse(stream)
