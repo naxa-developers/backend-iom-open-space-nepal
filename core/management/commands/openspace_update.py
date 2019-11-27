@@ -2,7 +2,8 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import OpenSpace
+from core.models import OpenSpace, SuggestedUse
+from django.contrib.gis.geos import GEOSGeometry
 
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -22,9 +23,11 @@ class Command(BaseCommand):
 
         for row in range(0, upper_range):
             try:
-                open_space = OpenSpace.objects.filter(title=df['Name'][row]).update(
-                    elevation=df['Elevation'][row], ward=df['Ward'][row])
-
+                open_space = OpenSpace.objects.get(title=df['Name'][row])
+                suggested = df['Suggested Use'][row]
+                suggested_uses = suggested.split(',')
+                for suggested_use in suggested_uses:
+                    SuggestedUse.objects.create(name=suggested_use, open_space=open_space)
                 print("data is successfully updated")
 
             except:
