@@ -79,7 +79,7 @@ class QuestionList(models.Model):
 class QuestionsData(models.Model):
     question = models.ForeignKey('QuestionList', on_delete=models.CASCADE,
                                  blank=True, null=True)
-    ans = models.BooleanField(default=True)
+    ans = models.CharField(blank=True, null=True, max_length=100)
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
                                    blank=True, null=True,
                                    related_name='question_data')
@@ -182,17 +182,6 @@ class Report(models.Model):
                                     blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
-    location = PointField(geography=True, srid=4326, blank=True, null=True)
-
-    @property
-    def latitude(self):
-        if self.location:
-            return self.location.y
-
-    @property
-    def longitude(self):
-        if self.location:
-            return self.location.x
 
     def __str__(self):
         return self.title
