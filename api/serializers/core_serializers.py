@@ -99,6 +99,15 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     #     return center
 
 
+class OpenSpaceAttributeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpenSpace
+        fields = ('id', 'title', 'current_land_use', 'ownership', 'elevation',
+                  'access_to_site', 'special_feature', 'address', 'province',
+                  'municipality', 'ward', 'capacity', 'total_area',
+                  'usable_area', 'image', 'description', 'centroid', )
+
+
 class ReportSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
 
