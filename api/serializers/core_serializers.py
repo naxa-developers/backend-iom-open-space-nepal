@@ -94,6 +94,18 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
 
 
 class ReportSerializer(serializers.ModelSerializer):
+    location = serializers.SerializerMethodField()
+
     class Meta:
         model = Report
-        fields = '__all__'
+        fields = ('title', 'name', 'message', 'date', 'urgency',
+                  'status', 'open_space', 'reported_by', 'image', 'location')
+
+    def get_location(self, instance):
+        center = []
+        long=instance.open_space.polygons.centroid.x
+        lat=instance.open_space.polygons.centroid.y
+        center.append(long)
+        center.append(lat)
+        return center
+

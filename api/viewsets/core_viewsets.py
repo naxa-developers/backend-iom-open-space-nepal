@@ -25,6 +25,7 @@ from rest_framework_swagger.views import get_swagger_view
 from rest_framework.decorators import api_view
 from django.http import Http404, HttpResponse
 from django.db import connection
+from django.contrib.gis.geos import Point
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -112,10 +113,6 @@ class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer
     queryset = Report.objects.all()
     permission_classes = []
-
-    def perform_create(self, serializer):
-        location = self.queryset.open_space.location
-        serializer.save(location=location)
 
     def filter_queryset(self, queryset):
         print(queryset)
