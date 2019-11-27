@@ -52,9 +52,15 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class QuestionDataSerializer(serializers.ModelSerializer):
+    que = serializers.SerializerMethodField()
+
     class Meta:
         model = QuestionsData
-        fields = '__all__'
+        fields = ('question', 'ans', 'open_space', 'que')
+
+    def get_que(self, instance):
+        que = instance.question.title
+        return que
 
 
 class AvailableFacilitySerializer(serializers.ModelSerializer):
