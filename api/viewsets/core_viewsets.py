@@ -108,6 +108,17 @@ class GalleryViewSet(viewsets.ModelViewSet):
     queryset = Gallery.objects.all()
     permission_classes = []
 
+    def filter_queryset(self, queryset):
+        typee = self.request.query_params.get('type')
+        if typee == 'map':
+            return queryset.filter(type='map')
+
+        elif typee == 'image':
+            return queryset.filter(type='image')
+
+        else:
+            return queryset
+
 
 class ReportViewSet(viewsets.ModelViewSet):
     serializer_class = ReportSerializer

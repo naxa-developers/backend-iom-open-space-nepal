@@ -89,10 +89,13 @@ class QuestionsData(models.Model):
 
 
 class Gallery(models.Model):
+    TYPE_CHOICES = (
+        ('map', 'Map'),
+        ('image', 'Image')
+    )
     image = models.ImageField(upload_to='open_image',
                               blank=True, null=True)
-    maps = models.ImageField(upload_to='open_maps',
-                             blank=True, null=True)
+    type = models.CharField(choices=TYPE_CHOICES, max_length=15, blank=True, null=True)
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
                                    blank=True, null=True,
                                    related_name='gallery')
