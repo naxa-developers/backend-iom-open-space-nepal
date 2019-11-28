@@ -118,8 +118,8 @@ class ReportSerializer(serializers.ModelSerializer):
 
     def get_location(self, instance):
         center = []
-        long=instance.open_space.polygons.centroid.x
-        lat=instance.open_space.polygons.centroid.y
+        long = instance.open_space.polygons.centroid.x
+        lat = instance.open_space.polygons.centroid.y
         center.append(long)
         center.append(lat)
         return center

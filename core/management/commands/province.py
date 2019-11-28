@@ -23,15 +23,5 @@ class Command(BaseCommand):
             if province_update:
                 self.stdout.write('Successfully  updated data ..')
 
-        # print("Wait Data is being Loaded")
-        # try:
-        #     for row in range(0, upper_range):
-        #         print(df['id'][row])
-        #         province_update = Province.objects.filter(id=df['id'][row]).update(
-        #             boundary=GEOSGeometry(df['geom'][row]))
-        #
-        #     if province_update:
-        #         self.stdout.write('Successfully  updated data ..')
-
         except Exception as e:
             print(e)
