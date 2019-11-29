@@ -31,13 +31,13 @@ class Command(BaseCommand):
 
                     municipality=Municipality.objects.get(
                         hlcit_code=(df['Municipality'][row])),
-                    #
+                    # #
                     # name=(df['Name'][row]).capitalize().strip(),
-                    #
-                    # gn_type_en=(df['Type_en'][row]).capitalize().strip(),
-                    #
-                    # gn_type_np=(df['Type'][row]).capitalize().strip(),
-                    title=df['name'][row],
+                    # #
+                    # # gn_type_en=(df['Type_en'][row]).capitalize().strip(),
+                    # #
+                    # # gn_type_np=(df['Type'][row]).capitalize().strip(),
+                    title=df['Name'][row],
                     current_land_use=df['Current Land Use'][row],
                     total_area=float((df['Total Area'][row]).replace(',', '')),
                     usable_area=float((df['Usable Open Space Area'][row]).replace(',', '')),
@@ -46,14 +46,17 @@ class Command(BaseCommand):
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
                     issue=df['Issues'][row],
+                    ward=df['Ward'][row],
+                    elevation=df['Elevation'][row],
+                    # address=df['Address'][row],
                     ownership=df['Ownership'][row],
                     polygons=GEOSGeometry(df['geom'][row]),
                 )
 
-                data = []
-                data.append(df['Suggested Use'][row])
-                for i in data:
-                    SuggestedUse.objects.create(name=i, open_space=open_space)
+                use = df['Suggested Use'][row]
+                suggested_uses = use.split(',')
+                for suggested_use in suggested_uses:
+                    SuggestedUse.objects.get_or_create(name=suggested_use, open_space=open_space)
 
                 description = df['WASH Facilities'][row]
                 wash_facility = Services.objects.create(name='WASH Facilities', description=description, open_space=open_space)
@@ -71,6 +74,7 @@ class Command(BaseCommand):
                 wash_facility = Services.objects.create(name='Trees & Vegetation',
                                                         description=tree,
                                                         open_space=open_space)
+                print(open_space, open_space.id)
 
             except Exception as e:
                 print(e)

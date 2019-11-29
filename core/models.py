@@ -102,13 +102,13 @@ class Gallery(models.Model):
 
 
 class OpenSpace(models.Model):
-    title = models.TextField()
+    title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     issue = models.TextField(blank=True, null=True)
     current_land_use = models.TextField(blank=True, null=True)
     catchment_area = models.CharField(max_length=500, blank=True, null=True)
     ownership = models.CharField(max_length=500, blank=True, null=True)
-    elevation = models.DecimalField(max_digits=15, decimal_places=10,
+    elevation = models.DecimalField(max_digits=15, decimal_places=5,
                                     null=True, blank=True)
     access_to_site = models.CharField(max_length=500, null=True, blank=True)
     special_feature = models.TextField(blank=True, null=True)
@@ -179,10 +179,7 @@ class Report(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
                                    related_name='report', blank=True, null=True)
-    reported_by = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                    related_name="reported_by",
-                                    on_delete=models.SET_NULL,
-                                    blank=True, null=True)
+    reported_by = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
 
