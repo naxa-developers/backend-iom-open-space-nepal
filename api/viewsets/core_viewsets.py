@@ -141,7 +141,7 @@ class ReportViewSet(viewsets.ModelViewSet):
             return queryset.filter(open_space=openspace)
 
         elif start_date and end_date:
-            return queryset.filter(date__range=(start_date, end_date))
+            return queryset.filter(date__gte=datetime.date(start_date), date__lte=datetime.date(end_date))
 
         elif start_date and end_date and status:
             return queryset.filter(date__range=(start_date, end_date), status=status)
