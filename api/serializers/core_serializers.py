@@ -1,6 +1,7 @@
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery
 from rest_framework import serializers
+from datetime import date, datetime
 
 
 class SliderSerializer(serializers.ModelSerializer):
@@ -110,11 +111,12 @@ class OpenSpaceAttributeSerializer(serializers.ModelSerializer):
 
 class ReportSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
 
     class Meta:
         model = Report
         fields = ('id', 'title', 'name', 'message', 'date', 'urgency',
-                  'status', 'open_space', 'reported_by', 'image', 'location')
+                  'status', 'open_space', 'reported_by', 'image', 'location', 'count')
 
     def get_location(self, instance):
         center = []
@@ -123,4 +125,11 @@ class ReportSerializer(serializers.ModelSerializer):
         center.append(long)
         center.append(lat)
         return center
+
+    def get_count(self, instance):
+        date1 = instance.date.date()
+        date2 = datetime.now().date()
+        delta = date2 - date1
+        return delta.days
+
 
