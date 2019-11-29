@@ -129,19 +129,22 @@ class ReportViewSet(viewsets.ModelViewSet):
         print(queryset)
         reports = Report.objects.filter(date__gte=datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
-        urgency = self.request.query_params.get('urgency')
+        # urgency = self.request.query_params.get('urgency')
         openspace = self.request.query_params.get('id')
         start_date = self.request.query_params.get('start_date')
         end_date = self.request.query_params.get('end_date')
 
-        if status and urgency:
-            return reports.filter(status=status, urgency=urgency)
+        if status:
+            return reports.filter(status=status)
 
-        if openspace:
+        elif openspace:
             return queryset.filter(open_space=openspace)
 
-        if start_date and end_date:
+        elif start_date and end_date:
             return queryset.filter(date__range=(start_date, end_date))
+
+        elif start_date and end_date and status:
+            return queryset.filter(date__range=(start_date, end_date), status=status)
 
         else:
             return queryset

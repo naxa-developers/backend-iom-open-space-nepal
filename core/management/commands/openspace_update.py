@@ -23,12 +23,9 @@ class Command(BaseCommand):
 
         for row in range(0, upper_range):
             try:
-                open_space = OpenSpace.objects.get(title=df['Name'][row])
-                suggested = df['Suggested Use'][row]
-                suggested_uses = suggested.split(',')
-                for suggested_use in suggested_uses:
-                    SuggestedUse.objects.create(name=suggested_use, open_space=open_space)
-                print("data is successfully updated")
+                open_space = OpenSpace.objects.get_or_create(title=df['Name'][row])
+                # title = df['Name'][row]
+                print(open_space)
 
-            except:
-                print('could not update data')
+            except Exception as e:
+                print(e)
