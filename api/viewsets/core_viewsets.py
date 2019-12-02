@@ -26,6 +26,7 @@ from rest_framework.decorators import api_view
 from django.http import Http404, HttpResponse
 from django.db import connection
 from django.contrib.gis.geos import Point
+import datetime
 
 
 class SliderViewSet(viewsets.ModelViewSet):
@@ -127,12 +128,14 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         print(queryset)
-        reports = Report.objects.filter(date__gte=datetime.now() - timedelta(days=7))
+        reports = Report.objects.filter(date__gte=datetime.datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
         # urgency = self.request.query_params.get('urgency')
         openspace = self.request.query_params.get('id')
-        start_date = self.request.query_params.get('start_date')
-        end_date = self.request.query_params.get('end_date')
+        start_date_str = self.request.query_params.get('start_date')
+        start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+        end_date_str = self.request.query_params.get('end_date')
+        end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
 
         if status:
             return reports.filter(status=status)
@@ -141,10 +144,10 @@ class ReportViewSet(viewsets.ModelViewSet):
             return queryset.filter(open_space=openspace)
 
         elif start_date and end_date:
-            return queryset.filter(date__gte=datetime.date(start_date), date__lte=datetime.date(end_date))
+            return queryset.filter(date__range=[start_date, end_date])
 
         elif start_date and end_date and status:
-            return queryset.filter(date__range=(start_date, end_date), status=status)
+            return queryset.filter(date__range=[start_date, end_date], status=status)
 
         else:
             return queryset
