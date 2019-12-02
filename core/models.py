@@ -356,6 +356,7 @@ class AvailableFacility(models.Model):
     website = models.TextField(blank=True, null=True)
     bank_network = models.CharField(max_length=500, blank=True, null=True)
     icon = models.FileField(upload_to='facility', blank=True, null=True)
+
     @property
     def latitude(self):
         if self.location:

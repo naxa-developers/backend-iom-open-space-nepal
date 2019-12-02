@@ -15,33 +15,38 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         path = kwargs['path']
-        df = pd.read_csv(path)
+        df = pd.read_csv(path).fillna('')
         upper_range = len(df)
 
         print("Wait Data is being Loaded")
 
-        try:
-            facility = [
-                AvailableFacility(
-                    name=df['name'][row],
-                    operator_type=df['operator_type'][row],
-                    opening_hours=df['opening_hours'][row],
-                    phone_number=df['phone_number'][row],
-                    email=df['email_address'][row],
-                    comments=df['comments'][row],
-                    type='education facility',
-                    education_type=df['type'][row],
-                    location=Point(float(df['long'][row]), df['lat'][row])
+        for row in range(0, upper_range):
+            name = df['name'][row]
+            if name != '':
+                try:
+                    facility = [
+                        AvailableFacility(
+                            name=df['name'][row],
+                            operator_type=df['operator_type'][row],
+                            opening_hours=df['opening_hours'][row],
+                            phone_number=df['phone_number'][row],
+                            email=df['email_address'][row],
+                            comments=df['comments'][row],
+                            type='education facility',
+                            education_type=df['type'][row],
+                            location=Point(float(df['long'][row]), df['lat'][row])
 
-                ) for row in range(0, upper_range)
+                        )
+                    ]
 
-            ]
+                    available_data = AvailableFacility.objects.bulk_create(facility)
 
-            available_data = AvailableFacility.objects.bulk_create(facility)
+                    if available_data:
+                        self.stdout.write('Successfully  updated data ..')
 
-            if available_data:
-                self.stdout.write('Successfully  updated data ..')
+                except Exception as e:
+                    print(e)
 
-        except Exception as e:
-            print(e)
+            else:
+                print('facility has no name')
 
