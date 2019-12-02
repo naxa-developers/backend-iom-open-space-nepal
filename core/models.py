@@ -186,6 +186,10 @@ class Report(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.name = self.open_space.title
+        super(Report, self).save(*args, **kwargs)
+
 
 class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
@@ -319,7 +323,7 @@ class AvailableFacility(models.Model):
         ('co-operative', 'Co-operative')
     )
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=1000)
     type = models.CharField(choices=TYPE_CHOICES, max_length=30,
                             null=True, blank=True)
     operator_type = models.CharField(choices=OPERATOR_TYPE,

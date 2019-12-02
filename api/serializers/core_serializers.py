@@ -112,11 +112,12 @@ class OpenSpaceAttributeSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
     count = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
 
     class Meta:
         model = Report
         fields = ('id', 'title', 'name', 'message', 'date', 'urgency',
-                  'status', 'open_space', 'reported_by', 'image', 'location', 'count')
+                  'status', 'open_space', 'reported_by', 'image', 'location', 'count', 'address')
 
     def get_location(self, instance):
         center = []
@@ -131,5 +132,8 @@ class ReportSerializer(serializers.ModelSerializer):
         date2 = datetime.now().date()
         delta = date2 - date1
         return delta.days
+
+    def get_address(self, instance):
+        return instance.open_space.address
 
 
