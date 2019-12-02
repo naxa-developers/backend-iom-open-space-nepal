@@ -133,9 +133,8 @@ class ReportViewSet(viewsets.ModelViewSet):
         # urgency = self.request.query_params.get('urgency')
         openspace = self.request.query_params.get('id')
         start_date_str = self.request.query_params.get('start_date')
-        start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
         end_date_str = self.request.query_params.get('end_date')
-        end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+
 
         if status:
             return reports.filter(status=status)
@@ -143,10 +142,14 @@ class ReportViewSet(viewsets.ModelViewSet):
         elif openspace:
             return queryset.filter(open_space=openspace)
 
-        elif start_date and end_date:
+        elif start_date_str and end_date_str:
+            start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date])
 
-        elif start_date and end_date and status:
+        elif start_date_str and end_date_str and status:
+            start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date], status=status)
 
         else:
