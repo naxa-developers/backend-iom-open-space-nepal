@@ -1,5 +1,5 @@
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUse, Services, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery
+    Municipality, SuggestedUseData, Services, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery
 from rest_framework import serializers
 from datetime import date, datetime
 
@@ -42,7 +42,7 @@ class MunicipalitySerializer(serializers.ModelSerializer):
 
 class SuggestedUseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SuggestedUse
+        model = SuggestedUseData
         fields = '__all__'
 
 
@@ -65,9 +65,22 @@ class QuestionDataSerializer(serializers.ModelSerializer):
 
 
 class AvailableFacilitySerializer(serializers.ModelSerializer):
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+
     class Meta:
         model = AvailableFacility
-        fields = '__all__'
+        fields = ('id', 'name', 'type', 'operator_type', 'address', 'location',
+                  'province', 'district', 'municipality', 'email', 'opening_hours',
+                  'education_type', 'financial_type', 'bank_type', 'health_type',
+                  'phone_number', 'comments', 'website', 'bank_network', 'icon',
+                  'latitude', 'longitude')
+
+        def get_latitude(self, instance):
+            return instance.location.y
+
+        def get_longitude(self, instance):
+            return instance.location.x
 
 
 class GallerySerializer(serializers.ModelSerializer):

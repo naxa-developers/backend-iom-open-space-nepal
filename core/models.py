@@ -48,14 +48,22 @@ class Municipality(models.Model):
         return self.name
 
 
-class SuggestedUse(models.Model):
+class SuggestedUseList(models.Model):
     name = models.CharField(max_length=500)
-    open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
-                                   on_delete=models.CASCADE)
     icon = models.FileField(upload_to='suggest', blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+
+class SuggestedUseData(models.Model):
+    open_space = models.ForeignKey('OpenSpace', related_name='suggested_use',
+                                   on_delete=models.CASCADE)
+    suggested_use = models.ForeignKey('SuggestedUseList', related_name='suggested_use',
+                                      on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.suggested_use.name
 
 
 class Services(models.Model):
