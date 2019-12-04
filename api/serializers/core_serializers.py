@@ -76,11 +76,11 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
                   'phone_number', 'comments', 'website', 'bank_network', 'icon',
                   'latitude', 'longitude')
 
-        def get_latitude(self, instance):
-            return instance.location.y
+    def get_latitude(self, instance):
+        return instance.location.y
 
-        def get_longitude(self, instance):
-            return instance.location.x
+    def get_longitude(self, instance):
+        return instance.location.x
 
 
 class GallerySerializer(serializers.ModelSerializer):
