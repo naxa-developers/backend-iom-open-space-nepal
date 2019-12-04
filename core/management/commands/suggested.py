@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import SuggestedUseList, OpenSpace
+from core.models import SuggestedUseList, OpenSpace, SuggestedUseData
 
 
 class Command(BaseCommand):
@@ -23,5 +23,7 @@ class Command(BaseCommand):
             suggested = df['Suggested Use'][row]
             suggested_uses = suggested.split(',')
             for name in suggested_uses:
-                SuggestedUseList.objects.get_or_create(name=name)
+                sug = SuggestedUseList.objects.filter(name=name)
+                if not sug:
+                    SuggestedUseList.objects.create(name=name)
             print(row, 'suggested use list is successfully created')

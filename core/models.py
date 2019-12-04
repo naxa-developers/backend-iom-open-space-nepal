@@ -49,7 +49,7 @@ class Municipality(models.Model):
 
 
 class SuggestedUseList(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=1000)
     icon = models.FileField(upload_to='suggest', blank=True, null=True)
 
     def __str__(self):
