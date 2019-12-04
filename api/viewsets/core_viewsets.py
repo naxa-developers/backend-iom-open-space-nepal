@@ -111,11 +111,15 @@ class GalleryViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         typee = self.request.query_params.get('type')
+        open_space = self.request.query_params.get('id')
         if typee == 'map':
             return queryset.filter(type='map')
 
         elif typee == 'image':
             return queryset.filter(type='image')
+
+        elif open_space:
+            return queryset.filter(open_space=open_space)
 
         else:
             return queryset
