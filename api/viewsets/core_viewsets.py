@@ -132,7 +132,7 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         print(queryset)
-        reports = Report.objects.filter(date__gte=datetime.datetime.now() - timedelta(days=7))
+        # reports = Report.objects.filter(date__gte=datetime.datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
         # urgency = self.request.query_params.get('urgency')
         openspace = self.request.query_params.get('id')
@@ -153,7 +153,7 @@ class ReportViewSet(viewsets.ModelViewSet):
             return queryset.filter(date__range=[start_date, end_date], status=status)
 
         elif status:
-            return reports.filter(status=status)
+            return queryset.filter(status=status)
 
         else:
             return queryset
