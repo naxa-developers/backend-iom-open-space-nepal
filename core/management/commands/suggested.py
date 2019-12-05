@@ -13,17 +13,26 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         path = kwargs['path']
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, skipinitialspace=True).fillna('')
         upper_range = len(df)
 
         print("Wait Data is being Loaded")
 
-        for row in range(0, upper_range):
-            # open_space = OpenSpace.objects.get(title__icontains=df['Name'][row])
-            suggested = df['Suggested Use'][row]
-            suggested_uses = suggested.split(',')
-            for name in suggested_uses:
-                sug = SuggestedUseList.objects.filter(name=name)
-                if not sug:
-                    SuggestedUseList.objects.create(name=name)
-            print(row, 'suggested use list is successfully created')
+        try:
+            for row in range(0, upper_range):
+                open_space = OpenSpace.objects.filter(title__icontains=df['Name'][row])
+                suggested = df['Suggested Use'][row]
+                if suggested != '':
+                    suggested_uses = suggested.split(',')
+                    for name in suggested_uses:
+                        sug = SuggestedUseList.objects.filter(name=name)
+                        for i in open_space:
+                            for j in sug:
+                                SuggestedUseData.objects.create(open_space=i, suggested_use=j)
+
+                else:
+                    pass
+                print(row, 'data is successfully updated')
+
+        except Exception as e:
+            print(e)
