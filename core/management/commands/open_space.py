@@ -2,9 +2,11 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import Province, District, OpenSpace, Municipality, SuggestedUse, Services
+from core.models import Province, District, OpenSpace, Municipality, SuggestedUseData, SuggestedUseList, ServiceList,\
+    ServiceData
 
 from django.contrib.gis.geos import GEOSGeometry
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Command(BaseCommand):
@@ -15,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         path = kwargs['path']
-        df = pd.read_csv(path)
+        df = pd.read_csv(path).fillna('')
         upper_range = len(df)
 
         print("Wait Data is being Loaded")
@@ -54,26 +56,44 @@ class Command(BaseCommand):
                 )
 
                 use = df['Suggested Use'][row]
-                suggested_uses = use.split(',')
-                for suggested_use in suggested_uses:
-                    SuggestedUse.objects.get_or_create(name=suggested_use, open_space=open_space)
+                if use != '':
+                    suggested_uses = use.split(',')
+                    for suggested_use in suggested_uses:
+                        a = suggested_use.lstrip()
+                        b = a.rstrip()
+                        try:
+                            sug = SuggestedUseList.objects.get(name=b)
+                            sug_data = SuggestedUseData.objects.create(open_space=open_space, suggested_use=sug)
+                        except ObjectDoesNotExist:
+                            pass
+
+                else:
+                    pass
 
                 description = df['WASH Facilities'][row]
-                wash_facility = Services.objects.create(name='WASH Facilities', description=description, open_space=open_space)
+                wash_facility = ServiceList.objects.get(name='WASH Facilities')
+                w_data = ServiceData.objects.create(description=description, open_space=open_space,
+                                                    service=wash_facility)
 
                 wifi_des = df['Wi-Fi'][row]
-                wifi_facility = Services.objects.create(name='Wi-Fi', description=wifi_des, open_space=open_space)
+                wifi_facility = ServiceList.objects.get(name='Wi-Fi')
+                wi_data = ServiceData.objects.create(description=wifi_des, open_space=open_space,
+                                                     service=wifi_facility)
 
                 boundry_wall_des = df['Boundary Wall'][row]
-                boundry_facility = Services.objects.create(name='Boundary Wall', description=boundry_wall_des, open_space=open_space)
+                boundry_facility = ServiceList.objects.get(name='Boundary Wall')
+                bo_data = ServiceData.objects.create(description=boundry_wall_des, open_space=open_space,
+                                                     service=boundry_facility)
 
                 electricity_des = df['Electricity Line'][row]
-                electricity_facility = Services.objects.create(name='Electricity Line', description=electricity_des, open_space=open_space)
+                electricity_facility = ServiceList.objects.get(name='Electricity Line')
+                el_data = ServiceData.objects.create(description=electricity_des, open_space=open_space,
+                                                     service=electricity_facility)
 
                 tree = df['Trees & Vegetation'][row]
-                wash_facility = Services.objects.create(name='Trees & Vegetation',
-                                                        description=tree,
-                                                        open_space=open_space)
+                wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
+                el_data = ServiceData.objects.create(description=tree, open_space=open_space,
+                                                     service=wash_facility)
                 print(open_space, open_space.id)
 
             except Exception as e:

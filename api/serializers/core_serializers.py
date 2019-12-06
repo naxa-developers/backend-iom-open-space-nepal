@@ -1,6 +1,6 @@
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUseData, Services, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery, \
-    SuggestedUseList
+    Municipality, SuggestedUseData, ServiceList, OpenSpace, Report, QuestionsData, AvailableFacility, Gallery, \
+    SuggestedUseList, ServiceData
 from rest_framework import serializers
 from datetime import date, datetime
 
@@ -55,10 +55,18 @@ class SuggestedUseSerializer(serializers.ModelSerializer):
         fields = ('id', 'open_space', 'suggested_use',)
 
 
-class ServiceSerializer(serializers.ModelSerializer):
+class ServiceListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Services
+        model = ServiceList
         fields = '__all__'
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    services = ServiceListSerializer()
+
+    class Meta:
+        model = ServiceData
+        fields = ('description', 'open_space', 'services')
 
 
 class QuestionDataSerializer(serializers.ModelSerializer):
