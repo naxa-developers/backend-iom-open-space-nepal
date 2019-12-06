@@ -66,15 +66,22 @@ class SuggestedUseData(models.Model):
         return self.suggested_use.name
 
 
-class Services(models.Model):
+class ServiceList(models.Model):
     name = models.CharField(max_length=500)
-    description = models.TextField(blank=True, null=True)
-    open_space = models.ForeignKey('OpenSpace', related_name='services',
-                                   on_delete=models.CASCADE)
     icon = models.FileField(upload_to='service', blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+
+class ServiceData(models.Model):
+    description = models.TextField(blank=True, null=True)
+    open_space = models.ForeignKey('OpenSpace', related_name='services',
+                                   on_delete=models.CASCADE)
+    service = models.ForeignKey('ServiceList', related_name='services', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.service.name
 
 
 class QuestionList(models.Model):

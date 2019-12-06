@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
-    Municipality, SuggestedUseList, Services, OpenSpace, Report, AvailableFacility, \
-    Gallery, SuggestedUseData
+    Municipality, SuggestedUseList, ServiceList, OpenSpace, Report, AvailableFacility, \
+    Gallery, SuggestedUseData, ServiceData
 from api.serializers.core_serializers import SliderSerializer, \
     CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
@@ -82,7 +82,7 @@ class SuggestedUseViewSet(viewsets.ModelViewSet):
 
 class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
-    queryset = Services.objects.all()
+    queryset = ServiceData.objects.all()
     permission_classes = []
 
 
