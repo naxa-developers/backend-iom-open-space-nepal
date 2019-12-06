@@ -62,11 +62,11 @@ class ServiceListSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    services = ServiceListSerializer()
+    service = ServiceListSerializer()
 
     class Meta:
         model = ServiceData
-        fields = ('description', 'open_space', 'services')
+        fields = ('description', 'open_space', 'service')
 
 
 class QuestionDataSerializer(serializers.ModelSerializer):
