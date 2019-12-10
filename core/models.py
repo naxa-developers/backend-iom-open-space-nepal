@@ -119,16 +119,16 @@ class Gallery(models.Model):
 class OpenSpace(models.Model):
     title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
-    issue = models.TextField(blank=True, null=True)
+    issue = models.CharField(max_length=1000, blank=True, null=True)
     current_land_use = models.TextField(blank=True, null=True)
-    catchment_area = models.CharField(max_length=500, blank=True, null=True)
-    ownership = models.CharField(max_length=500, blank=True, null=True)
-    elevation = models.DecimalField(max_digits=15, decimal_places=5,
-                                    null=True, blank=True)
-    access_to_site = models.CharField(max_length=500, null=True, blank=True)
+    catchment_area = models.CharField(max_length=1000, blank=True, null=True)
+    ownership = models.CharField(max_length=1000, blank=True, null=True)
+    elevation = models.CharField(max_length=1000,
+                                 null=True, blank=True)
+    access_to_site = models.CharField(max_length=1000, null=True, blank=True)
     special_feature = models.TextField(blank=True, null=True)
 
-    address = models.CharField(max_length=500, blank=True, null=True)
+    address = models.CharField(max_length=1000, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='open_province',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
@@ -139,15 +139,13 @@ class OpenSpace(models.Model):
                                      related_name='municipality',
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
-    ward = models.IntegerField(blank=True, null=True)
-    capacity = models.DecimalField(max_digits=20, decimal_places=3,
-                                   blank=True, null=True)
-    total_area = models.DecimalField(max_digits=20, decimal_places=3,
-                                     blank=True, null=True)
-    usable_area = models.DecimalField(max_digits=20, decimal_places=3,
-                                      blank=True, null=True)
-    image = models.ImageField(upload_to='space',
-                              blank=True, null=True)
+    ward = models.CharField(max_length=1000, blank=True, null=True)
+    capacity = models.CharField(max_length=1000,
+                                blank=True, null=True)
+    total_area = models.CharField(max_length=1000,
+                                  blank=True, null=True)
+    usable_area = models.CharField(max_length=1000,  blank=True, null=True)
+    image = models.ImageField(upload_to='space', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
 
@@ -169,6 +167,10 @@ class OpenSpace(models.Model):
         center.append(long)
         center.append(lat)
         return center
+
+    def save(self, *args, **kwargs):
+        self.address = self.municipality.name + '-' + self.ward + ',' + self.district.name
+        super(OpenSpace, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -209,55 +211,6 @@ class Report(models.Model):
 class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='identify_open_space')
-
-
-class NearbyAmenities(models.Model):
-    title = models.CharField(max_length=100)
-    open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
-                                   related_name='amenities')
-
-    def __str__(self):
-        return self.title
-
-
-class EducationFacility(models.Model):
-    name = models.CharField(max_length=100)
-    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
-                                related_name='education_facility')
-    location = PointField(geography=True, srid=4326, blank=True, null=True)
-
-    @property
-    def latitude(self):
-        if self.location:
-            return self.location.y
-
-    @property
-    def longitude(self):
-        if self.location:
-            return self.location.x
-
-    def __str__(self):
-        return self.name
-
-
-class HealthFacility(models.Model):
-    name = models.CharField(max_length=100)
-    amenity = models.ForeignKey('NearbyAmenities', on_delete=models.CASCADE,
-                                related_name='health_facility')
-    location = PointField(geography=True, srid=4326, blank=True, null=True)
-
-    @property
-    def latitude(self):
-        if self.location:
-            return self.location.y
-
-    @property
-    def longitude(self):
-        if self.location:
-            return self.location.x
-
-    def __str__(self):
-        return self.name
 
 
 class Resource(models.Model):
@@ -384,9 +337,4 @@ class AvailableFacility(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ProvinceDummy(models.Model):
-    province_id = models.IntegerField(blank=True, null=True)
-    geom_char = models.TextField(blank=True, null=True)
 

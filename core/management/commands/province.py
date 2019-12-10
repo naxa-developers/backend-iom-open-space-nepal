@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import pandas as pd
-from core.models import Province, District, ProvinceDummy
+from core.models import Province, District
 from django.contrib.gis.geos import GEOSGeometry
 
 
@@ -15,7 +15,7 @@ class Command(BaseCommand):
         # df = pd.read_csv(path)
         # upper_range = len(df)
 
-        province_dummy = ProvinceDummy.objects.all()
+        province_dummy = Province.objects.all()
         try:
             for i in province_dummy:
                 province_update = Province.objects.filter(id=i.province_id).update(boundary=i.geom_char)

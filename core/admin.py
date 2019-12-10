@@ -1,8 +1,7 @@
 from django.contrib import admin
 from core.models import Slider, Province, District, Municipality,\
-    SuggestedUseData, OpenSpace, Report, CreateOpenSpace,\
-    NearbyAmenities, EducationFacility, HealthFacility, Resource, \
-    QuestionList, QuestionsData, AvailableFacility, Gallery , ProvinceDummy, \
+    SuggestedUseData, OpenSpace, Report, CreateOpenSpace, Resource, \
+    QuestionList, QuestionsData, AvailableFacility, Gallery, \
     SuggestedUseList, ServiceData, ServiceList
 
 # Register your models here.
@@ -21,10 +20,7 @@ admin.site.register(Resource)
 admin.site.register(Report)
 admin.site.register(AvailableFacility)
 admin.site.register(CreateOpenSpace)
-admin.site.register(NearbyAmenities)
-admin.site.register(EducationFacility)
-admin.site.register(HealthFacility)
 admin.site.register(Gallery)
 admin.site.register(ServiceData)
 admin.site.register(ServiceList)
-admin.site.register(ProvinceDummy)
+
