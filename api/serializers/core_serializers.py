@@ -3,6 +3,8 @@ from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     SuggestedUseList, ServiceData
 from rest_framework import serializers
 from datetime import date, datetime
+from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import GEOSGeometry
 
 
 class SliderSerializer(serializers.ModelSerializer):
@@ -84,6 +86,7 @@ class QuestionDataSerializer(serializers.ModelSerializer):
 class AvailableFacilitySerializer(serializers.ModelSerializer):
     latitude = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
+    # distance = serializers.SerializerMethodField()
 
     class Meta:
         model = AvailableFacility
@@ -98,6 +101,16 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
 
     def get_longitude(self, instance):
         return instance.location.x
+
+    # def get_distance(self, instance):
+    #     open_space_id = self.context['request'].query_params.get('id')
+    #     open_space = OpenSpace.objects.get(id=open_space_id)
+    #     centroid = open_space.centroid
+    #     open_point = Point(centroid[0], centroid[1], srid=4326)
+    #     distance = open_point.distance(instance.location)
+    #     d = (distance/111)*1000
+    #
+    #     return d
 
 
 class GallerySerializer(serializers.ModelSerializer):

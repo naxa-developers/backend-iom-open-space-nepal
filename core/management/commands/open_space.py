@@ -41,18 +41,18 @@ class Command(BaseCommand):
                     # # gn_type_np=(df['Type'][row]).capitalize().strip(),
                     title=df['Name'][row],
                     current_land_use=df['Current Land Use'][row],
-                    total_area=float((df['Total Area'][row]).replace(',', '')),
-                    usable_area=float((df['Usable Open Space Area'][row]).replace(',', '')),
-                    capacity=float((df['Capacity'][row]).replace(',', '')),
+                    total_area=(df['Total Area'][row]),
+                    usable_area=(df['Usable Open Space Area'][row]),
+                    capacity=(df['Capacity'][row]),
                     catchment_area=df['Catchment Area'][row],
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
                     issue=df['Issues'][row],
                     ward=df['Ward'][row],
                     elevation=df['Elevation'][row],
-                    # address=df['Address'][row],
+                    # # address=df['Address'][row],
                     ownership=df['Ownership'][row],
-                    polygons=GEOSGeometry(df['geom'][row]),
+                    # polygons=GEOSGeometry(df['geom'][row]),
                 )
 
                 use = df['Suggested Use'][row]
@@ -94,7 +94,7 @@ class Command(BaseCommand):
                 wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
                 el_data = ServiceData.objects.create(description=tree, open_space=open_space,
                                                      service=wash_facility)
-                print(open_space, open_space.id)
+                print(open_space, open_space.id, row)
 
             except Exception as e:
                 print(e)

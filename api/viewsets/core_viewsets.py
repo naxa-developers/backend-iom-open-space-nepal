@@ -260,6 +260,30 @@ class ProvinceApi(APIView):
         return Response({"data": data})
 
 
+# class DistanceApi(APIView):
+#     authentication_classes = []
+#     permission_classes = []
+#
+#     def get(self, request):
+#         data = []
+#         open_id = self.request.query_params.get('open_id')
+#         open_space = OpenSpace.objects.get(id=open_id)
+#         facility_id = self.request.query_params.get('facility_id')
+#         facility = AvailableFacility.objects.get(id=facility_id)
+#
+#         open_point = open_space.centroid
+#         print(open_point)
+#
+#         # data.append(
+#         #     {
+#         #         "id": province.id,
+#         #         "name": province.name
+#         #     }
+#         # )
+#
+#         return Response({"data": data})
+
+
 class GlimpseOfOpenSpace(APIView):
     authentication_classes = []
     permission_classes = []
@@ -290,6 +314,7 @@ class OpenSpaceGeojsonViewSet(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
+
         serializers = serialize('geojson', OpenSpace.objects.all(),
                                 geometry_field='polygons',
                                 fields=('pk', 'title', 'description', 'status',
@@ -395,7 +420,7 @@ class NearByMeViewSet(APIView):
                                 .annotate(distance=Distance('location', openspace_location)) \
                                 .order_by('distance')[0:count]
         print(resource_queryset)
-        resource_json = AvailableFacilitySerializer(resource_queryset, many=True)
+        resource_json = AvailableFacilitySerializer(resource_queryset, many=True, context={'request': request})
         json = JSONRenderer().render(resource_json.data)
         stream = io.BytesIO(json)
         data = JSONParser().parse(stream)
