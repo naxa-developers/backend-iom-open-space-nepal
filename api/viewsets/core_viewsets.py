@@ -314,7 +314,6 @@ class OpenSpaceGeojsonViewSet(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
-
         serializers = serialize('geojson', OpenSpace.objects.all(),
                                 geometry_field='polygons',
                                 fields=('pk', 'title', 'description', 'status',

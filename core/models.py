@@ -140,10 +140,9 @@ class OpenSpace(models.Model):
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
     ward = models.CharField(max_length=1000, blank=True, null=True)
-    capacity = models.CharField(max_length=1000,
-                                blank=True, null=True)
-    total_area = models.CharField(max_length=1000,
-                                  blank=True, null=True)
+    capacity = models.DecimalField(max_digits=15, decimal_places=5, blank=True, null=True)
+    total_area = models.DecimalField(max_digits=15, decimal_places=5,
+                                     blank=True, null=True)
     usable_area = models.CharField(max_length=1000,  blank=True, null=True)
     image = models.ImageField(upload_to='space', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
