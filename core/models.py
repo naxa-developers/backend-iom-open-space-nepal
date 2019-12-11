@@ -141,8 +141,10 @@ class OpenSpace(models.Model):
                                      blank=True, null=True)
     ward = models.CharField(max_length=1000, blank=True, null=True)
     capacity = models.DecimalField(max_digits=15, decimal_places=5, blank=True, null=True)
-    total_area = models.DecimalField(max_digits=15, decimal_places=5,
-                                     blank=True, null=True)
+    # capacity = models.CharField(max_length=100, blank=True, null=True)
+    total_area = models.DecimalField(max_digits=15, decimal_places=5, blank=True, null=True)
+    # total_area = models.CharField(max_length=100,
+    #                                  blank=True, null=True)
     usable_area = models.CharField(max_length=1000,  blank=True, null=True)
     image = models.ImageField(upload_to='space', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
@@ -167,9 +169,9 @@ class OpenSpace(models.Model):
         center.append(lat)
         return center
 
-    def save(self, *args, **kwargs):
-        self.address = self.municipality.name + '-' + self.ward + ',' + self.district.name
-        super(OpenSpace, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.address = self.municipality.name + '-' + self.ward + ',' + self.district.name
+    #     super(OpenSpace, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -210,6 +212,9 @@ class Report(models.Model):
 class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='identify_open_space')
+
+    def __str__(self):
+        return self.title
 
 
 class Resource(models.Model):
