@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import Province, District, OpenSpace, Municipality, SuggestedUseData, SuggestedUseList, ServiceList,\
+from core.models import Province, District, OpenSpace, Municipality, SuggestedUseData, SuggestedUseList, ServiceList, \
     ServiceData
 
 from django.contrib.gis.geos import GEOSGeometry
@@ -27,7 +27,17 @@ class Command(BaseCommand):
             try:
                 # capacity = df['Capacity'][row]
                 # cap = capacity.replace(',', '')
-                # o_cap = Decimal(cap)
+                tot = df['Total Area'][row]
+                cap = df['Capacity'][row]
+                # print(df['Name'][row], type(df['Capacity'][row]), type(df['Total Area'][row]), )
+                if cap != '':
+                    capacities = str(df['Capacity'][row]).replace(',', '')
+                    capacity = Decimal(capacities)
+
+                if tot != '':
+                    total_areas = str(df['Total Area'][row]).replace(',', '')
+                    total_area = Decimal(total_areas)
+
                 open_space = OpenSpace.objects.create(
                     province=Province.objects.get(
                         code=(df['Province'][row])),
@@ -39,9 +49,9 @@ class Command(BaseCommand):
                         hlcit_code=(df['Municipality'][row])),
                     title=df['Name'][row],
                     current_land_use=df['Current Land Use'][row],
-                    total_area=df['Total Area'][row],
-                    usable_area=(df['Usable Open Space Area'][row]),
-                    capacity= df['Capacity'][row],
+                    total_area=total_area,
+                    usable_area=df['Usable Open Space Area'][row],
+                    capacity=capacity,
                     catchment_area=df['Catchment Area'][row],
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
@@ -51,7 +61,6 @@ class Command(BaseCommand):
                     ownership=df['Ownership'][row],
                     # # polygons=GEOSGeometry(df['the_geom'][row]),
                 )
-                print(row)
                 use = df['Suggested Use'][row]
                 if use != '':
                     suggested_uses = use.split(',')
@@ -91,7 +100,7 @@ class Command(BaseCommand):
                 wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
                 el_data = ServiceData.objects.create(description=tree, open_space=open_space,
                                                      service=wash_facility)
-                print(open_space, open_space.id, row)
+                print(open_space, row)
 
             except Exception as e:
                 print(e)

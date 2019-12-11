@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.gis.db.models import PointField, MultiPolygonField
-
+from decimal import Decimal
 
 # Create your models here.
 
@@ -140,9 +140,9 @@ class OpenSpace(models.Model):
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
     ward = models.CharField(max_length=1000, blank=True, null=True)
-    capacity = models.DecimalField(max_digits=15, decimal_places=5, blank=True, null=True)
+    capacity = models.FloatField(blank=True, null=True, default=Decimal('0.0000'))
     # capacity = models.CharField(max_length=100, blank=True, null=True)
-    total_area = models.DecimalField(max_digits=15, decimal_places=5, blank=True, null=True)
+    total_area = models.FloatField(blank=True, null=True)
     # total_area = models.CharField(max_length=100,
     #                                  blank=True, null=True)
     usable_area = models.CharField(max_length=1000,  blank=True, null=True)
