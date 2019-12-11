@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         path = kwargs['path']
-        df = pd.read_csv(path)
+        df = pd.read_csv(path).fillna('')
         upper_range = len(df)
 
         print("Wait Data is being Loaded")
@@ -60,8 +60,8 @@ class Command(BaseCommand):
                 # # title = df['Name'][row]
                 # print('Data is successfully updated')
                 # print(open_space, df['SN'][row])
-                open_space = OpenSpace.objects.filter(title=df['name'][row]).update(polygons=GEOSGeometry(df['the_geom'][row]))
-                print(row, df['name'][row])
+                open_space = OpenSpace.objects.filter(title=df['Name'][row]).update(polygons=GEOSGeometry(df['the_geom'][row]))
+                print(row, df['Name'][row])
 
             except Exception as e:
                 print(e)

@@ -21,23 +21,21 @@ class Command(BaseCommand):
         print("Wait Data is being Loaded")
 
         for row in range(0, upper_range):
-            open_spaces = OpenSpace.objects.filter(
+            open_spaces = OpenSpace.objects.get(
                             title=(df['Name'][row]))
 
-            for open_space in open_spaces:
-                print(open_space.pk, open_space.title)
 
-                try:
-                    question = [
-                            QuestionsData.objects.create(
-                                question=QuestionList.objects.get(
-                                    id=17),
-                                open_space=open_space,
-                                ans=df['Other environmental issues, e.g. noise and traffic'][row],
+            try:
+                question = [
+                        QuestionsData.objects.create(
+                            question=QuestionList.objects.get(
+                                id=17),
+                            open_space=open_spaces,
+                            ans=df['Other environmental issues, e.g. noise and traffic'][row],
 
-                            )
+                        )
 
-                        ]
+                    ]
 
-                except Exception as e:
-                    print(e)
+            except Exception as e:
+                print(e)
