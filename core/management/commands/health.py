@@ -33,8 +33,8 @@ class Command(BaseCommand):
                             name=df['Name'][row],
                             health_type=df['Type'][row],
                             type='health facility',
-                            location=Point(float(df['Latitude'][row]), float(df['Longitude'][row]))
-
+                            location=Point(float(df['Longitude'][row], df['Latitude'][row])
+                         )
                         )
 
                     ]

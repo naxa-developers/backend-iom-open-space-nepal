@@ -7,6 +7,7 @@ from core.models import Province, District, OpenSpace, Municipality, SuggestedUs
 
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.exceptions import ObjectDoesNotExist
+from decimal import Decimal
 
 
 class Command(BaseCommand):
@@ -24,6 +25,9 @@ class Command(BaseCommand):
 
         for row in range(0, upper_range):
             try:
+                # capacity = df['Capacity'][row]
+                # cap = capacity.replace(',', '')
+                # o_cap = Decimal(cap)
                 open_space = OpenSpace.objects.create(
                     province=Province.objects.get(
                         code=(df['Province'][row])),
@@ -33,28 +37,21 @@ class Command(BaseCommand):
 
                     municipality=Municipality.objects.get(
                         hlcit_code=(df['Municipality'][row])),
-                    # #
-                    # name=(df['Name'][row]).capitalize().strip(),
-                    # #
-                    # # gn_type_en=(df['Type_en'][row]).capitalize().strip(),
-                    # #
-                    # # gn_type_np=(df['Type'][row]).capitalize().strip(),
                     title=df['Name'][row],
                     current_land_use=df['Current Land Use'][row],
-                    total_area=(df['Total Area'][row]),
+                    total_area=df['Total Area'][row],
                     usable_area=(df['Usable Open Space Area'][row]),
-                    capacity=(df['Capacity'][row]),
+                    capacity= df['Capacity'][row],
                     catchment_area=df['Catchment Area'][row],
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
                     issue=df['Issues'][row],
                     ward=df['Ward'][row],
                     elevation=df['Elevation'][row],
-                    # # address=df['Address'][row],
                     ownership=df['Ownership'][row],
-                    # polygons=GEOSGeometry(df['geom'][row]),
+                    # # polygons=GEOSGeometry(df['the_geom'][row]),
                 )
-
+                print(row)
                 use = df['Suggested Use'][row]
                 if use != '':
                     suggested_uses = use.split(',')
