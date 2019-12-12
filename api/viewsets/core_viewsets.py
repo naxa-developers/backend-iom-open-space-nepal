@@ -167,7 +167,9 @@ class OpenSpaceLandingApi(APIView):
         data = []
         open_spaces = OpenSpace.objects.all()
         for open_space in open_spaces:
-            if open_space.image:
+            polygons = open_space.polygons
+
+            if polygons and open_space.image:
                 data.append(
                     {
                         "id": open_space.id,
@@ -182,7 +184,8 @@ class OpenSpaceLandingApi(APIView):
                         "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
                     }
                 )
-            else:
+
+            elif polygons and not open_space.image:
                 data.append(
                     {
                         "id": open_space.id,
@@ -197,6 +200,71 @@ class OpenSpaceLandingApi(APIView):
                         "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
                     }
                 )
+
+            elif open_space.image and not open_space.polygons:
+                data.append(
+                    {
+                        "id": open_space.id,
+                        "title": open_space.title,
+                        "province": open_space.province.id,
+                        "district": open_space.district.id,
+                        "municipality": open_space.municipality.id,
+                        "address": open_space.address,
+                        "image": open_space.image.url,
+                        "latitude": None,
+                        "longitude": None,
+                        "centroid": None
+                    }
+                )
+
+            elif not open_space.image and not open_space.polygons:
+                data.append(
+                    {
+                        "id": open_space.id,
+                        "title": open_space.title,
+                        "province": open_space.province.id,
+                        "district": open_space.district.id,
+                        "municipality": open_space.municipality.id,
+                        "address": open_space.address,
+                        "image": None,
+                        "latitude": None,
+                        "longitude": None,
+                        "centroid": None
+                    }
+                )
+            elif open_space is None:
+                data.append(
+                    {
+                        "id": None,
+                        "title": None,
+                        "province": None,
+                        "district": None,
+                        "municipality": None,
+                        "address": None,
+                        "image": None,
+                        "latitude": None,
+                        "longitude": None,
+                        "centroid": None
+                    }
+                )
+            else:
+                pass
+            # else:
+            #     print('defff')
+            #     data.append(
+            #         {
+            #             "id": open_space.id,
+            #             "title": open_space.title,
+            #             "province": open_space.province.id,
+            #             "district": open_space.district.id,
+            #             "municipality": open_space.municipality.id,
+            #             "address": open_space.address,
+            #             "image": None,
+            #             "latitude": open_space.polygons.centroid.y,
+            #             "longitude": open_space.polygons.centroid.x,
+            #             "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+            #         }
+            #     )
 
         return Response({"data": data})
 
