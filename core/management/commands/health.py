@@ -29,20 +29,14 @@ class Command(BaseCommand):
                 name = df['Name'][row]
                 if name != '':
                     facility = [
-                        AvailableFacility(
-                            name=df['Name'][row],
+                        AvailableFacility.objects.create(
+                            # name=df['Name'][row],
                             health_type=df['Type'][row],
                             type='health facility',
-                            location=Point(float(df['Longitude'][row], df['Latitude'][row])
-                         )
+                            location=Point(float(df['Longitude'][row], df['Latitude'][row]))
                         )
 
                     ]
-
-                    available_data = AvailableFacility.objects.bulk_create(facility)
-
-                    if available_data:
-                        self.stdout.write('Successfully  updated data ..')
 
                 else:
                     print('field has no name field')
