@@ -28,16 +28,13 @@ class Command(BaseCommand):
                 # print(Point(float(df['Latitude'][row]), float(df['Longitude'][row])))
                 name = df['Name'][row]
                 if name != '':
-                    facility = [
-                        AvailableFacility.objects.create(
-                            # name=df['Name'][row],
-                            health_type=df['Type'][row],
-                            type='health facility',
-                            location=Point(float(df['Longitude'][row], df['Latitude'][row]))
-                        )
-
-                    ]
-
+                    AvailableFacility.objects.create(
+                        name=df['Name'][row],
+                        health_type=df['Type'][row],
+                        type='health facility',
+                        location=Point(float(df['Longitude'][row]), float(df['Latitude'][row]))
+                    )
+                    print(row)
                 else:
                     print('field has no name field')
 
