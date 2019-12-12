@@ -103,6 +103,12 @@ class OpenSpaceViewSet(viewsets.ModelViewSet):
     queryset = OpenSpace.objects.all()
     permission_classes = []
 
+    # def perform_create(self, serializer):
+    #     if self.ward:
+    #         serializer.save(address=self.municipality.name + '-' + self.ward + ',' + self.district.name)
+    #     else:
+    #         serializer.save(address=self.municipality.name + ',' + self.district.name)
+
 
 class GalleryViewSet(viewsets.ModelViewSet):
     serializer_class = GallerySerializer

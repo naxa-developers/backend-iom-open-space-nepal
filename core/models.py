@@ -169,9 +169,12 @@ class OpenSpace(models.Model):
         center.append(lat)
         return center
 
-    # def save(self, *args, **kwargs):
-    #     self.address = self.municipality.name + '-' + self.ward + ',' + self.district.name
-    #     super(OpenSpace, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        if self.ward:
+            self.address = self.municipality.name + '-' + self.ward + ',' + self.district.name
+        else:
+            self.address = self.municipality.name + ',' + self.district.name
+        super(OpenSpace, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
