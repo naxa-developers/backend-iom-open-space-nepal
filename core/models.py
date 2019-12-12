@@ -242,7 +242,7 @@ class Resource(models.Model):
                               null=True, blank=True)
     audio = models.FileField(upload_to='audio', null=True, blank=True)
     video = models.FileField(upload_to='video', null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
     publication = models.FileField(upload_to='publication', null=True,
                                    blank=True)
     category = models.IntegerField(choices=CATEGORY_CHOICES, default=0)
