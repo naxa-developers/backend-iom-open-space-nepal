@@ -20,6 +20,9 @@ class Command(BaseCommand):
             if os.ward is None:
                 address = os.municipality.name + ',' + os.district.name
             else:
+                os.ward = int(os.ward)
+                os.save()
+                print(os.id)
                 address = os.municipality.name + '-' + os.ward + ',' + os.district.name
             os.address = address
             os.save()
