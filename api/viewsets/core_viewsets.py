@@ -390,7 +390,7 @@ class OpenSpaceGeojsonViewSet(APIView):
     def get(self, request, *args, **kwargs):
         serializers = serialize('geojson', OpenSpace.objects.all(),
                                 geometry_field='polygons',
-                                fields=('id', 'title', 'description', 'status',
+                                fields=('pk', 'title', 'description', 'status',
                                         'catchment_area', 'ownership',
                                         'elevation', 'access_to_site',
                                         'special_feature', 'address',
@@ -415,7 +415,7 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
         serializers = serialize('geojson',
                                 OpenSpace.objects.filter(id=open_id),
                                 geometry_field='polygons',
-                                fields=('id', 'title', 'description', 'status',
+                                fields=('pk', 'title', 'description', 'status',
                                         'catchment_area', 'ownership',
                                         'elevation', 'access_to_site',
                                         'special_feature', 'address',
