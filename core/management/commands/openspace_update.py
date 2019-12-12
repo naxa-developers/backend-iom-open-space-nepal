@@ -60,7 +60,8 @@ class Command(BaseCommand):
                 # # title = df['Name'][row]
                 # print('Data is successfully updated')
                 # print(open_space, df['SN'][row])
-                open_space = OpenSpace.objects.filter(title=df['Name'][row]).update(polygons=GEOSGeometry(df['the_geom'][row]))
+                des = df['Description'][row]
+                open_space = OpenSpace.objects.filter(title=df['Name'][row]).update(polygons=GEOSGeometry(df['the_geom'][row]), description=des)
                 print(row, df['Name'][row])
 
             except Exception as e:
