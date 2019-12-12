@@ -59,7 +59,7 @@ class Command(BaseCommand):
                     ward=df['Ward'][row],
                     elevation=df['Elevation'][row],
                     ownership=df['Ownership'][row],
-                    # # polygons=GEOSGeometry(df['the_geom'][row]),
+                    polygons=GEOSGeometry(df['the_geom'][row]),
                 )
                 use = df['Suggested Use'][row]
                 if use != '':
