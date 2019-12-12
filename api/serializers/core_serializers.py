@@ -156,6 +156,7 @@ class ReportSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
     count = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
+    # date = serializers.DateTimeField("%Y-%m-%d %H:%M:%S")
 
     class Meta:
         model = Report
@@ -171,7 +172,7 @@ class ReportSerializer(serializers.ModelSerializer):
         return center
 
     def get_count(self, instance):
-        date1 = instance.date.date()
+        date1 = instance.date
         date2 = datetime.now().date()
         delta = date2 - date1
         return delta.days
