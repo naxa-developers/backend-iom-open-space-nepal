@@ -192,7 +192,7 @@ class Report(models.Model):
     title = models.CharField(max_length=100)
     name = models.CharField(max_length=100, null=True, blank=True)
     message = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True,  null=True, blank=True)
+    date = models.DateField(auto_now_add=True,  null=True, blank=True)
     urgency = models.CharField(choices=URGENCY_CHOICES, max_length=15, default='high')
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
