@@ -116,16 +116,26 @@ class GalleryViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
     def filter_queryset(self, queryset):
-        typee = self.request.query_params.get('type')
+        img_type = self.request.query_params.get('type')
         open_space = self.request.query_params.get('id')
-        if typee == 'map':
-            return queryset.filter(type='map')
 
-        elif typee == 'image':
-            return queryset.filter(type='image')
+        if img_type == 'map' and open_space:
+            return Gallery.objects.filter(type='map', open_space=open_space)
+
+        elif img_type == 'image' and open_space:
+            return Gallery.objects.filter(type='image', open_space=open_space)
+
+        elif img_type == 'map':
+            print('def')
+            return Gallery.objects.filter(type='map')
+
+        elif img_type == 'image':
+            print('def')
+            return Gallery.objects.filter(type='image')
 
         elif open_space:
-            return queryset.filter(open_space=open_space)
+            print('def')
+            return Gallery.objects.filter(open_space=open_space)
 
         else:
             return queryset

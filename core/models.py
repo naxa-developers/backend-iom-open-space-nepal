@@ -2,7 +2,10 @@ from django.db import models
 from django.conf import settings
 from django.contrib.gis.db.models import PointField, MultiPolygonField
 from decimal import Decimal
-
+import os.path
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 # Create your models here.
 
 
@@ -114,6 +117,45 @@ class Gallery(models.Model):
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
                                    blank=True, null=True,
                                    related_name='gallery')
+    thumbnail = models.ImageField(upload_to='thumbs', editable=False, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        if not self.make_thumbnail():
+            # set to a default thumbnail
+            raise Exception('Could not create thumbnail - is the file type valid?')
+
+        super(Gallery, self).save(*args, **kwargs)
+
+    def make_thumbnail(self):
+
+        image = Image.open(self.image)
+        image.thumbnail((600, 400), Image.ANTIALIAS)
+
+        thumb_name, thumb_extension = os.path.splitext(self.image.name)
+        thumb_extension = thumb_extension.lower()
+
+        thumb_filename = thumb_name + '_thumb' + thumb_extension
+
+        if thumb_extension in ['.jpg', '.jpeg']:
+            FTYPE = 'JPEG'
+        elif thumb_extension == '.gif':
+            FTYPE = 'GIF'
+        elif thumb_extension == '.png':
+            FTYPE = 'PNG'
+        else:
+            return False  # Unrecognized file type
+
+        # Save thumbnail to in-memory file as StringIO
+        temp_thumb = BytesIO()
+        image.save(temp_thumb, FTYPE)
+        temp_thumb.seek(0)
+
+        # set save=False, otherwise it will run in an infinite loop
+        self.thumbnail.save(thumb_filename, ContentFile(temp_thumb.read()), save=False)
+        temp_thumb.close()
+
+        return True
 
 
 class OpenSpace(models.Model):
