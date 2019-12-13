@@ -2,7 +2,7 @@ from django.contrib import admin
 from core.models import Slider, Province, District, Municipality,\
     SuggestedUseData, OpenSpace, Report, CreateOpenSpace, Resource, \
     QuestionList, QuestionsData, AvailableFacility, Gallery, \
-    SuggestedUseList, ServiceData, ServiceList
+    SuggestedUseList, ServiceData, ServiceList, ResourceCategory, ResourceDocumentType
 
 # Register your models here.
 
@@ -23,4 +23,6 @@ admin.site.register(CreateOpenSpace)
 admin.site.register(Gallery)
 admin.site.register(ServiceData)
 admin.site.register(ServiceList)
+admin.site.register(ResourceCategory)
+admin.site.register(ResourceDocumentType)
 
