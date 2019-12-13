@@ -150,6 +150,9 @@ class OpenSpace(models.Model):
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['title']
+
     @property
     def latitude(self):
         if self.location:
@@ -223,19 +226,21 @@ class CreateOpenSpace(models.Model):
         return self.title
 
 
+class ResourceCategory(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class ResourceDocumentType(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Resource(models.Model):
-    CATEGORY_CHOICES = (
-        (0, 'Plans and Policies'),
-        (1, 'Research'),
-        (2, 'Multimedia')
-    )
-
-    DOCUMENT_TYPE_CHOICES = (
-        (0, 'publication'),
-        (1, 'audio'),
-        (2, 'video')
-
-    )
     title = models.TextField()
     description = models.TextField()
     image = models.ImageField(upload_to='resource_image',
@@ -245,9 +250,8 @@ class Resource(models.Model):
     date = models.DateField(auto_now_add=True)
     publication = models.FileField(upload_to='publication', null=True,
                                    blank=True)
-    category = models.IntegerField(choices=CATEGORY_CHOICES, default=0)
-    document_type = models.IntegerField(choices=DOCUMENT_TYPE_CHOICES,
-                                        default=0)
+    category = models.ForeignKey('ResourceCategory', on_delete=models.CASCADE, related_name='resource')
+    document_type = models.ForeignKey('ResourceDocumentType', on_delete=models.CASCADE, related_name='resource')
 
     def __str__(self):
         return self.title

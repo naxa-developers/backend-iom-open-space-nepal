@@ -20,10 +20,15 @@ class Command(BaseCommand):
             if os.ward is None:
                 address = os.municipality.name + ',' + os.district.name
             else:
-                os.ward = int(os.ward)
+                if type(os.ward) == str:
+                    os.ward = int(float(os.ward))
+                elif type(os.ward) == int:
+                    os.ward = os.ward
+                elif type(os.ward) == float:
+                    os.ward = int(os.ward)
                 os.save()
                 print(os.id)
-                address = os.municipality.name + '-' + os.ward + ',' + os.district.name
+                address = os.municipality.name + '-' + str(os.ward) + ',' + os.district.name
             os.address = address
             os.save()
 
