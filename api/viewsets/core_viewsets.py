@@ -285,6 +285,35 @@ class OpenSpaceLandingApi(APIView):
         return Response({"data": data})
 
 
+class AddedOpenAPi(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        data = []
+        id = self.request.query_params.get('id')
+        open_spaces = OpenSpace.objects.all()
+        if id:
+            open_space = OpenSpace.objects.get(id=id)
+
+            data.append(
+                {
+                    "id": open_space.id,
+                    "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+                }
+            )
+        else:
+            for open_space in open_spaces:
+                data.append(
+                    {
+                        "id": open_space.id,
+                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+                    }
+                )
+
+        return Response({"data": data})
+
+
 class DistrictApi(APIView):
     authentication_classes = []
     permission_classes = []
