@@ -174,7 +174,7 @@ class OpenSpace(models.Model):
 
     def save(self, *args, **kwargs):
         if self.ward:
-            self.address = 'Ward' + ' ' + str(self.ward) + ',' + 'self.municipality.name'
+            self.address = 'Ward' + ' ' + str(self.ward) + ',' + self.municipality.name
         else:
             self.address = self.municipality.name
         super(OpenSpace, self).save(*args, **kwargs)
