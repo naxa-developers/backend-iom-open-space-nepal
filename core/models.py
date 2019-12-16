@@ -393,5 +393,8 @@ class AvailableFacility(models.Model):
             return self.location.x
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            self.type
 
