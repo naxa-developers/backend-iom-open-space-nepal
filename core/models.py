@@ -305,7 +305,8 @@ class AvailableFacility(models.Model):
         ('education facility', 'Education Facility'),
         ('security force', 'Security Force'),
         ('place of worship', 'Place Of Worship'),
-        ('financial institution', 'Financial Institution')
+        ('financial institution', 'Financial Institution'),
+        ('helipad', 'Helipad')
     )
     EDUCATION_TYPE_CHOICES = (
         ('school', 'School'),
@@ -347,7 +348,7 @@ class AvailableFacility(models.Model):
         ('co-operative', 'Co-operative')
     )
 
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, null=True, blank=True)
     type = models.CharField(choices=TYPE_CHOICES, max_length=30,
                             null=True, blank=True)
     operator_type = models.CharField(choices=OPERATOR_TYPE,
