@@ -123,6 +123,9 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     suggested_use = SuggestedUseSerializer(many=True, required=False)
     services = ServiceSerializer(many=True, required=False)
     question_data = QuestionDataSerializer(many=True, required=False)
+    municipality_name = serializers.ReadOnlyField(source='municipality.name')
+    province_name = serializers.ReadOnlyField(source='province.name')
+    district_name = serializers.ReadOnlyField(source='district.name')
 
     # centroid = serializers.SerializerMethodField()
 
@@ -132,7 +135,8 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'current_land_use', 'ownership', 'elevation', 'district',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
-                  'usable_area', 'image', 'description', 'centroid', )
+                  'usable_area', 'image', 'description', 'centroid', 'municipality_name',
+                  'province_name', 'district_name')
 
     # def get_centroid(self, obj):
     #     center = []
