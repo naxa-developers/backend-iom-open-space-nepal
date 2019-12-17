@@ -79,6 +79,10 @@ class SuggestedUseViewSet(viewsets.ModelViewSet):
     queryset = SuggestedUseData.objects.all()
     permission_classes = []
 
+    def filter_queryset(self, queryset):
+        open_space_id = self.request.query_params.get('id')
+        return queryset.filter(open_space=open_space_id)
+
 
 class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
