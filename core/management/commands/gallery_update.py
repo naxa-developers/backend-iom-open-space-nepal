@@ -12,6 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         objects = OpenSpace.objects.all()
-        update = objects.update(thumb_update='make thumbnail update')
+        update = objects.update(thumb_update='make thumbnail up')
+        objects.save()
 
 
