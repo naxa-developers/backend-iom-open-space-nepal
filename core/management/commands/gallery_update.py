@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 import pandas as pd
 
-from core.models import AvailableFacility, Gallery, OpenSpace
+from core.models import AvailableFacility, OpenSpace
 
 from django.contrib.gis.geos import Point
 
@@ -14,7 +14,7 @@ class Command(BaseCommand):
         objects = OpenSpace.objects.all()
         ids = []
         for i in objects:
-            open = OpenSpace.objects.filter(id=i.id).update(thumb_update='abc')
+            open = OpenSpace.objects.filter(id=i.id).update(thumb_update='abddc')
             print('successully update')
 
 
