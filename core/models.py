@@ -118,6 +118,7 @@ class Gallery(models.Model):
                                    blank=True, null=True,
                                    related_name='gallery')
     thumbnail = models.ImageField(upload_to='thumbs', editable=False, null=True, blank=True)
+    gallery_update = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
 
