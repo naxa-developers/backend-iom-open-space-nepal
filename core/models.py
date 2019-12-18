@@ -248,14 +248,14 @@ class OpenSpace(models.Model):
         return True
 
     def save(self, *args, **kwargs):
-        if self.ward:
+        if not self.make_thumbnail():
+            # set to a default thumbnail
+            raise Exception('Could not create thumbnail - is the file type valid?')
+        elif self.ward:
             self.address = 'Ward' + ' ' + str(self.ward) + ',' + self.municipality.name
         else:
             self.address = self.municipality.name
 
-        if not self.make_thumbnail():
-            # set to a default thumbnail
-            raise Exception('Could not create thumbnail - is the file type valid?')
         super(OpenSpace, self).save(*args, **kwargs)
 
     def __str__(self):
