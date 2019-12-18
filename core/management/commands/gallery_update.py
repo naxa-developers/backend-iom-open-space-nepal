@@ -12,6 +12,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         objects = OpenSpace.objects.all()
-        update = objects.update(thumb_update='make thumbnail up')
+        ids = []
+        for i in objects:
+            open = OpenSpace.objects.filter(id=i.id).update(thumb_update='abc')
+            print('successully update')
+
+
+
 
 
