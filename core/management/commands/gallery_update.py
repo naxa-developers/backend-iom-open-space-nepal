@@ -14,7 +14,8 @@ class Command(BaseCommand):
         objects = OpenSpace.objects.all()
         ids = []
         for i in objects:
-            open = OpenSpace.objects.filter(id=i.id).update(thumb_update='abddc')
+            open = OpenSpace.objects.get(id=i.id)
+            open.save()
             print('successully update')
 
 
