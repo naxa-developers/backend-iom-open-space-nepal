@@ -545,6 +545,33 @@ class NearByMeViewSet(APIView):
         return Response(api_json)
 
 
+class AlternativeNearByMeViewSet(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        api_json = {}
+        open_space_id = self.request.query_params.get('id')
+        distance = self.request.query_params.get('distance')
+        print(open_space_id)
+        open_space = OpenSpace.objects.get(id=open_space_id)
+        longitude = open_space.centroid[0]
+        latitude = open_space.centroid[1]
+        openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
+        resource_queryset = AvailableFacility.objects \
+                                .filter(location__distance_lte=(openspace_location, D(km=distance))) \
+                                .annotate(distance=Distance('location', openspace_location)) \
+                                .order_by('distance')
+        print(resource_queryset)
+        resource_json = AvailableFacilitySerializer(resource_queryset, many=True, context={'request': request})
+        json = JSONRenderer().render(resource_json.data)
+        stream = io.BytesIO(json)
+        data = JSONParser().parse(stream)
+        api_json['facility'] = data
+
+        return Response(api_json)
+
+
 class NearByMeOpenSpace(APIView):
     authentication_classes = []
     permission_classes = []

@@ -45,6 +45,7 @@ urlpatterns = [
     path('province_geo_json',
          core_viewsets.ProvinceGeojsonViewSet.as_view()),
     path('near_by_me', core_viewsets.NearByMeViewSet.as_view()),
+    path('alternative_near_by_me', core_viewsets.AlternativeNearByMeViewSet.as_view()),
     path('open_extra', core_viewsets.AddedOpenAPi.as_view()),
     # path('distance', core_viewsets.DistanceApi.as_view()),
     path('near_by_openspace', core_viewsets.NearByMeOpenSpace.as_view()),
