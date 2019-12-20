@@ -29,9 +29,9 @@ class Command(BaseCommand):
                 question = [
                         QuestionsData.objects.create(
                             question=QuestionList.objects.get(
-                                id=17),
+                                id=1),
                             open_space=open_spaces,
-                            ans=df['Other environmental issues, e.g. noise and traffic'][row],
+                            ans=df['Is it a protected area?'][row],
 
                         )
 
