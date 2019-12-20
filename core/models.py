@@ -23,6 +23,9 @@ class Province(models.Model):
     code = models.IntegerField(null=True, blank=True)
     boundary = MultiPolygonField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -33,6 +36,9 @@ class District(models.Model):
     province = models.ForeignKey('Province', related_name='district',
                                  on_delete=models.CASCADE)
     boundary = MultiPolygonField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -46,6 +52,9 @@ class Municipality(models.Model):
                                  on_delete=models.CASCADE)
     hlcit_code = models.CharField(max_length=100, blank=True, null=True)
     boundary = MultiPolygonField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
