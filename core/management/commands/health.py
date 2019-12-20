@@ -27,12 +27,13 @@ class Command(BaseCommand):
                 # print(float(df['Longitude'][row]))
                 # print(Point(float(df['Latitude'][row]), float(df['Longitude'][row])))
 
-                AvailableFacility.objects.create(
-                    name=df['Name'][row],
+                q=AvailableFacility.objects.create(
+                    name=df['name'][row],
                     type='health facility',
-                    location=Point(float(df['Longitude'][row]), float(df['Latitude'][row]))
+                    location=Point(float(df['longitude'][row]), float(df['latitude'][row])),
+                    phone_number=df['contact'][row]
                 )
-                print(row)
+                print(row, q.name)
 
             except Exception as e:
                 print(e)

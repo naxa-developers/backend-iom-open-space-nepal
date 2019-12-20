@@ -27,16 +27,16 @@ class Command(BaseCommand):
             try:
                 # capacity = df['Capacity'][row]
                 # cap = capacity.replace(',', '')
-                tot = df['Total Area'][row]
-                cap = df['Capacity'][row]
-                # print(df['Name'][row], type(df['Capacity'][row]), type(df['Total Area'][row]), )
-                if cap != '':
-                    capacities = str(df['Capacity'][row]).replace(',', '')
-                    capacity = Decimal(capacities)
-
-                if tot != '':
-                    total_areas = str(df['Total Area'][row]).replace(',', '')
-                    total_area = Decimal(total_areas)
+                # tot = df['Total Area'][row]
+                # cap = df['Capacity'][row]
+                # # print(df['Name'][row], type(df['Capacity'][row]), type(df['Total Area'][row]), )
+                # if cap != '':
+                #     capacities = str(df['Capacity'][row]).replace(',', '')
+                #     capacity = Decimal(capacities)
+                #
+                # if tot != '':
+                #     total_areas = str(df['Total Area'][row]).replace(',', '')
+                #     total_area = Decimal(total_areas)
 
                 open_space = OpenSpace.objects.create(
                     province=Province.objects.get(
@@ -49,9 +49,9 @@ class Command(BaseCommand):
                         hlcit_code=(df['Municipality'][row])),
                     title=df['Name'][row],
                     current_land_use=df['Current Land Use'][row],
-                    total_area=total_area,
+                    total_area= df['Capacity'][row],
                     usable_area=df['Usable Open Space Area'][row],
-                    capacity=capacity,
+                    capacity=df['Total Area'][row],
                     catchment_area=df['Catchment Area'][row],
                     access_to_site=df['Access to Site'][row],
                     special_feature=df['Special features'][row],
