@@ -201,7 +201,7 @@ class OpenSpaceLandingApi(APIView):
                         "image": open_space.image.url,
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
-                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y],
                         "thumbnail": open_space.thumbnail.url
                     }
                 )
@@ -234,7 +234,8 @@ class OpenSpaceLandingApi(APIView):
                         "image": open_space.image.url,
                         "latitude": None,
                         "longitude": None,
-                        "centroid": None
+                        "centroid": None,
+                        "thumbnail": open_space.thumbnail.url
                     }
                 )
 
