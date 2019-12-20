@@ -202,6 +202,7 @@ class OpenSpaceLandingApi(APIView):
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
                         "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+                        "thumbnail": open_space.thumbnail.url
                     }
                 )
 
