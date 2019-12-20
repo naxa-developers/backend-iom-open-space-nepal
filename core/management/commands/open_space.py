@@ -18,49 +18,38 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         path = kwargs['path']
-        df = pd.read_csv(path).fillna('')
+        df = pd.read_csv(path, encoding='unicode_escape').fillna('')
         upper_range = len(df)
 
         print("Wait Data is being Loaded")
 
         for row in range(0, upper_range):
-            try:
-                # capacity = df['Capacity'][row]
-                # cap = capacity.replace(',', '')
-                # tot = df['Total Area'][row]
-                # cap = df['Capacity'][row]
-                # # print(df['Name'][row], type(df['Capacity'][row]), type(df['Total Area'][row]), )
-                # if cap != '':
-                #     capacities = str(df['Capacity'][row]).replace(',', '')
-                #     capacity = Decimal(capacities)
+            total_area = str(df['Total Area'][row]).replace(',', '')
+            capacity = str(df['Capacity'][row]).replace(',', '')
+
+            open_space = OpenSpace.objects.create(
+                title=df['Name'][row],
+                province=Province.objects.get(
+                    code=(df['Province'][row])),
                 #
-                # if tot != '':
-                #     total_areas = str(df['Total Area'][row]).replace(',', '')
-                #     total_area = Decimal(total_areas)
+                district=District.objects.get(
+                    code=(df['District'][row])),
 
-                open_space = OpenSpace.objects.create(
-                    province=Province.objects.get(
-                        code=(df['Province'][row])),
-                    #
-                    district=District.objects.get(
-                        code=(df['District'][row])),
-
-                    municipality=Municipality.objects.get(
-                        hlcit_code=(df['Municipality'][row])),
-                    title=df['Name'][row],
-                    current_land_use=df['Current Land Use'][row],
-                    total_area= df['Capacity'][row],
-                    usable_area=df['Usable Open Space Area'][row],
-                    capacity=df['Total Area'][row],
-                    catchment_area=df['Catchment Area'][row],
-                    access_to_site=df['Access to Site'][row],
-                    special_feature=df['Special features'][row],
-                    issue=df['Issues'][row],
-                    ward=df['Ward'][row],
-                    elevation=df['Elevation'][row],
-                    ownership=df['Ownership'][row],
-                    polygons=GEOSGeometry(df['the_geom'][row]),
-                )
+                municipality=Municipality.objects.get(
+                    hlcit_code=(df['Municipality'][row])),
+                ward=df['Ward'][row],
+                elevation=df['Elevation'][row],
+                total_area=total_area,
+                usable_area=df['Usable Open Space Area'][row],
+                capacity=capacity,
+                current_land_use=df['Current Land Use'][row],
+                catchment_area=df['Catchment Area'][row],
+                access_to_site=df['Access to Site'][row],
+                ownership=df['Ownership'][row],
+                special_feature=df['Special features'][row],
+                polygons=GEOSGeometry(df['the_geom'][row]),
+            )
+            try:
                 use = df['Suggested Use'][row]
                 if use != '':
                     suggested_uses = use.split(',')
