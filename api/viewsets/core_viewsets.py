@@ -189,7 +189,7 @@ class OpenSpaceLandingApi(APIView):
         for open_space in open_spaces:
             polygons = open_space.polygons
 
-            if polygons and open_space.image:
+            if polygons and open_space.image and open_space.thumbnail:
                 data.append(
                     {
                         "id": open_space.id,
@@ -206,6 +206,23 @@ class OpenSpaceLandingApi(APIView):
                     }
                 )
 
+            if polygons and open_space.image and not open_space.thumbnail:
+                data.append(
+                    {
+                        "id": open_space.id,
+                        "title": open_space.title,
+                        "province": open_space.province.id,
+                        "district": open_space.district.id,
+                        "municipality": open_space.municipality.id,
+                        "address": open_space.address,
+                        "image": open_space.image.url,
+                        "latitude": open_space.polygons.centroid.y,
+                        "longitude": open_space.polygons.centroid.x,
+                        "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y],
+                        "thumbnail": None
+                    }
+                )
+
             elif polygons and not open_space.image:
                 data.append(
                     {
@@ -219,10 +236,11 @@ class OpenSpaceLandingApi(APIView):
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
                         "centroid": [open_space.polygons.centroid.x, open_space.polygons.centroid.y]
+                        "thumbnail": None
                     }
                 )
 
-            elif open_space.image and not open_space.polygons:
+            elif open_space.image and open_space.thumbnail and not open_space.polygons:
                 data.append(
                     {
                         "id": open_space.id,
@@ -236,6 +254,23 @@ class OpenSpaceLandingApi(APIView):
                         "longitude": None,
                         "centroid": None,
                         "thumbnail": open_space.thumbnail.url
+                    }
+                )
+
+            elif open_space.image and not open_space.thumbnail and not open_space.polygons:
+                data.append(
+                    {
+                        "id": open_space.id,
+                        "title": open_space.title,
+                        "province": open_space.province.id,
+                        "district": open_space.district.id,
+                        "municipality": open_space.municipality.id,
+                        "address": open_space.address,
+                        "image": open_space.image.url,
+                        "latitude": None,
+                        "longitude": None,
+                        "centroid": None,
+                        "thumbnail": None
                     }
                 )
 
