@@ -151,10 +151,7 @@ class ReportViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
     def filter_queryset(self, queryset):
-        print(queryset)
-        # reports = Report.objects.filter(date__gte=datetime.datetime.now() - timedelta(days=7))
         status = self.request.query_params.get('status')
-        # urgency = self.request.query_params.get('urgency')
         openspace = self.request.query_params.get('id')
         start_date_str = self.request.query_params.get('start_date')
         end_date_str = self.request.query_params.get('end_date')
@@ -163,13 +160,11 @@ class ReportViewSet(viewsets.ModelViewSet):
             return queryset.filter(open_space=openspace)
 
         elif start_date_str and end_date_str and status:
-            print('abc')
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date], status=status)
 
         elif start_date_str and end_date_str:
-            print('def')
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date])
