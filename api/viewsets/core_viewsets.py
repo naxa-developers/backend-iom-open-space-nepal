@@ -166,12 +166,14 @@ class ReportViewSet(viewsets.ModelViewSet):
             print('abc')
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+            print(Report.objects.filter(date__range=[start_date, end_date], status=status))
             return queryset.filter(date__range=[start_date, end_date], status=status)
 
         elif start_date_str and end_date_str:
             print('def')
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+            print(Report.objects.filter(date__range=[start_date, end_date]))
             return queryset.filter(date__range=[start_date, end_date])
 
         elif status:
