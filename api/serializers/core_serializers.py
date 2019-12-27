@@ -114,9 +114,14 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
 
 
 class GallerySerializer(serializers.ModelSerializer):
+    open_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Gallery
-        fields = '__all__'
+        fields = ['image', 'type', 'open_space', 'thumbnail', 'open_name']
+
+    def get_open_name(self, instance):
+        return instance.open_space.title
 
 
 class OpenSpaceSerializer(serializers.ModelSerializer):
