@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from core.models import OpenSpace, AvailableFacility
+from core.models import OpenSpace, AvailableFacility, Report
 
 
 # Create your views here.
@@ -36,6 +36,21 @@ class AvailableFacilityList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super(AvailableFacilityList, self).get_context_data(**kwargs)
         marker_list = AvailableFacility.objects.select_related('province', 'district', 'municipality').order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = marker_list
+        # data['user'] = user_data
+        data['active'] = 'available'
+        return data
+
+
+class ReportList(LoginRequiredMixin, ListView):
+    template_name = 'reports_list.html'
+    model = Report
+
+    def get_context_data(self, **kwargs):
+        data = super(ReportList, self).get_context_data(**kwargs)
+        marker_list = Report.objects.select_related('open_space', ).order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = marker_list
