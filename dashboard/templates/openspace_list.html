@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Output list</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
+                        <li class="breadcrumb-item">Openspace</li>
+                        <li class="breadcrumb-item active">Openspace list</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12">
+                    <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="card project_list">
+                <div class="table-responsive">
+                    <table class="table table-hover c_table">
+                        <thead>
+                            <tr>
+                                <th>S.N</th>
+                                <th>Name</th>
+                                <th>ownership</th>
+                                <th>province</th>
+                                <th>district</th>
+                                <th>municipality</th>
+                                <th>Address</th>
+                                <th>Catchment area</th>
+                                <th>Issue</th>
+                                <th>Current land use</th>
+                                <th>Elevation</th>
+                                <th>Access to site</th>
+                                <th>Special feature</th>
+                                <th>Capacity</th>
+                                <th>Total area</th>
+                                <th>Usable area</th>
+                                <th>action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for open in list %}
+                            <tr>
+                                <td>{{ open.id }}</td>
+                                <td>{{ open.title }}</td>
+                                <td>{{ open.ownership }}</td>
+                                <td>{{ open.province }}</td>
+                                <td>{{ open.district }}</td>
+                                <td>{{ open.municipality }}</td>
+                                <td>{{ open.address }}</td>
+                                <td>{{ open.catchment_area }}</td>
+                                <td>{{ open.issue }}</td>
+                                <td>{{ open.current_land_use }}</td>
+                                <td>{{ open.elevation }}</td>
+                                <td>{{ open.access_to_site }}</td>
+                                <td>{{ open.special_feature }}</td>
+                                <td>{{ open.capacity }}</td>
+                                <td>{{ open.total_area }}</td>
+                                <td>{{ open.usable_area }}</td>
+
+                                <td class="table-action">
+                                    <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
+                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <a class="btn float-right" href="output-form.html"><i class="la la-plus"></i> Add output</a>
+                    <ul class="pagination pagination-primary">
+                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">5</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
