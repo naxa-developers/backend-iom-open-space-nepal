@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Dashboard-1</h2>
+                <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn btn-primary float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="project-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="project-list">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Project overview</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><label>Name :</label><span>House Construction</span></li>
+                                    <li><label>Project Manager :</label><span>Mr.Ramesh khadgi</span></li>
+                                    <li><label>Province :</label><span>Province 2, Province 4</span></li>
+                                    <li><label>district :</label><span>Gorkha, Makawanpur</span></li>
+                                    <li><label>Municipality :</label><span>Thaha, Dhordi</span></li>
+                                    <li><label>Start date :</label><span>01/01/2019</span></li>
+                                    <li><label>End date :</label><span>01/05/2020</span></li>
+                                    <li><label>reporting period :</label><span>Quarterly</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="map-view">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Project summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-6">
+                                        <div class="card card-widget ">
+                                            <div class="body">
+                                                <a href="output-form.html">
+                                                    <div class="card-content">
+                                                        <div class="card-icon">
+                                                            <i class="la la-signal"></i>
+                                                        </div>
+                                                        <div class="card-text">
+                                                            <h3>1</h3>
+                                                            <h5>Output</h5>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 ">
+                                        <div class="card card-widget ">
+                                            <div class="body">
+                                                <a href="#">
+                                                    <div class="card-content">
+                                                        <div class="card-icon">
+                                                            <i class="la la-line-chart"></i>
+                                                        </div>
+                                                        <div class="card-text">
+                                                            <h3>15</h3>
+                                                            <h5>Activities</h5>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 ">
+                                        <div class="card card-widget mrt30">
+                                            <div class="body">
+                                                <a href="#">
+                                                    <div class="card-content">
+                                                        <div class="card-icon">
+                                                            <i class="la la-transgender-alt"></i>
+                                                        </div>
+                                                        <div class="card-text">
+                                                            <h3>31</h3>
+                                                            <h5>Cluster</h5>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 ">
+                                        <div class="card card-widget mrt30">
+                                            <div class="body">
+                                                <a href="#">
+                                                    <div class="card-content">
+                                                        <div class="card-icon">
+                                                            <i class="la la-sellsy"></i>
+                                                        </div>
+                                                        <div class="card-text">
+                                                            <h3>1560</h3>
+                                                            <h5>Benificiaries</h5>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    <div class="graph">
+        <div class="container-fluid">
+            <div class="graph-warpper">
+
+                <div class="graph-column">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Phase</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="phase-pie"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>map</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="map" style="height:320px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Progress overview</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="chart-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="graph activity-graph">
+        <div class="container-fluid">
+            <div class="graph-warpper">
+
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

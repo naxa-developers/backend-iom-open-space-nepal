@@ -95,6 +95,7 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
     queryset = Municipality.objects.all()
     permission_classes = []
 
+
 #
 # class QuestionViewSet(viewsets.ModelViewSet):
 #     serializer_class = QuestionSerializer
@@ -491,17 +492,35 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
 
     def get(self, request, *args, **kwargs):
         open_id = self.request.query_params.get('id')
-        serializers = serialize('geojson',
-                                OpenSpace.objects.filter(id=open_id),
-                                geometry_field='polygons',
-                                fields=('pk', 'title', 'description', 'status',
-                                        'catchment_area', 'ownership',
-                                        'elevation', 'access_to_site',
-                                        'special_feature', 'address',
-                                        'province', 'district',
-                                        'municipality', 'ward', 'capacity',
-                                        'total_area', 'usable_area', 'image',
-                                        'maps', 'location'))
+        mun_id = self.request.query_params.get('mun')
+        # print(open_id);
+
+        if open_id == None:
+            serializers = serialize('geojson',
+                                    OpenSpace.objects.filter(municipality=mun_id),
+                                    geometry_field='polygons',
+                                    fields=('pk', 'title', 'description', 'status',
+                                            'catchment_area', 'ownership',
+                                            'elevation', 'access_to_site',
+                                            'special_feature', 'address',
+                                            'province', 'district',
+                                            'municipality', 'ward', 'capacity',
+                                            'total_area', 'usable_area', 'image',
+                                            'maps', 'location'))
+
+
+        else:
+            serializers = serialize('geojson',
+                                    OpenSpace.objects.filter(id=open_id),
+                                    geometry_field='polygons',
+                                    fields=('pk', 'title', 'description', 'status',
+                                            'catchment_area', 'ownership',
+                                            'elevation', 'access_to_site',
+                                            'special_feature', 'address',
+                                            'province', 'district',
+                                            'municipality', 'ward', 'capacity',
+                                            'total_area', 'usable_area', 'image',
+                                            'maps', 'location'))
 
         open_space_geo_json = json.loads(serializers)
         return Response(open_space_geo_json)
@@ -595,9 +614,9 @@ class AlternativeNearByMeViewSet(APIView):
         latitude = open_space.centroid[1]
         openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
         resource_queryset = AvailableFacility.objects \
-                                .filter(location__distance_lte=(openspace_location, D(km=distance))) \
-                                .annotate(distance=Distance('location', openspace_location)) \
-                                .order_by('distance')
+            .filter(location__distance_lte=(openspace_location, D(km=distance))) \
+            .annotate(distance=Distance('location', openspace_location)) \
+            .order_by('distance')
         print(resource_queryset)
         resource_json = AvailableFacilitySerializer(resource_queryset, many=True, context={'request': request})
         json = JSONRenderer().render(resource_json.data)
@@ -666,7 +685,6 @@ def province_tile(request, zoom, x, y):
         if not len(tile):
             raise Http404()
     return HttpResponse(tile, content_type="application/x-protobuf")
-
 
 
 @api_view(['GET'])
