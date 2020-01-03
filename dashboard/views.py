@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList
+from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
+    SuggestedUseList, SuggestedUseData
 import json
 import random
 
@@ -119,6 +120,21 @@ class QuestionData(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super(QuestionData, self).get_context_data(**kwargs)
         query_data = QuestionsData.objects.select_related('open_space', 'question', ).order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'available'
+        return data
+
+
+class SuggestedUseLists(LoginRequiredMixin, ListView):
+    template_name = 'suggest_list.html'
+    model = SuggestedUseList
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedUseLists, self).get_context_data(**kwargs)
+        query_data = SuggestedUseList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data

@@ -9,5 +9,6 @@ urlpatterns = [
     path('report-list/', views.ReportList.as_view(), name='report-list'),
     path('question-list/', views.QuestionsList.as_view(), name='question-list'),
     path('questiondata-list/', views.QuestionData.as_view(), name='questiondata-list'),
+    path('suggest-list/', views.SuggestedUseLists.as_view(), name='suggest-list'),
 
 ]
