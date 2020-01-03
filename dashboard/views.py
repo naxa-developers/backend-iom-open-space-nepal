@@ -156,3 +156,18 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         # data['user'] = user_data
         data['active'] = 'available'
         return data
+
+
+class ServiceLists(LoginRequiredMixin, ListView):
+    template_name = 'service_list.html'
+    model = ServiceList
+
+    def get_context_data(self, **kwargs):
+        data = super(ServiceLists, self).get_context_data(**kwargs)
+        query_data = ServiceList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'available'
+        return data

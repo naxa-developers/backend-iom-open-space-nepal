@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Suggested Use Data </h2>
+                    <h2>Suggested Use </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Suggested Use Data</li>
-                        <li class="breadcrumb-item active">Suggested Use Data list</li>
+                        <li class="breadcrumb-item">Suggested Use</li>
+                        <li class="breadcrumb-item active">Suggested Use list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -27,8 +27,7 @@
                         <thead>
                             <tr>
                                 <th>S.N</th>
-                                <th>open space</th>
-                                <th>suggested use</th>
+                                <th>name</th>
                                 <th>action</th>
                             </tr>
                         </thead>
@@ -36,8 +35,7 @@
                             {% for data in list %}
                             <tr>
                                 <td>{{ data.id }}</td>
-                                <td>{{ data.open_space }}</td>
-                                <td>{{ data.suggested_use }}</td>
+                                <td>{{ data.name }}</td>
                                 <td class="table-action">
                                     <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
                                     <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
