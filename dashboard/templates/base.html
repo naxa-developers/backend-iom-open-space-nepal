@@ -183,7 +183,6 @@
 <script src="{% static 'dashboard/js/vendorscripts.bundle.js' %}"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 <script src="{% static 'dashboard/js/select2.min.js' %}"></script>
 <script src="{% static 'dashboard/js/c3.bundle.js' %}"></script>
-<script src="{% static 'dashboard/js/c3.js' %}"></script>
 <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
@@ -198,6 +197,9 @@
 <script src="{% static 'dashboard/js/mainscripts.bundle.js' %}"></script>
 <script src="{% static 'dashboard/js/map.js' %}"></script>
 <script src="{% static 'dashboard/js/dateform.js' %}"></script>
+{% block extra_js %}
+
+{% endblock %}
 </body>
 
 

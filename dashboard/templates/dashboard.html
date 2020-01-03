@@ -179,3 +179,15 @@
 
 </section>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    var data_list1={{ data_list1 }}
+    var data_list2={{ data_list2 }}
+    var open_space_name={{ open_space_name | safe }}
+
+</script>
+<script src="{% static 'dashboard/js/c3.js' %}"></script>
+
+
+{% endblock %}
