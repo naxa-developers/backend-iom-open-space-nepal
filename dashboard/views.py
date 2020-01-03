@@ -141,3 +141,18 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         # data['user'] = user_data
         data['active'] = 'available'
         return data
+
+
+class SuggestedUseDataList(LoginRequiredMixin, ListView):
+    template_name = 'suggestdata_list.html'
+    model = SuggestedUseData
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedUseDataList, self).get_context_data(**kwargs)
+        query_data = SuggestedUseData.objects.select_related('open_space', 'suggested_use', ).order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'available'
+        return data
