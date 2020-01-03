@@ -12,5 +12,6 @@ urlpatterns = [
     path('suggest-list/', views.SuggestedUseLists.as_view(), name='suggest-list'),
     path('suggestdata-list/', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
     path('service-list/', views.ServiceLists.as_view(), name='service-list'),
+    path('servicedata-list/', views.ServiceDataList.as_view(), name='servicedata-list'),
 
 ]
