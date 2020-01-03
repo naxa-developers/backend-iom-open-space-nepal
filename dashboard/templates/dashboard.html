@@ -181,10 +181,16 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'dashboard/js/map.js' %}"></script>
 <script>
+
     var data_list1={{ data_list1 }}
     var data_list2={{ data_list2 }}
     var open_space_name={{ open_space_name | safe }}
+    var pie_count = {{ pie_count | safe  }}
+    var pie_name = {{ pie_name | safe }}
+    var pie_color = {{ pie_color | safe }}
+
 
 </script>
 <script src="{% static 'dashboard/js/c3.js' %}"></script>

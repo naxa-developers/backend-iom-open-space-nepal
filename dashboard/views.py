@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList
 import json
+import random
 
 
 # Create your views here.
@@ -18,25 +19,28 @@ class HomePage(TemplateView):
         open_space_total = list(OpenSpace.objects.filter(municipality__id=96).values_list('total_area', flat=True))
         open_space_usable = list(OpenSpace.objects.filter(municipality__id=96).values_list('usable_area', flat=True))
         open_space_name = list(OpenSpace.objects.filter(municipality__id=96).values_list('title', flat=True))
-        service_open = ServiceData.objects.filter(open_space__municipality=96)
-        service_list = ServiceList.objects.all()
-        i = 0
-        total = []
+        service_list = ServiceList.objects.order_by('id')
+
+        columns = []
+        columns_dict = {}
+        color_dict = {}
+
         for l in service_list:
-
             count = ServiceData.objects.filter(open_space__municipality=96, service__id=l.id).count()
-            print(total.append(count))
-            # for d in service_open:
-            #     if d.service.id == l.id:
-            #         i = i + 1
-            #         l.name.append(i)
-            #
-            #         print(i)
-            #         print(l.name)
-            # total.append(l.name)
-            # print(d.open_space)
+            print(l.name)
+            print(count)
+            columns_dict.update({'data' + str(l.id): l.name})
+            service = ['data' + str(l.id), count]
+            columns.append(service)
+            r = random.randint(0, 255)
+            g = random.randint(0, 255)
+            b = random.randint(0, 255)
+            rgb = 'rgb' + str((r, g, b))
+            color_dict.update({'data' + str(l.id): rgb})
 
-        print(total)
+        print(columns)
+        print(columns_dict)
+        print(color_dict)
         open_spaces = json.dumps(open_space_name)
         data_list1.extend(open_space_total)
         data_list2.extend(open_space_usable)
@@ -44,7 +48,8 @@ class HomePage(TemplateView):
         # print(service_open)
 
         return render(request, 'dashboard.html',
-                      {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces})
+                      {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
+                       'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict})
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):

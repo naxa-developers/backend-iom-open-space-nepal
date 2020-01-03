@@ -612,26 +612,11 @@ $(function() {
             var chart = c3.generate({
                 bindto: '#phase-pie', // id of chart wrapper
                 data: {
-                    columns: [
-                        // each columns data
-                        ['data1', 63],
-                        ['data2', 37],
-                        ['data3', 63],
-                    ],
+                    columns: pie_count,
                     type: 'pie', // default type of chart
                     
-                    colors: {
-                        'data2': "#00A890",
-                        'data3': "#0d89df",
-                        'data1': "#193f77",
-                        'data5': "#f5b2d0",
-                    },
-                    names: {
-                        // name of each serie
-                        'data1': 'Phase-1',
-                        'data2': 'Phase-2',
-                        'data3': 'phase-3',
-                    }
+                    colors: pie_color,
+                    names: pie_name
                 },
                 axis: {
                 },
