@@ -1,6 +1,7 @@
 
     $(document).ready(function() {
-
+        var getUrl = window.location;
+        var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[0];
 
         var map = L.map('map', {
                 center: [28.3973623, 84.12576],
@@ -30,7 +31,7 @@
                     dashArray: ''
             });
 
-             var url = 'http://localhost:8003/api/v1/municipality_geo_json?id=354';
+             var url = baseUrl+'api/v1/municipality_geo_json?id=354';
                      var municipality = new L.geoJson.ajax(url, {
 
                         onEachFeature: function (feature, layer) {
@@ -44,7 +45,7 @@
                     map.fitBounds(municipality.getBounds(),{padding:[-50,-50]})
                     })
 
-                    var url_open = 'http://localhost:8003/api/v1/single_open_geo_json?mun=354';
+                    var url_open = baseUrl+'api/v1/single_open_geo_json?mun=354';
                      var open_space = new L.geoJson.ajax(url_open, {
 
                         onEachFeature: function (feature, layer) {
