@@ -406,34 +406,51 @@ $(function() {
         });
         //double graph
         $(document).ready(function(){
+
+        data_list1.unshift('data1');
+        data_list2.unshift('data2');
+
             var chart = c3.generate({
                 bindto: '#chart-bar', // id of chart wrapper
                 data: {
                     columns: [
                         // each columns data
-                        ['data1', 100, 200, 300, 250, 350, 150,500,1000,400, 800,100, 200, 300, 250, 350, 150,500,1000,400, 800],
-                        ['data2', 200, 150, 600, 350, 250, 300,650, 750, 1200, 1500,200, 150, 600, 350, 250, 300,650, 750, 1200, 1500]
+                        data_list1,
+                        data_list2
                     ],
                     type: 'bar', // default type of chart
                     
                     colors: {
-                        'data1': "#00A890",
-                        'data2': "#0d89df"
+                        'data1': "#0d89df",
+                        'data2':  "#00A890",
                     },
                     names: {
                         // name of each serie
-                        'data1': 'marginlized',
-                        'data2': 'Vulnerable'
+                        'data1': 'Total area',
+                        'data2': 'Usable area'
                     }
                 },
                 axis: {
                     x: {
                         type: 'category',
                         // name of each category
-                        categories: ['Dhordi', 'Makwanpur', 'Dhordi', 'Makwanpur' , 'Dhordi', 'Makwanpur', 'Dhordi', 'Makwanpur','Dhordi', 'Makwanpur', 'Dhordi', 'Makwanpur','Dhordi', 'Makwanpur', 'Dhordi', 'Makwanpur','Dhordi', 'Makwanpur', 'Dhordi', 'Makwanpur' ],
+                        categories: open_space_name,
                         
                     },
+//                    y:{
+//                    max:200000,
+//                    min:1000,
+//                    ticks : 5,
+//                    },
                 },
+
+//                axis:{
+//                    y:{
+//                    max:20000,
+//                    min:1000,
+//                    },
+//                },
+
                 bar: {
                     width: 10
                 },
@@ -445,12 +462,17 @@ $(function() {
                             x: 50,
                             y: -30,
                             step: 1
-                        }
+                        },
+
                 },
                 padding: {
                     bottom: 0,
                     top: 30
                 },
+
+                size: {
+              height: 600
+            },
             });
         });
         //roted chart
@@ -590,26 +612,11 @@ $(function() {
             var chart = c3.generate({
                 bindto: '#phase-pie', // id of chart wrapper
                 data: {
-                    columns: [
-                        // each columns data
-                        ['data1', 63],
-                        ['data2', 37],
-                        ['data3', 63],
-                    ],
+                    columns: pie_count,
                     type: 'pie', // default type of chart
                     
-                    colors: {
-                        'data2': "#00A890",
-                        'data3': "#0d89df",
-                        'data1': "#193f77",
-                        'data5': "#f5b2d0",
-                    },
-                    names: {
-                        // name of each serie
-                        'data1': 'Phase-1',
-                        'data2': 'Phase-2',
-                        'data3': 'phase-3',
-                    }
+                    colors: pie_color,
+                    names: pie_name
                 },
                 axis: {
                 },

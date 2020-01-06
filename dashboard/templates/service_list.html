@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Open Space list</h2>
+                    <h2>Service  </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Openspace</li>
-                        <li class="breadcrumb-item active">Openspace list</li>
+                        <li class="breadcrumb-item">Service</li>
+                        <li class="breadcrumb-item active">Service list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -27,44 +27,15 @@
                         <thead>
                             <tr>
                                 <th>S.N</th>
-                                <th>Name</th>
-                                <th>ownership</th>
-                                <th>province</th>
-                                <th>district</th>
-                                <th>municipality</th>
-                                <th>Address</th>
-                                <th>Catchment area</th>
-                                <th>Issue</th>
-                                <th>Current land use</th>
-                                <th>Elevation</th>
-                                <th>Access to site</th>
-                                <th>Special feature</th>
-                                <th>Capacity</th>
-                                <th>Total area</th>
-                                <th>Usable area</th>
+                                <th>name</th>
                                 <th>action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for open in list %}
+                            {% for data in list %}
                             <tr>
-                                <td>{{ open.id }}</td>
-                                <td>{{ open.title }}</td>
-                                <td>{{ open.ownership }}</td>
-                                <td>{{ open.province }}</td>
-                                <td>{{ open.district }}</td>
-                                <td>{{ open.municipality }}</td>
-                                <td>{{ open.address }}</td>
-                                <td>{{ open.catchment_area }}</td>
-                                <td>{{ open.issue }}</td>
-                                <td>{{ open.current_land_use }}</td>
-                                <td>{{ open.elevation }}</td>
-                                <td>{{ open.access_to_site }}</td>
-                                <td>{{ open.special_feature }}</td>
-                                <td>{{ open.capacity }}</td>
-                                <td>{{ open.total_area }}</td>
-                                <td>{{ open.usable_area }}</td>
-
+                                <td>{{ data.id }}</td>
+                                <td>{{ data.name }}</td>
                                 <td class="table-action">
                                     <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
                                     <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>

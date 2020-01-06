@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Practical action dashboard.">
-    <title>Practical Action</title>
+    <title>IOM</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Favicon-->
     <link rel="stylesheet" href="{% static 'dashboard/css/bootstrap.min.css' %}">
@@ -140,25 +140,24 @@
             </li>
 
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-line-chart"></i><span>Activities</span></a>
+                    class="la la-line-chart"></i><span>Questions</span></a>
                 <ul class="ml-menu">
-                    <li><a href="activity-list.html">activity List</a></li>
-                    <li><a href="activity-form.html">add activity</a></li>
+                    <li><a href="/dashboard/question-list">Question List</a></li>
+                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>
                 </ul>
             </li>
 
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-transgender-alt"></i><span>cluster</span></a>
+                    class="la la-transgender-alt"></i><span>Suggested Use</span></a>
                 <ul class="ml-menu">
-                    <li><a href="cluster-list.html">activity assign</a></li>
-                    <li><a href="cluster-form.html">add cluster</a></li>
+                    <li><a href="/dashboard/suggest-list">Suggested Use List</a></li>
+                    <li><a href="/dashboard/suggestdata-list/">Suggested Data List</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span>Benificiaries</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span>Services</span></a>
                 <ul class="ml-menu">
-                    <li><a href="banificiary-list.html">banificiary list</a></li>
-                    <li><a href="banificiary.html">upload Benificiaries</a></li>
-                    <li><a href="banificiary-form.html">edit Benificiaries</a></li>
+                    <li><a href="/dashboard/service-list">Service List</a></li>
+                    <li><a href="/dashboard/servicedata-list">Service Data List</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span>Authentication</span></a>
@@ -183,7 +182,6 @@
 <script src="{% static 'dashboard/js/vendorscripts.bundle.js' %}"></script> <!-- slimscroll, waves Scripts Plugin Js -->
 <script src="{% static 'dashboard/js/select2.min.js' %}"></script>
 <script src="{% static 'dashboard/js/c3.bundle.js' %}"></script>
-<script src="{% static 'dashboard/js/c3.js' %}"></script>
 <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
@@ -196,8 +194,11 @@
 
 
 <script src="{% static 'dashboard/js/mainscripts.bundle.js' %}"></script>
-<script src="{% static 'dashboard/js/map.js' %}"></script>
+
 <script src="{% static 'dashboard/js/dateform.js' %}"></script>
+{% block extra_js %}
+
+{% endblock %}
 </body>
 
 
