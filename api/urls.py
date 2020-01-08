@@ -47,6 +47,7 @@ urlpatterns = [
     path('near_by_me', core_viewsets.NearByMeViewSet.as_view()),
     path('alternative_near_by_me', core_viewsets.AlternativeNearByMeViewSet.as_view()),
     path('open_extra', core_viewsets.AddedOpenAPi.as_view()),
+    path('open_post_location', core_viewsets.OpenSpaceNearBy.as_view()),
     # path('distance', core_viewsets.DistanceApi.as_view()),
     path('near_by_openspace', core_viewsets.NearByMeOpenSpace.as_view()),
     path('district-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.district_tile),

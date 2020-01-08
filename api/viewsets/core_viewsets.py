@@ -643,13 +643,41 @@ class NearByMeOpenSpace(APIView):
                                 .filter(polygons__distance_lte=(user_location, D(km=distance))) \
                                 .annotate(distance=Distance('polygons', user_location)) \
                                 .order_by('distance')[0:count]
-        print(resource_queryset)
         resource_json = OpenSpaceAttributeSerializer(resource_queryset, many=True)
         json = JSONRenderer().render(resource_json.data)
         stream = io.BytesIO(json)
         data = JSONParser().parse(stream)
         api_json['open_space'] = data
         return Response(api_json)
+
+
+class OpenSpaceNearBy(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self,request):
+        api_json = {}
+        latitude = self.request.data.get('latitude')
+        longitude = self.request.data.get('longitude')
+        distance = self.request.data.get('distance')
+
+        if latitude and longitude:
+            location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
+
+        open_space = OpenSpace.objects \
+                                .filter(polygons__distance_lte=(location, D(km=distance))) \
+                                .annotate(distance=Distance('polygons', location)) \
+                                .order_by('distance')
+
+        resource_json = OpenSpaceAttributeSerializer(open_space, many=True)
+        json = JSONRenderer().render(resource_json.data)
+        stream = io.BytesIO(json)
+        data = JSONParser().parse(stream)
+        api_json['open_space'] = data
+        return Response(api_json)
+
+
+
 
 
 class AvailableFacilityViewSet(viewsets.ModelViewSet):
