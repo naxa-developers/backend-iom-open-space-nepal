@@ -160,15 +160,23 @@ class ReportViewSet(viewsets.ModelViewSet):
         if openspace:
             return queryset.filter(open_space=openspace)
 
-        elif start_date_str and end_date_str and status:
+        elif start_date_str and end_date_str and status and openspace:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
-            return queryset.filter(date__range=[start_date, end_date], status=status)
+            return queryset.filter(date__range=[start_date, end_date], status=status, openspace=openspace)
+
+        elif start_date_str and end_date_str and openspace:
+            start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+            return queryset.filter(date__range=[start_date, end_date], openspace=openspace)
 
         elif start_date_str and end_date_str:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date])
+
+        elif status and openspace:
+            return queryset.filter(status=status, openspace=openspace)
 
         elif status:
             return queryset.filter(status=status)
