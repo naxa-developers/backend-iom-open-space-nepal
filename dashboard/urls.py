@@ -4,7 +4,10 @@ from dashboard import views
 
 urlpatterns = [
     path('home/', views.HomePage.as_view(), name='home'),
+
     path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
+    path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
+
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
     path('report-list/', views.ReportList.as_view(), name='report-list'),
     path('question-list/', views.QuestionsList.as_view(), name='question-list'),
