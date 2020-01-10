@@ -22,6 +22,9 @@ urlpatterns = [
     path('questiondata-edit/<int:pk>', views.QuestionDataUpdate.as_view(), name='questiondata-edit'),
 
     path('suggest-list/', views.SuggestedUseLists.as_view(), name='suggest-list'),
+    path('suggest-add/', views.SuggestedCreate.as_view(), name='suggest-add'),
+    path('suggest-edit/<int:pk>', views.SuggestedUpdate.as_view(), name='suggest-edit'),
+
     path('suggestdata-list/', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
     path('service-list/', views.ServiceLists.as_view(), name='service-list'),
     path('servicedata-list/', views.ServiceDataList.as_view(), name='servicedata-list'),

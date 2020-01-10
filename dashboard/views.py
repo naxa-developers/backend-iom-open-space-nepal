@@ -8,7 +8,7 @@ import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm
+from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm
 
 
 # Create your views here.
@@ -341,3 +341,39 @@ class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('questiondata-list')
+
+
+class SuggestedCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = SuggestedUseList
+    template_name = 'suggest_add.html'
+    form_class = SuggestedForm
+    success_message = 'Suggested successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'suggest'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('suggest-list')
+
+
+class SuggestedUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = SuggestedUseList
+    template_name = 'suggest_edit.html'
+    form_class = SuggestedForm
+    success_message = 'Suggested successfully Edited'
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'suggest'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('suggest-list')
