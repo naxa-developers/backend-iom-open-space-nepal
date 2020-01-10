@@ -6,6 +6,9 @@ from core.models import OpenSpace, AvailableFacility, Report, QuestionList, Ques
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType
 import json
 import random
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from .forms import OpenSpaceForm
 
 
 # Create your views here.
@@ -226,3 +229,21 @@ class ResourceDocumentList(LoginRequiredMixin, ListView):
         # data['user'] = user_data
         data['active'] = 'resource'
         return data
+
+
+class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = OpenSpace
+    template_name = 'openspace_add.html'
+    form_class = OpenSpaceForm
+    success_message = 'Open successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'openspace'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-list')
