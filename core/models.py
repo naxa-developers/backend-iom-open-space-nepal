@@ -306,6 +306,7 @@ class Report(models.Model):
 
 class CreateOpenSpace(models.Model):
     title = models.CharField(max_length=100)
+    title_nep = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='identify_open_space')
 
     class Meta:
