@@ -40,15 +40,24 @@ class OpenSpaceIde(models.Model):
 
 class Contact(models.Model):
     title = models.CharField(max_length=300)
+    title_nep = models.CharField(max_length=300,null=True, blank=True)
     location = models.CharField(max_length=300, null=True, blank=True)
-    num1 = models.CharField(max_length=14)
-    num2 = models.CharField(max_length=14)
-    email = models.EmailField()
-    description = models.TextField()
+    location_nep = models.CharField(max_length=300, null=True, blank=True)
+    num1 = models.CharField(max_length=14, null=True, blank=True)
+    num1_nep = models.CharField(max_length=14, null=True, blank=True)
+    num2 = models.CharField(max_length=14, null=True, blank=True)
+    num2_nep = models.CharField(max_length=14, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    email_nep = models.EmailField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    description_nep = models.TextField(null=True, blank=True)
+
 
 
 class OpenSpaceApp(models.Model):
     title = models.CharField(max_length=100)
+    title_nep = models.CharField(max_length=100, null=True, blank=True)
     image = models.ImageField(upload_to="app")
     icon = models.FileField(upload_to="icon")
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
+    description_nep = models.TextField(null=True, blank=True)
