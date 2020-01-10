@@ -153,33 +153,36 @@ class ReportViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         status = self.request.query_params.get('status')
-        openspace = self.request.query_params.get('id')
+        open_space = self.request.query_params.get('id')
         start_date_str = self.request.query_params.get('start_date')
         end_date_str = self.request.query_params.get('end_date')
 
-        if openspace:
-            return queryset.filter(open_space=openspace)
+        print('abc')
 
-        elif start_date_str and end_date_str and status and openspace:
+
+        if start_date_str and end_date_str and status and open_space:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
-            return queryset.filter(date__range=[start_date, end_date], status=status, openspace=openspace)
+            return queryset.filter(date__range=[start_date, end_date], status=status, open_space=open_space)
 
-        elif start_date_str and end_date_str and openspace:
+        elif start_date_str and end_date_str and open_space:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
-            return queryset.filter(date__range=[start_date, end_date], openspace=openspace)
+            return queryset.filter(date__range=[start_date, end_date], open_space=open_space)
 
         elif start_date_str and end_date_str:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date])
 
-        elif status and openspace:
-            return queryset.filter(status=status, openspace=openspace)
+        elif status and open_space:
+            return queryset.filter(status=status, open_space=open_space)
 
         elif status:
             return queryset.filter(status=status)
+
+        elif open_space:
+            return queryset.filter(open_space=open_space)
 
         else:
             return queryset
