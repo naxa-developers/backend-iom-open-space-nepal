@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from core.models import OpenSpace, AvailableFacility, QuestionList
+from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData
 
 
 class OpenSpaceForm(ModelForm):
@@ -17,4 +17,10 @@ class AvailableFacilityForm(ModelForm):
 class QuestionForm(ModelForm):
     class Meta:
         model = QuestionList
+        fields = '__all__'
+
+
+class QuestionDataForm(ModelForm):
+    class Meta:
+        model = QuestionsData
         fields = '__all__'

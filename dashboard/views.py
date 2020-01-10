@@ -8,7 +8,7 @@ import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm
+from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm
 
 
 # Create your views here.
@@ -301,3 +301,43 @@ class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('question-list')
+
+
+class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = QuestionsData
+    template_name = 'questiondata_add.html'
+    form_class = QuestionDataForm
+    success_message = 'Question Data Facility successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(QuestionDataCreate, self).get_context_data(**kwargs)
+        data['question'] = QuestionList.objects.order_by('id')
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'question'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('questiondata-list')
+
+
+class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = QuestionsData
+    template_name = 'questiondata_edit.html'
+    form_class = QuestionDataForm
+    success_message = 'Question Data successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(QuestionDataUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        data['question'] = QuestionList.objects.order_by('id')
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'question'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('questiondata-list')

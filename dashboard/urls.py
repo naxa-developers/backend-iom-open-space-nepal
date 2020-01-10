@@ -18,6 +18,9 @@ urlpatterns = [
     path('question-edit/<int:pk>', views.QuestionUpdate.as_view(), name='question-edit'),
 
     path('questiondata-list/', views.QuestionData.as_view(), name='questiondata-list'),
+    path('questiondata-add/', views.QuestionDataCreate.as_view(), name='questiondata-add'),
+    path('questiondata-edit/<int:pk>', views.QuestionDataUpdate.as_view(), name='questiondata-edit'),
+
     path('suggest-list/', views.SuggestedUseLists.as_view(), name='suggest-list'),
     path('suggestdata-list/', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
     path('service-list/', views.ServiceLists.as_view(), name='service-list'),
