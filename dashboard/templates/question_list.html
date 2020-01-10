@@ -38,7 +38,7 @@
                                 <td>{{ data.title }}</td>
                                 <td class="table-action">
                                     <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/question-edit/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -47,7 +47,7 @@
                     </table>
                 </div>
                 <div class="table-footer">
-                    <a class="btn float-right" href="output-form.html"><i class="la la-plus"></i> Add output</a>
+                    <a class="btn float-right" href="/dashboard/question-add"><i class="la la-plus"></i> Add output</a>
 
                 </div>
             </div>

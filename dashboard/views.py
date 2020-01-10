@@ -8,7 +8,7 @@ import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import OpenSpaceForm
+from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm
 
 
 # Create your views here.
@@ -247,3 +247,57 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('openspace-list')
+
+
+class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = AvailableFacility
+    template_name = 'available_facility_add.html'
+    form_class = AvailableFacilityForm
+    success_message = 'Available Facility successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(AvailableFacilityCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'available'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('available-list')
+
+
+class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = QuestionsList
+    template_name = 'question_add.html'
+    form_class = QuestionForm
+    success_message = 'Question Facility successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(QuestionCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'question'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('question-list')
+
+
+class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = QuestionList
+    template_name = 'question_edit.html'
+    form_class = QuestionForm
+    success_message = 'Question successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(QuestionUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'question'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('question-list')

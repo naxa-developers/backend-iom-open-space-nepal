@@ -9,8 +9,14 @@ urlpatterns = [
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
 
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
+    path('available-add/', views.AvailableFacilityCreate.as_view(), name='available-add'),
+
     path('report-list/', views.ReportList.as_view(), name='report-list'),
+
     path('question-list/', views.QuestionsList.as_view(), name='question-list'),
+    path('question-add/', views.QuestionCreate.as_view(), name='question-add'),
+    path('question-edit/<int:pk>', views.QuestionUpdate.as_view(), name='question-edit'),
+
     path('questiondata-list/', views.QuestionData.as_view(), name='questiondata-list'),
     path('suggest-list/', views.SuggestedUseLists.as_view(), name='suggest-list'),
     path('suggestdata-list/', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
