@@ -3,9 +3,12 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
-    SuggestedUseList, SuggestedUseData
+    SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType
 import json
 import random
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from .forms import OpenSpaceForm
 
 
 # Create your views here.
@@ -28,8 +31,6 @@ class HomePage(TemplateView):
 
         for l in service_list:
             count = ServiceData.objects.filter(open_space__municipality=96, service__id=l.id).count()
-            print(l.name)
-            print(count)
             columns_dict.update({'data' + str(l.id): l.name})
             service = ['data' + str(l.id), count]
             columns.append(service)
@@ -39,9 +40,6 @@ class HomePage(TemplateView):
             rgb = 'rgb' + str((r, g, b))
             color_dict.update({'data' + str(l.id): rgb})
 
-        print(columns)
-        print(columns_dict)
-        print(color_dict)
         open_spaces = json.dumps(open_space_name)
         data_list1.extend(open_space_total)
         data_list2.extend(open_space_usable)
@@ -186,3 +184,66 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         # data['user'] = user_data
         data['active'] = 'available'
         return data
+
+
+class ResourceList(LoginRequiredMixin, ListView):
+    template_name = 'resource_list.html'
+    model = Resource
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceList, self).get_context_data(**kwargs)
+        query_data = Resource.objects.select_related('category', 'document_type', ).order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+
+class ResourceCategoryList(LoginRequiredMixin, ListView):
+    template_name = 'resource_category_list.html'
+    model = ResourceCategory
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceCategoryList, self).get_context_data(**kwargs)
+        query_data = ResourceCategory.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+
+class ResourceDocumentList(LoginRequiredMixin, ListView):
+    template_name = 'resource_document_list.html'
+    model = ResourceDocumentType
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceDocumentList, self).get_context_data(**kwargs)
+        query_data = ResourceDocumentType.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+
+class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = OpenSpace
+    template_name = 'openspace_add.html'
+    form_class = OpenSpaceForm
+    success_message = 'Open successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'openspace'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-list')

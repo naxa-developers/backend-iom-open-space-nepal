@@ -13,5 +13,8 @@ urlpatterns = [
     path('suggestdata-list/', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
     path('service-list/', views.ServiceLists.as_view(), name='service-list'),
     path('servicedata-list/', views.ServiceDataList.as_view(), name='servicedata-list'),
+    path('resource-list/', views.ResourceList.as_view(), name='resource-list'),
+    path('resource-category-list/', views.ResourceCategoryList.as_view(), name='resource-category-list'),
+    path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
 
 ]
