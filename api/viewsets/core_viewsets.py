@@ -157,8 +157,6 @@ class ReportViewSet(viewsets.ModelViewSet):
         start_date_str = self.request.query_params.get('start_date')
         end_date_str = self.request.query_params.get('end_date')
 
-        print('abc')
-
 
         if start_date_str and end_date_str and status and open_space:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
@@ -169,6 +167,11 @@ class ReportViewSet(viewsets.ModelViewSet):
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             return queryset.filter(date__range=[start_date, end_date], open_space=open_space)
+
+        elif start_date_str and end_date_str and status:
+            start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+            return queryset.filter(date__range=[start_date, end_date], status=status)
 
         elif start_date_str and end_date_str:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
