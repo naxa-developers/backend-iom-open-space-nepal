@@ -8,7 +8,8 @@ import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm
+from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
+    SuggestedDataForm, ServiceForm, ServiceDataForm
 
 
 # Create your views here.
@@ -377,3 +378,121 @@ class SuggestedUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('suggest-list')
+
+
+class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = SuggestedUseData
+    template_name = 'suggestdata_add.html'
+    form_class = SuggestedDataForm
+    success_message = 'Suggested Data successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedDataCreate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['suggest'] = SuggestedUseList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'suggest'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('suggestdata-list')
+
+
+class SuggestedDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = SuggestedUseData
+    template_name = 'suggestdata_edit.html'
+    form_class = SuggestedDataForm
+    success_message = 'Suggested Data successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(SuggestedDataUpdate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['suggest'] = SuggestedUseList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'suggest'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('suggestdata-list')
+
+
+class ServiceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ServiceList
+    template_name = 'service_add.html'
+    form_class = ServiceForm
+    success_message = 'Service successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ServiceCreate, self).get_context_data(**kwargs)
+        # data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        # data['suggest'] = SuggestedUseList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'service'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('service-list')
+
+
+class ServiceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = ServiceList
+    template_name = 'service_edit.html'
+    form_class = ServiceForm
+    success_message = 'Service successfully Edited'
+
+    def get_context_data(self, **kwargs):
+        data = super(ServiceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'suggest'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('service-list')
+
+
+class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ServiceData
+    template_name = 'servicedata_add.html'
+    form_class = ServiceDataForm
+    success_message = 'Service Data successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ServiceDataCreate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['service'] = ServiceList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'service'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('servicedata-list')
+
+
+class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = ServiceData
+    template_name = 'servicedata_edit.html'
+    form_class = ServiceDataForm
+    success_message = 'Service Data Updated Successfully'
+
+    def get_context_data(self, **kwargs):
+        data = super(ServiceDataUpdate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['service'] = ServiceList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'service'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('servicedata-list')

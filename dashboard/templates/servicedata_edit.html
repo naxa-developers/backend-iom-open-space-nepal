@@ -7,7 +7,7 @@
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Openspace form</h2>
+                <h2>Service Data form</h2>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
                     <li class="breadcrumb-item active">Add form</li>
@@ -49,20 +49,50 @@
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2" name="open_space" id="id_open_space">
                                 {% for open_space in open_space %}
+
+                                {% if form.instance.open_space.id == open_space.id %}
+
+                                <option value="{{ open_space.id }}" selected>{{open_space.title}}</option>
+
+                                {% else %}
+
                                 <option value="{{ open_space.id }}">{{open_space.title}}</option>
+
+                                {% endif %}
+
+
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="id_question">Question </label>
+                        <label for="id_service">Services </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2" name="question" id="id_question">
-                                {% for question in question %}
-                                <option value="{{ question.id }}">{{question.title}}</option>
+                            <select class="custom-select show-tick ms select2" name="service" id="id_service">
+
+                                {% for service in service %}
+
+                                {% if form.instance.service.id == service.id %}
+
+                                <option value="{{ service.id }}" selected>{{service.name}}</option>
+
+                                {% else %}
+
+                                <option value="{{ service.id }}">{{service.name}}</option>
+
+                                {% endif %}
+
+
                                 {% endfor %}
+
                             </select>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_description">Description</label>
+                        <textarea class="form-control" name="description" cols="40" rows="10" required
+                                  id="id_description">{{ form.instance.description }}</textarea>
                     </div>
 
                     <div class="form-footer pull-right">
