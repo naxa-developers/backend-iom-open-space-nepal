@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     Municipality, SuggestedUseList, ServiceList, OpenSpace, Report, AvailableFacility, \
-    Gallery, SuggestedUseData, ServiceData
+    Gallery, SuggestedUseData, ServiceData, ServiceList
 from api.serializers.core_serializers import SliderSerializer, \
     CreateOpenSpaceSerializer, ResourceSerializer, ProvinceSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
     ServiceSerializer, OpenSpaceSerializer, \
     ReportSerializer, AvailableFacilitySerializer, \
-    GallerySerializer, OpenSpaceAttributeSerializer
+    GallerySerializer, OpenSpaceAttributeSerializer, ServiceListSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Sum
@@ -87,6 +87,12 @@ class SuggestedUseViewSet(viewsets.ModelViewSet):
 class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
     queryset = ServiceData.objects.all()
+    permission_classes = []
+
+
+class ServiceListViewSet(viewsets.ModelViewSet):
+    serializer_class = ServiceListSerializer
+    queryset = ServiceList.objects.all()
     permission_classes = []
 
 
