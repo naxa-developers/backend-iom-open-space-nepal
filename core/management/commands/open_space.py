@@ -24,7 +24,7 @@ class Command(BaseCommand):
         print("Wait Data is being Loaded")
 
         for row in range(0, upper_range):
-            total_area = str(df['Total Area'][row]).replace(',', '')
+            total_area = str(df['Total_Area'][row]).replace(',', '')
             capacity = str(df['Capacity'][row]).replace(',', '')
 
             open_space = OpenSpace.objects.create(
@@ -36,17 +36,18 @@ class Command(BaseCommand):
                     code=(df['District'][row])),
 
                 municipality=Municipality.objects.get(
-                    hlcit_code=(df['Municipality'][row])),
+                    hlcit_code=(df['Municipality/Metropolian City'][row])),
                 ward=df['Ward'][row],
+                address=df['Address'][row],
                 elevation=df['Elevation'][row],
                 total_area=total_area,
-                usable_area=df['Usable Open Space Area'][row],
+                usable_area=df['Usable_Area'][row],
                 capacity=capacity,
                 current_land_use=df['Current Land Use'][row],
                 catchment_area=df['Catchment Area'][row],
-                access_to_site=df['Access to Site'][row],
+                access_to_site=df['Access_to_Site'][row],
                 ownership=df['Ownership'][row],
-                special_feature=df['Special features'][row],
+                special_feature=df['Special_features_of_Site'][row],
                 polygons=GEOSGeometry(df['the_geom'][row]),
             )
             try:
@@ -65,17 +66,17 @@ class Command(BaseCommand):
                 else:
                     pass
 
-                description = df['WASH Facilities'][row]
+                description = df['WASH_Facility'][row]
                 wash_facility = ServiceList.objects.get(name='WASH Facilities')
                 w_data = ServiceData.objects.create(description=description, open_space=open_space,
                                                     service=wash_facility)
 
-                wifi_des = df['Wi-Fi'][row]
+                wifi_des = df['WiFi'][row]
                 wifi_facility = ServiceList.objects.get(name='Wi-Fi')
                 wi_data = ServiceData.objects.create(description=wifi_des, open_space=open_space,
                                                      service=wifi_facility)
 
-                boundry_wall_des = df['Boundary Wall'][row]
+                boundry_wall_des = df['Boundary_Wall'][row]
                 boundry_facility = ServiceList.objects.get(name='Boundary Wall')
                 bo_data = ServiceData.objects.create(description=boundry_wall_des, open_space=open_space,
                                                      service=boundry_facility)
@@ -85,7 +86,7 @@ class Command(BaseCommand):
                 el_data = ServiceData.objects.create(description=electricity_des, open_space=open_space,
                                                      service=electricity_facility)
 
-                tree = df['Trees & Vegetation'][row]
+                tree = df['Trees_&_Vegetation'][row]
                 wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
                 el_data = ServiceData.objects.create(description=tree, open_space=open_space,
                                                      service=wash_facility)
