@@ -354,7 +354,8 @@ class AvailableFacility(models.Model):
         ('security force', 'Security Force'),
         ('place of worship', 'Place Of Worship'),
         ('financial institution', 'Financial Institution'),
-        ('helipad', 'Helipad')
+        ('helipad', 'Helipad'),
+        ('fire', 'Fire')
     )
     EDUCATION_TYPE_CHOICES = (
         ('school', 'School'),

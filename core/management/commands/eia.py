@@ -26,16 +26,16 @@ class Command(BaseCommand):
 
 
             try:
-                # question1 = [
-                #         QuestionsData.objects.create(
-                #             question=QuestionList.objects.get(
-                #                 id=1),
-                #             open_space=open_spaces,
-                #             ans=df['Is it a protected area?'][row],
-                #
-                #         )
-                #
-                #     ]
+                question1 = [
+                        QuestionsData.objects.create(
+                            question=QuestionList.objects.get(
+                                id=1),
+                            open_space=open_spaces,
+                            ans=df['Is it a protected area?'][row],
+
+                        )
+
+                    ]
 
                 question2 = [
                     QuestionsData.objects.create(
