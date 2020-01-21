@@ -381,7 +381,12 @@ class DistrictApi(APIView):
 
     def get(self, request):
         data = []
+        id = self.request.query_params.get('province_id')
+
         districts = District.objects.all()
+
+        if id:
+            districts = districts.filter(province=id)
 
         for district in districts:
             data.append(
@@ -401,7 +406,11 @@ class MunicipalityApi(APIView):
 
     def get(self, request):
         data = []
+        id = self.request.query_params.get('district_id')
         municipalities = Municipality.objects.all()
+
+        if id:
+            municipalities = municipalities.filter(district=id)
 
         for municipality in municipalities:
             data.append(
