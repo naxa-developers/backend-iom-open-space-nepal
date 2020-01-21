@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Available Facility form</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active">Add form</li>
+                </ul>
+                <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ field.name|title }} {{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="id_title">Question</label>
+                        <textarea class="form-control" name="title" cols="40" rows="10" required id="id_title"></textarea>
+                    </div>
+
+                    <div class="form-footer pull-right">
+                        <button type="submit" class="btn" role="button">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

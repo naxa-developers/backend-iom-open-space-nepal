@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Openspace form</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active">Add form</li>
+                </ul>
+                <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+
+        <div class="card">
+            <div class="card-body">
+                <form action="banificiary.html" post="">
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" placeholder="Name" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">description</label>
+                        <textarea class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>municipality </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" multiple data-placeholder="Select">
+                                <option>Kathmandu</option>
+                                <option>Lalitpur</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>District </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" multiple data-placeholder="Select">
+                                <option>syangja</option>
+                                <option>Bhaktapur</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ward No. </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" data-placeholder="Select">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-footer pull-right">
+                        <button type="submit" class="btn" role="button">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
