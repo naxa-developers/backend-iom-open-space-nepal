@@ -4,6 +4,7 @@ from dashboard import views
 
 urlpatterns = [
     path('home/', views.HomePage.as_view(), name='home'),
+    path('create-user/', views.CreateUser, name='create-user'),
 
     path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
@@ -38,7 +39,10 @@ urlpatterns = [
     path('servicedata-edit/<int:pk>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
 
     path('resource-list/', views.ResourceList.as_view(), name='resource-list'),
+
     path('resource-category-list/', views.ResourceCategoryList.as_view(), name='resource-category-list'),
+    path('resource-category-add/', views.ResourceCategoryCreate.as_view(), name='resource-category-add'),
+
     path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
 
 ]

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
-    ServiceList, ServiceData
+    ServiceList, ServiceData, ResourceCategory
 
 
 class OpenSpaceForm(ModelForm):
@@ -48,4 +48,10 @@ class ServiceForm(ModelForm):
 class ServiceDataForm(ModelForm):
     class Meta:
         model = ServiceData
+        fields = '__all__'
+
+
+class ResourceCategoryForm(ModelForm):
+    class Meta:
+        model = ResourceCategory
         fields = '__all__'

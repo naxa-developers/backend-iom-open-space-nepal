@@ -3,13 +3,17 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
-    SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType
+    SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
+    Municipality
+from .models import UserProfile
 import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
-    SuggestedDataForm, ServiceForm, ServiceDataForm
+    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group, Permission
 
 
 # Create your views here.
@@ -496,3 +500,69 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('servicedata-list')
+
+
+class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ResourceCategory
+    template_name = 'resourcecategory_add.html'
+    form_class = ResourceCategoryForm
+    success_message = 'Resource Category successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceCategoryCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-category-list')
+
+
+class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ResourceCategory
+    template_name = 'resourcecategory_add.html'
+    form_class = ResourceCategoryForm
+    success_message = 'Resource Category successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceCategoryCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-category-list')
+
+
+def CreateUser(request, **kwargs):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # user.is_active = False
+            # user.save()
+            group = Group.objects.get(pk=kwargs['group'])
+            user.groups.add(group)
+            UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
+                                       partner_id=int(request.POST['partner']), image=request.FILES['image'])
+
+            return render(request, 'registered_message.html', {'user': request.POST['name']})
+        else:
+            province = Province.objects.all()
+            district = District.objects.select_related('province', ).all()
+            municipality = Municipality.objects.select_related('province', 'district', ).all()
+            return render(request, 'create_user.html',
+                          {'form': form, 'provinces': province, 'districts': district,
+                           'municipalities': municipality})
+
+    form = UserCreationForm()
+    province = Province.objects.all()
+    district = District.objects.select_related('province', ).all()
+    municipality = Municipality.objects.select_related('province', 'district', ).all()
+    return render(request, 'create_user.html',
+                  {'form': form, 'provinces': province, 'districts': district,
+                   'municipalities': municipality})
