@@ -96,12 +96,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="id_province_id">Select Province</label>
+                        <label for="municipality_id">Select Municipality</label>
                          <div class="select-option">
-                        <select name="province_id" id="id_province_id" class="custom-select show-tick ms select2 province_class">
-                            {% for province in provinces %}
+                        <select name="municipality" id="municipality_id" class="custom-select show-tick ms select2 province_class">
+                            {% for mun in municipalities %}
 
-                            <option value="{{province.id}}">{{province.name}}</option>
+                            <option value="{{mun.id}}">{{mun.name}}</option>
 
 
                             {% endfor %}
@@ -110,20 +110,7 @@
                          </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="id_district">Select District</label>
-                         <div class="select-option">
-                        <select name="district" id="id_district" class="custom-select show-tick ms select2 district_class">
 
-
-                            <option value="0">select province First</option>
-
-
-
-
-                        </select>
-                         </div>
-                    </div>
 
                     <div class="form-footer pull-right">
                         <button type="submit" class="btn" role="button">Save</button>

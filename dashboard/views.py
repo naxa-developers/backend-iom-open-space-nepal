@@ -581,24 +581,17 @@ def CreateUser(request, **kwargs):
             user = form.save()
             # user.is_active = False
             # user.save()
-            group = Group.objects.get(pk=kwargs['group'])
+            group = Group.objects.get(name='admin')
             user.groups.add(group)
             UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
-                                       partner_id=int(request.POST['partner']), image=request.FILES['image'])
+                                       municipality_id=int(request.POST['municipality']), )
 
             return render(request, 'registered_message.html', {'user': request.POST['name']})
         else:
-            province = Province.objects.all()
-            district = District.objects.select_related('province', ).all()
+
             municipality = Municipality.objects.select_related('province', 'district', ).all()
-            return render(request, 'create_user.html',
-                          {'form': form, 'provinces': province, 'districts': district,
-                           'municipalities': municipality})
+            return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
 
     form = UserCreationForm()
-    province = Province.objects.all()
-    district = District.objects.select_related('province', ).all()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
-    return render(request, 'create_user.html',
-                  {'form': form, 'provinces': province, 'districts': district,
-                   'municipalities': municipality})
+    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
