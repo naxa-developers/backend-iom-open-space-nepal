@@ -4,16 +4,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality
+    Municipality, Slider, CreateOpenSpace
 from .models import UserProfile
 import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
-    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm
+    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
+from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
 
 
 # Create your views here.
@@ -536,6 +537,41 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
 
     def get_success_url(self):
         return reverse_lazy('resource-category-list')
+
+
+class HeaderList(LoginRequiredMixin, ListView):
+    template_name = 'header.html'
+    model = Header
+
+    def get_context_data(self, **kwargs):
+        data = super(HeaderList, self).get_context_data(**kwargs)
+        query_data = Header.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        print(query_data)
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+
+class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Header
+    template_name = 'header_edit.html'
+    form_class = HeaderForm
+    success_message = 'Openspace portal successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(HeaderUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('header-list')
 
 
 def CreateUser(request, **kwargs):
