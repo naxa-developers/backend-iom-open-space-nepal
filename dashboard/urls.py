@@ -44,5 +44,7 @@ urlpatterns = [
     path('resource-category-add/', views.ResourceCategoryCreate.as_view(), name='resource-category-add'),
 
     path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
+    path('header-list/', views.HeaderList.as_view(), name='header-list'),
+    path('header-update/<int:pk>', views.HeaderUpdate.as_view(), name='header-update'),
 
 ]
