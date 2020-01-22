@@ -6,19 +6,19 @@
 $('.province_class').on('change',function(){
 prov_id = $(this).val()
 $.ajax({
-    url: baseUrl+'api/v1/core/district/?province_id='+prov_id,
+    url: baseUrl+'api/v1/district_api?province_id='+prov_id,
 //    headers: {
 //        'Authorization': "Token 8933c5dd02de389ab5ee69c17a9af49f3d83b938",
 //    },
     method: 'GET',
     success: function(result){
 
-
-    var district = result.results
-    $('#id_district_id').html("");
+    console.log(result)
+    var district = result.data
+    $('.district_class').html("");
     for(var i = 0 ; i<district.length;i++){
     var prov_div="<option value="+district[i].id+">"+district[i].name+"</option>"
-    $('#id_district_id').append(prov_div);
+    $('.district_class').append(prov_div);
     }
 
     }});
