@@ -629,6 +629,59 @@ class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 
 
+class OpenSpaceDefinitionList(LoginRequiredMixin, ListView):
+    template_name = 'openspace_defination_list.html'
+    model = OpenSpaceDef
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceDefinitionList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceDef.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_def'
+        return data
+
+
+class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceDef
+    template_name = 'openspace_defination_edit.html'
+    form_class = OpenSpaceDefForm
+    success_message = 'Slider Successfully updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceDefinitionUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_def'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-definition-list')
+
+
+class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
+    template_name = 'open_space_identifiaction_list.html'
+    model = OpenSpaceIde
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceIde.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_ide'
+        return data
+
+
+
+
 
 
 def CreateUser(request, **kwargs):
