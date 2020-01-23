@@ -7,10 +7,10 @@
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Slider form</h2>
+                <h2>Open Space Identification Process form</h2>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
-                    <li class="breadcrumb-item active">Add form</li>
+                    <li class="breadcrumb-item active">Update form</li>
                 </ul>
                 <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
             </div>
@@ -24,8 +24,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form action=" " method="post" enctype="multipart/form-data">
-
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% if form.errors %}
                     {% for field in form %}
@@ -42,15 +41,24 @@
                     {% endfor %}
                     {% endif %}
 
-
                     <div class="form-group">
-                        <p><label for="id_title">Title:</label> <input class="form-control" type="text" name="title" maxlength="100" required id="id_title"></p>
-                        <p><label for="id_title_nep">Title nep:</label> <input class="form-control" type="text" name="title_nep" maxlength="200" id="id_title_nep"></p>
+                        <p><label for="id_title">Title:</label> <input class="form-control" type="text" name="title" value="{{ form.instance.title }}" maxlength="100" required id="id_title"></p>
+                        <p><label for="id_title_nep">Title nep:</label> <input class="form-control" type="text" name="title_nep" value="{{ form.instance.title_nep }}" maxlength="100" id="id_title_nep"></p>
                     </div>
-                     <div class="custom-upload form-group">
 
+<!--                    <input type="file" name="image" accept="image/*" id="id_image"></p>-->
+
+                    <div class="form_image" style="margin-left:160px">
+                        {% if form.instance.image %}
+                        <img src="{{form.instance.image.url}}" alt="User"  height="350px" width="350px">
+                        {% else %}
+                        <img src="/static/dashboard/images/pf.png" alt="User" >
+                        {% endif %}
+
+                    </div>
+                    <div class="custom-upload form-group">
                         <label class="custom-upload__button" for="id_image" data-element="custom-upload-button">Choose
-                            Icon </label>
+                            Image </label>
                         <input class="custom-upload__input" id="id_image" name="image" type="file"
                                data-behaviour="custom-upload-input">
 

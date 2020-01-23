@@ -700,6 +700,60 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
 
 
 
+class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
+    template_name = 'open_space_identification_process_list.html'
+    model = CreateOpenSpace
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationProcessList, self).get_context_data(**kwargs)
+        query_data = CreateOpenSpace.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+
+class OpenSpaceIdentificationProcessUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CreateOpenSpace
+    template_name = 'open_space_identification_process_edit.html'
+    form_class = CreateOpenSpaceForm
+    success_message = 'Open Space Identification Process Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationProcessUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-process-list')
+
+
+
+class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CreateOpenSpace
+    template_name = 'open_space_identification_process_add.html'
+    form_class = CreateOpenSpaceForm
+    success_message = 'Open Space Identification Process Successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceIdentificationProcessCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-process-list')
+
+
 
 
 def CreateUser(request, **kwargs):

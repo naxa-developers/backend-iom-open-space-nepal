@@ -56,4 +56,8 @@ urlpatterns = [
     path('openspace-identification-list/', views.OpenSpaceIdentificationList.as_view(), name='openspace-identification-list'),
     path('openspace-identification-update/<int:pk>', views.OpenSpaceIdentificationUpdate.as_view(), name='openspace-identification-update'),
 
+    path('openspace-identification-process-list/', views.OpenSpaceIdentificationProcessList.as_view(), name='openspace-identification-process-list'),
+    path('openspace-identification-process-update/<int:pk>', views.OpenSpaceIdentificationProcessUpdate.as_view(), name='openspace-identification-process-update'),
+    path('openspace-identification-process-create/', views.OpenSpaceIdentificationProcessCreate.as_view(), name='openspace-identification-process-create'),
+
 ]
