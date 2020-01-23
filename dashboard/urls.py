@@ -60,4 +60,7 @@ urlpatterns = [
     path('openspace-identification-process-update/<int:pk>', views.OpenSpaceIdentificationProcessUpdate.as_view(), name='openspace-identification-process-update'),
     path('openspace-identification-process-create/', views.OpenSpaceIdentificationProcessCreate.as_view(), name='openspace-identification-process-create'),
 
+    path('footer-list/', views.FooterList.as_view(), name='footer-list'),
+    path('footer-update/<int:pk>', views.FooterUpdate.as_view(), name='footer-update'),
+
 ]
