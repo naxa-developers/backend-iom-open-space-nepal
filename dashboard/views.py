@@ -4,16 +4,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality
+    Municipality, Slider, CreateOpenSpace
 from .models import UserProfile
 import json
 import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
-    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm
+    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
+    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
+from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
 
 
 # Create your views here.
@@ -538,6 +540,222 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
         return reverse_lazy('resource-category-list')
 
 
+class HeaderList(LoginRequiredMixin, ListView):
+    template_name = 'header.html'
+    model = Header
+
+    def get_context_data(self, **kwargs):
+        data = super(HeaderList, self).get_context_data(**kwargs)
+        query_data = Header.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+
+class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Header
+    template_name = 'header_edit.html'
+    form_class = HeaderForm
+    success_message = 'Openspace portal successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(HeaderUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('header-list')
+
+
+
+class SliderList(LoginRequiredMixin, ListView):
+    template_name = 'slider_list.html'
+    model = Slider
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(SliderList, self).get_context_data(**kwargs)
+        query_data = Slider.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'slider'
+        return data
+
+
+class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Slider
+    template_name = 'slider_edit.html'
+    form_class = SliderForm
+    success_message = 'Slider Successfully updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(SliderUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('slider-list')
+
+
+class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Slider
+    template_name = 'slider_add.html'
+    form_class = SliderForm
+    success_message = 'Slider instance successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(SliderCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'slider'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('slider-list')
+
+
+
+class OpenSpaceDefinitionList(LoginRequiredMixin, ListView):
+    template_name = 'openspace_defination_list.html'
+    model = OpenSpaceDef
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceDefinitionList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceDef.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_def'
+        return data
+
+
+class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceDef
+    template_name = 'openspace_defination_edit.html'
+    form_class = OpenSpaceDefForm
+    success_message = 'Open Space Definition Successfully updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceDefinitionUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_def'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-definition-list')
+
+
+class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
+    template_name = 'openspace_identification_list.html'
+    model = OpenSpaceIde
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceIde.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_ide'
+        return data
+
+
+class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceIde
+    template_name = 'openspace_identification_edit.html'
+    form_class = OpenSpaceIdeForm
+    success_message = 'Open Space Identification Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-list')
+
+
+
+class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
+    template_name = 'open_space_identification_process_list.html'
+    model = CreateOpenSpace
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationProcessList, self).get_context_data(**kwargs)
+        query_data = CreateOpenSpace.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+
+class OpenSpaceIdentificationProcessUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CreateOpenSpace
+    template_name = 'open_space_identification_process_edit.html'
+    form_class = CreateOpenSpaceForm
+    success_message = 'Open Space Identification Process Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationProcessUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-process-list')
+
+
+
+class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CreateOpenSpace
+    template_name = 'open_space_identification_process_add.html'
+    form_class = CreateOpenSpaceForm
+    success_message = 'Open Space Identification Process Successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceIdentificationProcessCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-process-list')
+
+
+
+
 def CreateUser(request, **kwargs):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -545,24 +763,17 @@ def CreateUser(request, **kwargs):
             user = form.save()
             # user.is_active = False
             # user.save()
-            group = Group.objects.get(pk=kwargs['group'])
+            group = Group.objects.get(name='admin')
             user.groups.add(group)
             UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
-                                       partner_id=int(request.POST['partner']), image=request.FILES['image'])
+                                       municipality_id=int(request.POST['municipality']), )
 
             return render(request, 'registered_message.html', {'user': request.POST['name']})
         else:
-            province = Province.objects.all()
-            district = District.objects.select_related('province', ).all()
+
             municipality = Municipality.objects.select_related('province', 'district', ).all()
-            return render(request, 'create_user.html',
-                          {'form': form, 'provinces': province, 'districts': district,
-                           'municipalities': municipality})
+            return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
 
     form = UserCreationForm()
-    province = Province.objects.all()
-    district = District.objects.select_related('province', ).all()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
-    return render(request, 'create_user.html',
-                  {'form': form, 'provinces': province, 'districts': district,
-                   'municipalities': municipality})
+    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})

@@ -44,5 +44,20 @@ urlpatterns = [
     path('resource-category-add/', views.ResourceCategoryCreate.as_view(), name='resource-category-add'),
 
     path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
+    path('header-list/', views.HeaderList.as_view(), name='header-list'),
+    path('header-update/<int:pk>', views.HeaderUpdate.as_view(), name='header-update'),
+    path('slider-list/', views.SliderList.as_view(), name='slider-list'),
+    path('slider-update/<int:pk>', views.SliderUpdate.as_view(), name='slider-update'),
+    path('slider-add/', views.SliderCreate.as_view(), name='slider-create'),
+
+    path('openspace-definition-list/', views.OpenSpaceDefinitionList.as_view(), name='openspace-definition-list'),
+    path('openspace-definition-update/<int:pk>', views.OpenSpaceDefinitionUpdate.as_view(), name='openspace-definition-update'),
+
+    path('openspace-identification-list/', views.OpenSpaceIdentificationList.as_view(), name='openspace-identification-list'),
+    path('openspace-identification-update/<int:pk>', views.OpenSpaceIdentificationUpdate.as_view(), name='openspace-identification-update'),
+
+    path('openspace-identification-process-list/', views.OpenSpaceIdentificationProcessList.as_view(), name='openspace-identification-process-list'),
+    path('openspace-identification-process-update/<int:pk>', views.OpenSpaceIdentificationProcessUpdate.as_view(), name='openspace-identification-process-update'),
+    path('openspace-identification-process-create/', views.OpenSpaceIdentificationProcessCreate.as_view(), name='openspace-identification-process-create'),
 
 ]
