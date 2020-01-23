@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
-    OpenSpaceIde, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm
+    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -649,7 +649,7 @@ class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateV
     model = OpenSpaceDef
     template_name = 'openspace_defination_edit.html'
     form_class = OpenSpaceDefForm
-    success_message = 'Slider Successfully updated'
+    success_message = 'Open Space Definition Successfully updated'
 
     def get_context_data(self, **kwargs):
         print('abc')
@@ -665,7 +665,7 @@ class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateV
 
 
 class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
-    template_name = 'open_space_identifiaction_list.html'
+    template_name = 'openspace_identification_list.html'
     model = OpenSpaceIde
 
     def get_context_data(self, **kwargs):
@@ -679,6 +679,24 @@ class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
         data['active'] = 'open_ide'
         return data
 
+
+class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceIde
+    template_name = 'openspace_identification_edit.html'
+    form_class = OpenSpaceIdeForm
+    success_message = 'Open Space Identification Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-identification-list')
 
 
 
