@@ -11,7 +11,8 @@ import random
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
-    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm
+    SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
+    OpenSpaceIde, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -549,7 +550,6 @@ class HeaderList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        print(query_data)
         # data['user'] = user_data
         data['active'] = 'header'
         return data
@@ -572,6 +572,63 @@ class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('header-list')
+
+
+
+class SliderList(LoginRequiredMixin, ListView):
+    template_name = 'slider_list.html'
+    model = Slider
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(SliderList, self).get_context_data(**kwargs)
+        query_data = Slider.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'slider'
+        return data
+
+
+class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Slider
+    template_name = 'slider_edit.html'
+    form_class = SliderForm
+    success_message = 'Slider Successfully updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(SliderUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'header'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('slider-list')
+
+
+class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Slider
+    template_name = 'slider_add.html'
+    form_class = SliderForm
+    success_message = 'Slider instance successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(SliderCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'slider'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('slider-list')
+
+
+
 
 
 def CreateUser(request, **kwargs):

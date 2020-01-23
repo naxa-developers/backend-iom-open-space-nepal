@@ -46,5 +46,8 @@ urlpatterns = [
     path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
     path('header-list/', views.HeaderList.as_view(), name='header-list'),
     path('header-update/<int:pk>', views.HeaderUpdate.as_view(), name='header-update'),
+    path('slider-list/', views.SliderList.as_view(), name='slider-list'),
+    path('slider-update/<int:pk>', views.SliderUpdate.as_view(), name='slider-update'),
+    path('slider-add/', views.SliderCreate.as_view(), name='slider-create'),
 
 ]
