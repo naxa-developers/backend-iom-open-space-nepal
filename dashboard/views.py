@@ -701,6 +701,7 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
 
 
 class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
+    print('abc')
     template_name = 'open_space_identification_process_list.html'
     model = CreateOpenSpace
 
@@ -754,6 +755,39 @@ class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMix
         return reverse_lazy('openspace-identification-process-list')
 
 
+class FooterList(LoginRequiredMixin, ListView):
+    template_name = 'footer_list.html'
+    model = Contact
+
+    def get_context_data(self, **kwargs):
+        print('footer')
+        data = super(FooterList, self).get_context_data(**kwargs)
+        query_data = Contact.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'footer'
+        return data
+
+
+class FooterUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Contact
+    template_name = 'footer_edit.html'
+    form_class = ContactForm
+    success_message = 'Contact Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(FooterUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'footer'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('footer-list')
 
 
 def CreateUser(request, **kwargs):
