@@ -50,4 +50,9 @@ urlpatterns = [
     path('slider-update/<int:pk>', views.SliderUpdate.as_view(), name='slider-update'),
     path('slider-add/', views.SliderCreate.as_view(), name='slider-create'),
 
+    path('openspace-definition-list/', views.OpenSpaceDefinitionList.as_view(), name='openspace-definition-list'),
+    path('openspace-definition-update/<int:pk>', views.OpenSpaceDefinitionUpdate.as_view(), name='openspace-definition-update'),
+
+
+
 ]
