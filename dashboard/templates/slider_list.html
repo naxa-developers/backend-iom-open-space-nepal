@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Open Space Portal</h2>
+                    <h2>Slider</h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Open Space Portal</li>
-                        <li class="breadcrumb-item active">Open Space Portal list</li>
+                        <li class="breadcrumb-item">Slider</li>
+                        <li class="breadcrumb-item active">Slider list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -35,15 +35,19 @@
                             {% for data in list %}
                             <tr>
                                 <td>{{ data.id }}</td>
-                                <td>{{ data.title1 }}</td>
+                                <td>{{ data.title }}</td>
                                 <td class="table-action">
-                                    <a href="/dashboard/header-update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/slider-update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}
 
                         </tbody>
                     </table>
+                </div>
+                 <div class="table-footer">
+                    <a class="btn float-right" href="/dashboard/slider-add"><i class="la la-plus"></i> Add output</a>
+
                 </div>
             </div>
         </div>
