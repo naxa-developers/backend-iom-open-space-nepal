@@ -790,6 +790,60 @@ class FooterUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy('footer-list')
 
 
+class AppList(LoginRequiredMixin, ListView):
+    template_name = 'app_list.html'
+    model = OpenSpaceApp
+
+    def get_context_data(self, **kwargs):
+        print('footer')
+        data = super(AppList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceApp.objects.all()
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        # data['user'] = user_data
+        data['active'] = 'app'
+        return data
+
+
+class AppUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceApp
+    template_name = 'app_edit.html'
+    form_class = OpenSpaceAppForm
+    success_message = 'App Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(AppUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'app'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('app-list')
+
+
+class AppCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = OpenSpaceApp
+    template_name = 'app_add.html'
+    form_class = OpenSpaceAppForm
+    success_message = 'App Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(AppCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('app-list')
+
+
+
 def CreateUser(request, **kwargs):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

@@ -63,4 +63,8 @@ urlpatterns = [
     path('footer-list/', views.FooterList.as_view(), name='footer-list'),
     path('footer-update/<int:pk>', views.FooterUpdate.as_view(), name='footer-update'),
 
+    path('app-list/', views.AppList.as_view(), name='app-list'),
+    path('app-add/', views.AppCreate.as_view(), name='app-add'),
+    path('app-update/<int:pk>', views.AppUpdate.as_view(), name='app-update'),
+
 ]
