@@ -53,6 +53,7 @@ urlpatterns = [
     path('openspace-definition-list/', views.OpenSpaceDefinitionList.as_view(), name='openspace-definition-list'),
     path('openspace-definition-update/<int:pk>', views.OpenSpaceDefinitionUpdate.as_view(), name='openspace-definition-update'),
 
-
+    path('openspace-identification-list/', views.OpenSpaceIdentificationList.as_view(), name='openspace-identification-list'),
+    path('openspace-identification-update/<int:pk>', views.OpenSpaceIdentificationUpdate.as_view(), name='openspace-identification-update'),
 
 ]
