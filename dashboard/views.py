@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -16,6 +16,8 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
+from django.apps import apps
+from django.contrib import messages
 
 
 # Create your views here.
@@ -218,6 +220,8 @@ class ResourceCategoryList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'ResourceCategory'
+        data['url'] = 'resource-category-list'
         # data['user'] = user_data
         data['active'] = 'resource'
         return data
@@ -574,7 +578,6 @@ class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         return reverse_lazy('header-list')
 
 
-
 class SliderList(LoginRequiredMixin, ListView):
     template_name = 'slider_list.html'
     model = Slider
@@ -626,7 +629,6 @@ class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('slider-list')
-
 
 
 class OpenSpaceDefinitionList(LoginRequiredMixin, ListView):
@@ -699,7 +701,6 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
         return reverse_lazy('openspace-identification-list')
 
 
-
 class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
     print('abc')
     template_name = 'open_space_identification_process_list.html'
@@ -734,7 +735,6 @@ class OpenSpaceIdentificationProcessUpdate(SuccessMessageMixin, LoginRequiredMix
 
     def get_success_url(self):
         return reverse_lazy('openspace-identification-process-list')
-
 
 
 class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -843,7 +843,6 @@ class AppCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy('app-list')
 
 
-
 def CreateUser(request, **kwargs):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -865,3 +864,11 @@ def CreateUser(request, **kwargs):
     form = UserCreationForm()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
     return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
+
+
+def deleteData(request, **kwargs):
+    model = apps.get_model(app_label='core', model_name=kwargs['model'])
+    delete = model.objects.filter(id=kwargs['id']).delete()
+    messages.success(request, "Deleted SuccessFully")
+    return redirect(kwargs['url'])
+    print(model)

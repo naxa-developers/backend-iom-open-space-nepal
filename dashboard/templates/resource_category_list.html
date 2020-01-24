@@ -13,43 +13,56 @@
                         <li class="breadcrumb-item">Resource</li>
                         <li class="breadcrumb-item active">Resource list</li>
                     </ul>
-                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                    </button>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
-                    <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+                    <button class="btn float-right right_icon_toggle_btn" type="button"><i
+                            class="la la-arrow-right"></i></button>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
             <div class="card project_list">
                 <div class="table-responsive">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
-                            <tr>
-                                <th>S.N</th>
-                                <th>name</th>
+                        <tr>
+                            <th>S.N</th>
+                            <th>name</th>
 
-                                <th>action</th>
-                            </tr>
+                            <th>action</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for data in list %}
-                            <tr>
-                                <td>{{ data.id }}</td>
-                                <td>{{ data.name }}</td>
+                        {% for data in list %}
+                        <tr>
+                            <td>{{ data.id }}</td>
+                            <td>{{ data.name }}</td>
 
-                                <td class="table-action">
-                                    <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
-                                </td>
-                            </tr>
+                            <td class="table-action">
+                                <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
+                                   onclick="return confirm('Are you sure you want to delete this item?');"
+                                   class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
+                                <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                            </td>
+                        </tr>
                         {% endfor %}
 
                         </tbody>
                     </table>
                 </div>
                 <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/resource-category-add"><i class="la la-plus"></i> Add output</a>
+                    <a class="btn float-right" href="/dashboard/resource-category-add"><i class="la la-plus"></i> Add
+                        output</a>
 
                 </div>
             </div>
