@@ -5,6 +5,8 @@ from dashboard import views
 urlpatterns = [
     path('home/', views.HomePage.as_view(), name='home'),
     path('create-user/', views.CreateUser, name='create-user'),
+    path('delete/<str:model>/<int:id>/<str:url>', views.deleteData, name='delete'),
+    path('delete_front/<str:model>/<int:id>/<str:url>', views.deleteDataFront, name='delete'),
 
     path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
