@@ -70,6 +70,8 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'OpenSpace'
+        data['url'] = 'openspace-list'
         # data['user'] = user_data
         data['active'] = 'openspace'
         return data
@@ -85,6 +87,8 @@ class AvailableFacilityList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'AvailableFacility'
+        data['url'] = 'available-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -100,6 +104,8 @@ class ReportList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'Report'
+        data['url'] = 'report-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -115,6 +121,8 @@ class QuestionsList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'QuestionList'
+        data['url'] = 'question-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -130,6 +138,8 @@ class QuestionData(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'QuestionsData'
+        data['url'] = 'questiondata-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -145,6 +155,8 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'SuggestedUseList'
+        data['url'] = 'suggest-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -160,6 +172,8 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'SuggestedUseData'
+        data['url'] = 'suggestdata-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -175,6 +189,8 @@ class ServiceLists(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'ServiceList'
+        data['url'] = 'service-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -190,6 +206,8 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'ServiceData'
+        data['url'] = 'servicedata-list'
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -589,6 +607,8 @@ class SliderList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'Slider'
+        data['url'] = 'slider-list'
         # data['user'] = user_data
         data['active'] = 'slider'
         return data
@@ -713,6 +733,8 @@ class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'CreateOpenSpace'
+        data['url'] = 'openspace-identification-process-list'
         # data['user'] = user_data
         data['active'] = 'open_ide_process'
         return data
@@ -801,8 +823,11 @@ class AppList(LoginRequiredMixin, ListView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
+        data['model'] = 'OpenSpaceApp'
+        data['url'] = 'app-list'
         # data['user'] = user_data
         data['active'] = 'app'
+        print(data)
         return data
 
 
@@ -871,4 +896,12 @@ def deleteData(request, **kwargs):
     delete = model.objects.filter(id=kwargs['id']).delete()
     messages.success(request, "Deleted SuccessFully")
     return redirect(kwargs['url'])
-    print(model)
+    # print(model)
+
+
+def deleteDataFront(request, **kwargs):
+    model = apps.get_model(app_label='front', model_name=kwargs['model'])
+    delete = model.objects.filter(id=kwargs['id']).delete()
+    messages.success(request, "Deleted SuccessFully")
+    return redirect(kwargs['url'])
+    # print(model)
