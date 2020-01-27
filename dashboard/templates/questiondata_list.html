@@ -35,8 +35,8 @@
                         <thead>
                             <tr>
                                 <th>S.N</th>
-                                <th>question</th>
                                 <th>open space</th>
+                                <th>question</th>
                                 <th>answer</th>
 
                                 <th>action</th>
@@ -46,8 +46,8 @@
                             {% for data in list %}
                             <tr>
                                 <td>{{ data.id }}</td>
-                                <td>{{ data.question }}</td>
                                 <td>{{ data.open_space }}</td>
+                                <td>{{ data.question }}</td>
                                 <td>{{ data.ans }}</td>
                                 <td class="table-action">
                                     <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"

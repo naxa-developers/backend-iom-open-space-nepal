@@ -134,7 +134,9 @@ class QuestionData(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super(QuestionData, self).get_context_data(**kwargs)
-        query_data = QuestionsData.objects.select_related('open_space', 'question', ).order_by('id')
+        query_data = QuestionsData.objects.filter(open_space=self.kwargs['id']).select_related('open_space',
+                                                                                               'question', ).order_by(
+            'id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
@@ -168,7 +170,9 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super(SuggestedUseDataList, self).get_context_data(**kwargs)
-        query_data = SuggestedUseData.objects.select_related('open_space', 'suggested_use', ).order_by('id')
+        query_data = SuggestedUseData.objects.filter(open_space=self.kwargs['id']).select_related(
+            'open_space').order_by('id')
+
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
@@ -202,7 +206,8 @@ class ServiceDataList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super(ServiceDataList, self).get_context_data(**kwargs)
-        query_data = ServiceData.objects.select_related('open_space', 'service', ).order_by('id')
+        query_data = ServiceData.objects.filter(open_space=self.kwargs['id']).select_related('open_space',
+                                                                                             'service', ).order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data

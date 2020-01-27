@@ -34,7 +34,12 @@
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
                             <tr>
+
                                 <th>S.N</th>
+                                <th>action</th>
+                                <th>Suggested Use</th>
+                                <th>Onsite Amenities</th>
+                                <th>EIA</th>
                                 <th>Name</th>
                                 <th>ownership</th>
                                 <th>province</th>
@@ -50,13 +55,22 @@
                                 <th>Capacity</th>
                                 <th>Total area</th>
                                 <th>Usable area</th>
-                                <th>action</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             {% for open in list %}
                             <tr>
                                 <td>{{ open.id }}</td>
+                                <td class="table-action">
+                                    <a href="/dashboard/delete/{{ model }}/{{ open.id }}/{{ url }}"
+                                   onclick="return confirm('Are you sure you want to delete this item?');"
+                                   class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
+                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                </td>
+                                <td><a href="/dashboard/suggestdata-list/{{ open.id }}" class="btn "> <i class="la la-edit"> </i> Manage Suggested Use</a></td>
+                                <td><a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i> Manage Amenities</a></td>
+                                <td><a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i> Manage EIA</a></td>
                                 <td>{{ open.title }}</td>
                                 <td>{{ open.ownership }}</td>
                                 <td>{{ open.province }}</td>
@@ -73,12 +87,7 @@
                                 <td>{{ open.total_area }}</td>
                                 <td>{{ open.usable_area }}</td>
 
-                                <td class="table-action">
-                                    <a href="/dashboard/delete/{{ model }}/{{ open.id }}/{{ url }}"
-                                   onclick="return confirm('Are you sure you want to delete this item?');"
-                                   class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
-                                </td>
+
                             </tr>
                         {% endfor %}
 
