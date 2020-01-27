@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
-    ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace
+    ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef
 
@@ -59,7 +59,7 @@ class ResourceCategoryForm(ModelForm):
         fields = '__all__'
 
 
-#front views from
+# front views from
 class HeaderForm(ModelForm):
     class Meta:
         model = Header
@@ -102,3 +102,7 @@ class OpenSpaceAppForm(ModelForm):
         fields = '__all__'
 
 
+class GalleryForm(ModelForm):
+    class Meta:
+        model = Gallery
+        fields = '__all__'

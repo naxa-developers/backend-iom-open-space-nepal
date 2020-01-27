@@ -48,4 +48,49 @@ $.ajax({
     }); // end
 
 
+form_num = 1;
+ $('#add_form').on('click', function () {
+    var gallery_form = "";
+    gallery_form += '<div id="gallery_form'+form_num+'" class="card gallery_image_form">'+
+                    '<div class="card-body">'+
+                    '<a href="javascript:void(0);" id="remove_form" data-id="'+form_num+'" style="margin-left: 568px;" ><button type="button" class=" btn-outline-danger">Remove <i class="la la-minus-circle"></i></button></a>'+
+                    '<div class="form-group">'+
+                        '<label for="id_type">Type</label>'+
+                       '<div class="select-option">'+
+                            '<select class="custom-select show-tick ms select2" name="type" id="id_type">'+
+
+
+                                    '<option value="map">Map</option>'+
+
+                                    '<option value="image">Image</option>'+
+
+
+                            '</select>'+
+                        '</div>'+
+                    '</div>'+
+
+                  '<p><label for="id_image">Image:</label>'+
+                    '<input class="form-control" id="id_image" name="image" type="file">'+
+                     '</div>'+
+                    '</div>';
+
+                    console.log(gallery_form);
+                    form_num++
+                    $('#gallery_image_div').append(gallery_form)
+
+
+
+
+
+
     });
+
+    $('#gallery_image_div').on('click', '#remove_form', function () {
+        id=$(this).attr("data-id")
+        $( '#gallery_form'+id ).remove();
+
+
+ })
+
+
+    });// document end

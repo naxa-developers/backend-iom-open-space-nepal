@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Gallery Edit form</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active">Add form</li>
+                </ul>
+                <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ field.name|title }} {{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="id_open_space">Open Space </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" name="open_space" id="id_open_space">
+                                {% for open_space in open_space %}
+                                <option value="{{ open_space.id }}">{{open_space.title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_type">Type</label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" name="type" id="id_type">
+
+                                {% if form.instance.type == "map" %}
+                                <option value="map" selected>Map</option>
+                                <option value="image">Image</option>
+                                {% else %}
+
+                               <option value="map">Map</option>
+                                <option value="image" selected>Image</option>
+
+                                {% endif %}
+
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form_image" style="margin-left:160px">
+                        {% if form.instance.image %}
+                        <img src="{{form.instance.image.url}}" alt="User"  height="350px" width="350px">
+                        {% else %}
+                        <img src="/static/dashboard/images/pf.png" alt="User" >
+                        {% endif %}
+
+                    </div>
+
+                    <div class="custom-upload form-group">
+
+                        <label class="custom-upload__button" for="id_image" data-element="custom-upload-button">Change
+                            Image </label>
+                        <input class="custom-upload__input" id="id_image" name="image" type="file"
+                               data-behaviour="custom-upload-input">
+
+                    </div>
+
+                    <div class="form-footer pull-right">
+                        <button type="submit" class="btn" role="button">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
