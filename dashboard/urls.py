@@ -16,6 +16,10 @@ urlpatterns = [
 
     path('report-list/', views.ReportList.as_view(), name='report-list'),
 
+    path('gallery-list/<int:id>', views.GalleryLists.as_view(), name='gallery-list'),
+    path('gallery-add/<int:id>', views.GalleryCreate.as_view(), name='gallery-add'),
+    path('gallery-edit/<int:pk>/<int:id>', views.GalleryUpdate.as_view(), name='gallery-edit'),
+
     path('question-list/', views.QuestionsList.as_view(), name='question-list'),
     path('question-add/', views.QuestionCreate.as_view(), name='question-add'),
     path('question-edit/<int:pk>', views.QuestionUpdate.as_view(), name='question-edit'),

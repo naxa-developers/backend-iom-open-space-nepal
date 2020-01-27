@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace
+    Municipality, Slider, CreateOpenSpace, Gallery
 from .models import UserProfile
 import json
 import random
@@ -12,7 +13,7 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
-    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm
+    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -180,6 +181,23 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         data['url'] = 'suggestdata-list'
         # data['user'] = user_data
         data['active'] = 'available'
+        return data
+
+
+class GalleryLists(LoginRequiredMixin, ListView):
+    template_name = 'gallery_list.html'
+    model = Gallery
+
+    def get_context_data(self, **kwargs):
+        data = super(GalleryLists, self).get_context_data(**kwargs)
+        query_data = Gallery.objects.filter(open_space=self.kwargs['id']).order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'Gallery'
+        data['url'] = 'gallery-list'
+        # data['user'] = user_data
+        data['active'] = 'gallery'
         return data
 
 
@@ -473,6 +491,41 @@ class ServiceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy('service-list')
 
 
+class GalleryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ServiceList
+    template_name = 'gallery_add.html'
+    form_class = GalleryForm
+    success_message = 'Gallery successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(GalleryCreate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
+        # data['suggest'] = SuggestedUseList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'service'
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/gallery-list/' + str(self.kwargs['id'])
+
+    def form_valid(self, form):
+        # user_data = UserProfile.objects.get(user=self.request.user)
+        open_space = self.request.POST['open_space']
+        type = self.request.POST.getlist('type')
+        image = self.request.FILES.getlist('image')
+        print(open_space)
+        print(type)
+        print(image)
+        upper_range = len(type)
+        for row in range(0, upper_range):
+            Gallery.objects.create(open_space_id=open_space, type=type[row], image=image[row], )
+        return HttpResponseRedirect(self.get_success_url())
+
+
 class ServiceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = ServiceList
     template_name = 'service_edit.html'
@@ -509,6 +562,28 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('servicedata-list')
+
+
+class GalleryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Gallery
+    template_name = 'gallery_edit.html'
+    form_class = GalleryForm
+    success_message = 'Gallery successfully edited'
+
+    def get_context_data(self, **kwargs):
+        data = super(GalleryUpdate, self).get_context_data(**kwargs)
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
+        # data['suggest'] = SuggestedUseList.objects.order_by('id')
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['active'] = 'openspace'
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/gallery-list/' + str(self.kwargs['id'])
 
 
 class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
