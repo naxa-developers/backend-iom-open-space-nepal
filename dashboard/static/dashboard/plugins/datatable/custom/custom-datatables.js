@@ -11,8 +11,11 @@ $(function(){
 $(function(){
 	$('#Beneficiary_table').DataTable({
 
+
 		"scrollCollapse": true,
-		'iDisplayLength': 20,
+		'iDisplayLength': 10,
+
+		"lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
 		
 	});
 });

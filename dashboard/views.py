@@ -19,6 +19,7 @@ from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
 from django.apps import apps
 from django.contrib import messages
+import base64
 
 
 # Create your views here.
@@ -176,9 +177,13 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
 
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'suggestdata-list/'+str(self.kwargs['id'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'SuggestedUseData'
-        data['url'] = 'suggestdata-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -439,7 +444,10 @@ class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         data = super(SuggestedDataCreate, self).get_context_data(**kwargs)
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province',
+                                                                                           'district',
+                                                                                           'municipality').order_by(
+            'id')
         data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
@@ -448,18 +456,20 @@ class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return data
 
     def get_success_url(self):
-        return reverse_lazy('suggestdata-list')
+        return '/dashboard/suggestdata-list/' + str(self.kwargs['id'])
 
 
 class SuggestedDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = SuggestedUseData
     template_name = 'suggestdata_edit.html'
     form_class = SuggestedDataForm
-    success_message = 'Suggested Data successfully Created'
+    success_message = 'Suggested Data successfully Updated'
 
     def get_context_data(self, **kwargs):
         data = super(SuggestedDataUpdate, self).get_context_data(**kwargs)
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
         data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
@@ -468,7 +478,7 @@ class SuggestedDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         return data
 
     def get_success_url(self):
-        return reverse_lazy('suggestdata-list')
+        return '/dashboard/suggestdata-list/' + str(self.kwargs['id'])
 
 
 class ServiceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -975,8 +985,11 @@ def deleteData(request, **kwargs):
     model = apps.get_model(app_label='core', model_name=kwargs['model'])
     delete = model.objects.filter(id=kwargs['id']).delete()
     messages.success(request, "Deleted SuccessFully")
-    return redirect(kwargs['url'])
-    # print(model)
+    base64_url = kwargs['url']
+    base64_bytes = base64_url.encode('ascii')
+    url_bytes = base64.b64decode(base64_bytes)
+    url = url_bytes.decode('ascii')
+    return redirect('/dashboard/'+url)
 
 
 def deleteDataFront(request, **kwargs):
