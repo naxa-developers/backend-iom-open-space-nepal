@@ -13,10 +13,12 @@
                         <li class="breadcrumb-item">Openspace</li>
                         <li class="breadcrumb-item active">Openspace list</li>
                     </ul>
-                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                    </button>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
-                    <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+                    <button class="btn float-right right_icon_toggle_btn" type="button"><i
+                            class="la la-arrow-right"></i></button>
                 </div>
             </div>
         </div>
@@ -33,64 +35,90 @@
                     {% endif %}
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
-                            <tr>
+                        <tr>
 
-                                <th>S.N</th>
-                                <th>action</th>
-                                <th>Suggested Use</th>
-                                <th>Onsite Amenities</th>
-                                <th>EIA</th>
-                                <th>Gallery</th>
-                                <th>Name</th>
-                                <th>ownership</th>
-                                <th>province</th>
-                                <th>district</th>
-                                <th>municipality</th>
-                                <th>Address</th>
-                                <th>Catchment area</th>
-                                <th>Issue</th>
-                                <th>Current land use</th>
-                                <th>Elevation</th>
-                                <th>Access to site</th>
-                                <th>Special feature</th>
-                                <th>Capacity</th>
-                                <th>Total area</th>
-                                <th>Usable area</th>
+                            <th>S.N</th>
+                            <th>action</th>
+                            <th>Suggested Use</th>
+                            <th>Onsite Amenities</th>
+                            <th>EIA</th>
+                            <th>Gallery</th>
+                            <th>Name</th>
+                            <th>ownership</th>
+                            <th>province</th>
+                            <th>district</th>
+                            <th>municipality</th>
+                            <th>Address</th>
+                            <th>Catchment area</th>
+                            <th>Issue</th>
+                            <th>Current land use</th>
+                            <th>Elevation</th>
+                            <th>Access to site</th>
+                            <th>Special feature</th>
+                            <th>Capacity</th>
+                            <th>Total area</th>
+                            <th>Usable area</th>
 
-                            </tr>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for open in list %}
-                            <tr>
-                                <td>{{ open.id }}</td>
-                                <td class="table-action">
-                                    <a href="/dashboard/delete/{{ model }}/{{ open.id }}/{{ url }}"
+                        {% for open in list %}
+                        <tr>
+                            <td>{{ open.id }}</td>
+                            <td class="table-action">
+                                <a href="/dashboard/delete/{{ model }}/{{ open.id }}/{{ url }}"
                                    onclick="return confirm('Are you sure you want to delete this item?');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
-                                </td>
-                                <td><a href="/dashboard/suggestdata-list/{{ open.id }}" class="btn "> <i class="la la-edit"> </i> Manage Suggested Use</a></td>
-                                <td><a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i> Manage Amenities</a></td>
-                                <td><a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i> Manage EIA</a></td>
-                                <td><a href="/dashboard/gallery-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i> Manage Gallery</a></td>
-                                <td>{{ open.title }}</td>
-                                <td>{{ open.ownership }}</td>
-                                <td>{{ open.province }}</td>
-                                <td>{{ open.district }}</td>
-                                <td>{{ open.municipality }}</td>
-                                <td>{{ open.address }}</td>
-                                <td>{{ open.catchment_area }}</td>
-                                <td>{{ open.issue }}</td>
-                                <td>{{ open.current_land_use }}</td>
-                                <td>{{ open.elevation }}</td>
-                                <td>{{ open.access_to_site }}</td>
-                                <td>{{ open.special_feature }}</td>
-                                <td>{{ open.capacity }}</td>
-                                <td>{{ open.total_area }}</td>
-                                <td>{{ open.usable_area }}</td>
+                                <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                            </td>
+                            <td>{% if open.suggested_use.all.count < 1 %}
+                                <a href="/dashboard/suggestdata-add/{{ open.id }}" class="btn "> <i
+                                        class="la la-plus-circle"> </i> Add Suggested Use</a>
+
+                                {% else %}
+                                <a href="/dashboard/suggestdata-list/{{ open.id }}" class="btn "> <i
+                                        class="la la-edit"> </i> Manage Suggested Use</a>
+
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {% if open.services.all.count < 1 %}
+
+                                <a href="/dashboard/servicedata-add/{{ open.id }}" class="btn"> <i
+                                    class="la la-plus-circle"> </i> Add Amenities</a>
+
+                                {% else %}
+
+                                <a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i
+                                    class="la la-edit"> </i> Manage Amenities</a>
+
+                                {% endif %}
 
 
-                            </tr>
+                            </td>
+                            <td><a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i
+                                    class="la la-edit"> </i> Manage EIA</a></td>
+                            <td><a href="/dashboard/gallery-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i>
+                                Manage Gallery</a></td>
+                            <td>{{ open.title }}</td>
+                            <td>{{ open.ownership }}</td>
+                            <td>{{ open.province }}</td>
+                            <td>{{ open.district }}</td>
+                            <td>{{ open.municipality }}</td>
+                            <td>{{ open.address }}</td>
+                            <td>{{ open.catchment_area }}</td>
+                            <td>{{ open.issue }}</td>
+                            <td>{{ open.current_land_use }}</td>
+                            <td>{{ open.elevation }}</td>
+                            <td>{{ open.access_to_site }}</td>
+                            <td>{{ open.special_feature }}</td>
+                            <td>{{ open.capacity }}</td>
+                            <td>{{ open.total_area }}</td>
+                            <td>{{ open.usable_area }}</td>
+
+
+                        </tr>
                         {% endfor %}
 
                         </tbody>

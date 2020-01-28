@@ -10,7 +10,7 @@
                     <h2>Suggested Use Data </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Suggested Use Data</li>
+                        <li class="breadcrumb-item">Suggested Use </li>
                         <li class="breadcrumb-item active">Suggested Use Data list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
@@ -21,6 +21,10 @@
             </div>
         </div>
         <div class="container-fluid">
+              <div class="">
+                    <a class="btn float-right" href="/dashboard/suggestdata-add/{{ list.first.open_space.id }}"><i class="la la-plus"></i> Add Suggested Use</a>
+
+                </div>
             <div class="card project_list">
                 <div class="table-responsive">
                      {% if messages %}
@@ -50,7 +54,7 @@
                                     <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
                                    onclick="return confirm('Are you sure you want to delete this item?');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="/dashboard/suggestdata-edit/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/suggestdata-edit/{{ data.id }}/{{ data.open_space.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -58,10 +62,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/suggestdata-add"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>

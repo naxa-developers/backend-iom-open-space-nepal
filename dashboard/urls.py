@@ -33,16 +33,16 @@ urlpatterns = [
     path('suggest-edit/<int:pk>', views.SuggestedUpdate.as_view(), name='suggest-edit'),
 
     path('suggestdata-list/<int:id>', views.SuggestedUseDataList.as_view(), name='suggestdata-list'),
-    path('suggestdata-add/', views.SuggestedDataCreate.as_view(), name='suggestdata-add'),
-    path('suggestdata-edit/<int:pk>', views.SuggestedDataUpdate.as_view(), name='suggestdata-edit'),
+    path('suggestdata-add/<int:id>', views.SuggestedDataCreate.as_view(), name='suggestdata-add'),
+    path('suggestdata-edit/<int:pk>/<int:id>', views.SuggestedDataUpdate.as_view(), name='suggestdata-edit'),
 
     path('service-list/', views.ServiceLists.as_view(), name='service-list'),
     path('service-add/', views.ServiceCreate.as_view(), name='service-add'),
     path('service-edit/<int:pk>', views.ServiceUpdate.as_view(), name='service-edit'),
 
     path('servicedata-list/<int:id>', views.ServiceDataList.as_view(), name='servicedata-list'),
-    path('servicedata-add/', views.ServiceDataCreate.as_view(), name='servicedata-add'),
-    path('servicedata-edit/<int:pk>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
+    path('servicedata-add/<int:id>', views.ServiceDataCreate.as_view(), name='servicedata-add'),
+    path('servicedata-edit/<int:pk>/<int:id>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
 
     path('resource-list/', views.ResourceList.as_view(), name='resource-list'),
 
