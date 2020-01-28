@@ -23,6 +23,10 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                    <a class="btn float-right" href="/dashboard/gallery-add/{{ open_space_id }}"><i class="la la-plus"></i> Add output</a>
+
+                </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -70,10 +74,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/gallery-add/{{ list.first.open_space.id }}"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>

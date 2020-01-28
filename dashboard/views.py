@@ -122,11 +122,12 @@ class QuestionsList(LoginRequiredMixin, ListView):
         query_data = QuestionList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+
         data['list'] = query_data
         data['model'] = 'QuestionList'
         data['url'] = 'question-list'
         # data['user'] = user_data
-        data['active'] = 'available'
+        data['active'] = 'question'
         return data
 
 
@@ -141,11 +142,16 @@ class QuestionData(LoginRequiredMixin, ListView):
             'id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'questiondata-list/' + str(self.kwargs['id'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['open_space_id'] = self.kwargs['id']
         data['list'] = query_data
         data['model'] = 'QuestionsData'
-        data['url'] = 'questiondata-list'
+        data['url'] = base64_url
         # data['user'] = user_data
-        data['active'] = 'available'
+        data['active'] = 'question'
         return data
 
 
@@ -181,6 +187,7 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
         base64_url = base64_bytes.decode('ascii')
+        data['open_space_id'] = self.kwargs['id']
         data['list'] = query_data
         data['model'] = 'SuggestedUseData'
         data['url'] = base64_url
@@ -198,9 +205,14 @@ class GalleryLists(LoginRequiredMixin, ListView):
         query_data = Gallery.objects.filter(open_space=self.kwargs['id']).order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'gallery-list/' + str(self.kwargs['id'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['open_space_id'] = self.kwargs['id']
         data['list'] = query_data
         data['model'] = 'Gallery'
-        data['url'] = 'gallery-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'gallery'
         return data
@@ -237,6 +249,7 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
         base64_url = base64_bytes.decode('ascii')
+        data['open_space_id'] = self.kwargs['id']
         data['list'] = query_data
         data['model'] = 'ServiceData'
         data['url'] = base64_url
@@ -373,7 +386,9 @@ class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(QuestionDataCreate, self).get_context_data(**kwargs)
         data['question'] = QuestionList.objects.order_by('id')
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         # data['user'] = user_data
@@ -381,7 +396,7 @@ class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return data
 
     def get_success_url(self):
-        return reverse_lazy('questiondata-list')
+        return '/dashboard/questiondata-list/' + str(self.kwargs['id'])
 
 
 class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
@@ -394,14 +409,17 @@ class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data = super(QuestionDataUpdate, self).get_context_data(**kwargs)
         user = self.request.user
         data['question'] = QuestionList.objects.order_by('id')
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province',
+                                                                                           'district',
+                                                                                           'municipality').order_by(
+            'id')
         # user_data = UserProfile.objects.get(user=user)
         # data['user'] = user_data
         data['active'] = 'question'
         return data
 
     def get_success_url(self):
-        return reverse_lazy('questiondata-list')
+        return '/dashboard/questiondata-list/' + str(self.kwargs['id'])
 
 
 class SuggestedCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
