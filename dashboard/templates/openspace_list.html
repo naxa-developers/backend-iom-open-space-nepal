@@ -82,8 +82,21 @@
                                 {% endif %}
 
                             </td>
-                            <td><a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i
-                                    class="la la-edit"> </i> Manage Amenities</a></td>
+                            <td>
+                                {% if open.services.all.count < 1 %}
+
+                                <a href="/dashboard/servicedata-add/{{ open.id }}" class="btn"> <i
+                                    class="la la-plus-circle"> </i> Add Amenities</a>
+
+                                {% else %}
+
+                                <a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i
+                                    class="la la-edit"> </i> Manage Amenities</a>
+
+                                {% endif %}
+
+
+                            </td>
                             <td><a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i
                                     class="la la-edit"> </i> Manage EIA</a></td>
                             <td><a href="/dashboard/gallery-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i>

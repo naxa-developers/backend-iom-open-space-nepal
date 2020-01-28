@@ -41,8 +41,8 @@ urlpatterns = [
     path('service-edit/<int:pk>', views.ServiceUpdate.as_view(), name='service-edit'),
 
     path('servicedata-list/<int:id>', views.ServiceDataList.as_view(), name='servicedata-list'),
-    path('servicedata-add/', views.ServiceDataCreate.as_view(), name='servicedata-add'),
-    path('servicedata-edit/<int:pk>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
+    path('servicedata-add/<int:id>', views.ServiceDataCreate.as_view(), name='servicedata-add'),
+    path('servicedata-edit/<int:pk>/<int:id>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
 
     path('resource-list/', views.ResourceList.as_view(), name='resource-list'),
 

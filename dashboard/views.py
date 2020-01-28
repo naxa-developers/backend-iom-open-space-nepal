@@ -177,7 +177,7 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
 
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
-        url = 'suggestdata-list/'+str(self.kwargs['id'])
+        url = 'suggestdata-list/' + str(self.kwargs['id'])
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
         base64_url = base64_bytes.decode('ascii')
@@ -233,9 +233,13 @@ class ServiceDataList(LoginRequiredMixin, ListView):
                                                                                              'service', ).order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'servicedata-list/' + str(self.kwargs['id'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'ServiceData'
-        data['url'] = 'servicedata-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -562,7 +566,9 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         data = super(ServiceDataCreate, self).get_context_data(**kwargs)
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
         data['service'] = ServiceList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
@@ -571,7 +577,7 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return data
 
     def get_success_url(self):
-        return reverse_lazy('servicedata-list')
+        return '/dashboard/servicedata-list/' + str(self.kwargs['id'])
 
 
 class GalleryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
@@ -604,7 +610,9 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super(ServiceDataUpdate, self).get_context_data(**kwargs)
-        data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+        data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
+                                                                                           'municipality').order_by(
+            'id')
         data['service'] = ServiceList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
@@ -613,7 +621,7 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         return data
 
     def get_success_url(self):
-        return reverse_lazy('servicedata-list')
+        return '/dashboard/servicedata-list/' + str(self.kwargs['id'])
 
 
 class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -989,7 +997,7 @@ def deleteData(request, **kwargs):
     base64_bytes = base64_url.encode('ascii')
     url_bytes = base64.b64decode(base64_bytes)
     url = url_bytes.decode('ascii')
-    return redirect('/dashboard/'+url)
+    return redirect('/dashboard/' + url)
 
 
 def deleteDataFront(request, **kwargs):
