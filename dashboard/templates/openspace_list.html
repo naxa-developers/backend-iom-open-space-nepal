@@ -23,6 +23,10 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                    <a class="btn float-right" href="/dashboard/openspace-add"><i class="la la-plus"></i> Add Open Space</a>
+
+                </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -97,10 +101,26 @@
 
 
                             </td>
-                            <td><a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i
+                            <td>
+                                {% if open.question_data.all.count < 1 %}
+
+                                <a href="/dashboard/questiondata-add/{{ open.id }}" class="btn"> <i
+                                    class="la la-plus-circle"> </i> Add EIA</a></td>
+
+                                {% else %}
+                                <a href="/dashboard/questiondata-list/{{ open.id }}" class="btn"> <i
                                     class="la la-edit"> </i> Manage EIA</a></td>
-                            <td><a href="/dashboard/gallery-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i>
-                                Manage Gallery</a></td>
+                                {% endif %}
+                            <td>
+                                {% if open.gallery.all.count < 1 %}
+                                <a href="/dashboard/gallery-add/{{ open.id }}" class="btn"> <i class="la la-plus-circle"> </i>Add Gallery</a>
+                                {% else %}
+                                <a href="/dashboard/gallery-list/{{ open.id }}" class="btn"> <i class="la la-edit"> </i>
+                                Manage Gallery</a>
+                                {% endif %}
+                            </td>
+
+
                             <td>{{ open.title }}</td>
                             <td>{{ open.ownership }}</td>
                             <td>{{ open.province }}</td>
@@ -124,10 +144,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="output-form.html"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>
