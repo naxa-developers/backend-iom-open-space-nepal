@@ -21,6 +21,10 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                    <a class="btn float-right" href="/dashboard/questiondata-add/{{ open_space_id }}"><i class="la la-plus"></i> Add EIA</a>
+
+                </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -53,7 +57,7 @@
                                     <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
                                    onclick="return confirm('Are you sure you want to delete this item?');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="/dashboard/questiondata-edit/{{ data.id}}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/questiondata-edit/{{ data.id}}/{{ data.open_space.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -61,10 +65,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/questiondata-add"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>

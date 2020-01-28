@@ -74,7 +74,7 @@
 
                                 {% if form.instance.question.id == question.id %}
 
-                                <option value="{{ question.id }}">{{question.title}}</option>
+                                <option value="{{ question.id }}" selected>{{question.title}}</option>
 
                                 {% else %}
 
@@ -91,7 +91,7 @@
                     <div class="form-group">
                         <label for="id_ans">Answer</label>
                         <input type="text" class="form-control" placeholder="Your Answer" name="ans" maxlength="100"
-                               id="id_ans" value="{{ form.instance.answer }}">
+                               id="id_ans" value="{{ form.instance.ans }}">
                     </div>
                     <div class="form-footer pull-right">
                         <button type="submit" class="btn" role="button">Save</button>
