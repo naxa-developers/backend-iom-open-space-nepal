@@ -316,6 +316,7 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
         # data['user'] = user_data
+        data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         return data
 

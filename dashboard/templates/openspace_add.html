@@ -23,45 +23,131 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="banificiary.html" post="">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ field.name|title }} {{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
 
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" placeholder="Name" id="name">
+                        <label for="id_title">Title</label>
+                        <input  class="form-control" type="text" name="title" maxlength="1000" required id="id_title">
                     </div>
                     <div class="form-group">
-                        <label for="name">description</label>
-                        <textarea class="form-control"></textarea>
+                        <label for="id_description">Description</label>
+                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description"></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label>municipality </label>
+                        <label for="id_issue">Issue</label>
+                        <input  class="form-control" type="text" name="issue" maxlength="1000" id="id_issue">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_current_land_use">Current land use:</label>
+                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_catchment_area">Catchment area</label>
+                        <input  class="form-control" ttype="text" name="catchment_area" maxlength="1000" id="id_catchment_area">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_ownership">Ownership</label>
+                        <input  class="form-control" type="text" name="ownership" maxlength="1000" id="id_ownership">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_elevation">Elevation</label>
+                        <input  class="form-control" type="text" name="elevation" maxlength="1000" id="id_elevation">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_access_to_site">Access to site</label>
+                        <input  class="form-control" type="text" name="access_to_site" maxlength="1000" id="id_access_to_site">
+                    </div>
+
+                     <div class="form-group">
+                        <label for="id_special_feature">Special feature</label>
+                        <textarea class="form-control" name="special_feature" cols="40" rows="10" id="id_special_feature"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_address">Address</label>
+                        <input  class="form-control" type="text" name="address" maxlength="1000" id="id_address">
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="id_province">Province </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2" multiple data-placeholder="Select">
-                                <option>Kathmandu</option>
-                                <option>Lalitpur</option>
+                            <select class="custom-select show-tick ms select2 province_class" name="province" id="id_province"  data-placeholder="Select">
+                                <option selected>--- Select Province  ---</option>
+                                {% for province in provinces %}
+                                <option value="{{ province.id }}">{{ province.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>District </label>
+                        <label for="id_district">District </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2" multiple data-placeholder="Select">
-                                <option>syangja</option>
-                                <option>Bhaktapur</option>
+                            <select class="custom-select show-tick ms select2 district_class" name="district" id="id_district"  data-placeholder="Select">
+                                <option>--- Select Province First ---</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Ward No. </label>
+                        <label for="id_municipality">municipality </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2" data-placeholder="Select">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select class="custom-select show-tick ms select2 mun_class" name="municipality" id="id_municipality"  data-placeholder="Select">
+                                <option>--- Select District First ---</option>
                             </select>
                         </div>
                     </div>
+
+
+                    <div class="form-group">
+                        <label for="id_ward">Ward</label>
+                        <input  class="form-control" type="text" name="ward" maxlength="1000" id="id_ward">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_capacity">Capacity</label>
+                        <input  class="form-control" type="number" name="capacity" value="0" step="any" id="id_capacity">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_total_area">Total area</label>
+                        <input  class="form-control" type="number" name="total_area" step="any" id="id_total_area">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_usable_area">Usable area</label>
+                        <input  class="form-control" type="text" name="usable_area" maxlength="1000" id="id_usable_area">
+                    </div>
+
+
+
+                    <label for="id_image">Image:</label>
+
+                                <input class="form-control" id="id_image" name="image" type="file">
+
+
                     <div class="form-footer pull-right">
                         <button type="submit" class="btn" role="button">Save</button>
                     </div>

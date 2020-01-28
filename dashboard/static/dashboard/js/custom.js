@@ -13,7 +13,7 @@ $.ajax({
     method: 'GET',
     success: function(result){
 
-    console.log(result)
+//    console.log(result)
     var district = result.data
     $('.district_class').html("");
     for(var i = 0 ; i<district.length;i++){
@@ -25,10 +25,10 @@ $.ajax({
     }); // end
 
 //ajax request for mun
-$('#id_district_id').on('change',function(){
+$('.district_class').on('change',function(){
 dist_id = $(this).val()
 $.ajax({
-    url: baseUrl+'api/v1/core/gapanapa/?district_id='+dist_id,
+    url: baseUrl+'api/v1/municipality_api?district_id='+dist_id,
 //    headers: {
 //        'Authorization': "Token 8933c5dd02de389ab5ee69c17a9af49f3d83b938",
 //    },
@@ -36,12 +36,12 @@ $.ajax({
     success: function(result){
 
 
-
-    $('#id_municipality_id').html("");
-    var mun = result.results
+//    console.log(result)
+    $('.mun_class').html("");
+    var mun = result.data
     for(var i = 0 ; i<mun.length;i++){
     var prov_div="<option value="+mun[i].id+">"+mun[i].name+"</option>"
-    $('#id_municipality_id').append(prov_div);
+    $('.mun_class').append(prov_div);
     }
 
     }});
