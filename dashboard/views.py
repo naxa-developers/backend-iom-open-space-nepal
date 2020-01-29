@@ -71,9 +71,13 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'openspace-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'OpenSpace'
-        data['url'] = 'openspace-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'openspace'
         return data
@@ -105,9 +109,13 @@ class ReportList(LoginRequiredMixin, ListView):
         query_data = Report.objects.select_related('open_space', ).order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'report-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'Report'
-        data['url'] = 'report-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -122,10 +130,13 @@ class QuestionsList(LoginRequiredMixin, ListView):
         query_data = QuestionList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
-
+        url = 'question-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'QuestionList'
-        data['url'] = 'question-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'question'
         return data
@@ -164,9 +175,13 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         query_data = SuggestedUseList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'suggest-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'SuggestedUseList'
-        data['url'] = 'suggest-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -227,9 +242,13 @@ class ServiceLists(LoginRequiredMixin, ListView):
         query_data = ServiceList.objects.order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'service-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'ServiceList'
-        data['url'] = 'service-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'available'
         return data
@@ -346,7 +365,7 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = QuestionsList
     template_name = 'question_add.html'
     form_class = QuestionForm
-    success_message = 'Question Facility successfully Created'
+    success_message = 'EIA successfully Created'
 
     def get_context_data(self, **kwargs):
         data = super(QuestionCreate, self).get_context_data(**kwargs)
@@ -358,6 +377,25 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('question-list')
+
+
+class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpace
+    template_name = 'openspace_edit.html'
+    form_class = OpenSpaceForm
+    success_message = 'Open successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['provinces'] = Province.objects.all().order_by('id')
+        data['active'] = 'openspace'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-list')
 
 
 class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
@@ -427,7 +465,7 @@ class SuggestedCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = SuggestedUseList
     template_name = 'suggest_add.html'
     form_class = SuggestedForm
-    success_message = 'Suggested successfully Created'
+    success_message = 'Amenities successfully Created'
 
     def get_context_data(self, **kwargs):
         data = super(SuggestedCreate, self).get_context_data(**kwargs)
@@ -445,7 +483,7 @@ class SuggestedUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = SuggestedUseList
     template_name = 'suggest_edit.html'
     form_class = SuggestedForm
-    success_message = 'Suggested successfully Edited'
+    success_message = 'Amenities successfully Updated'
 
     def get_context_data(self, **kwargs):
         data = super(SuggestedUpdate, self).get_context_data(**kwargs)

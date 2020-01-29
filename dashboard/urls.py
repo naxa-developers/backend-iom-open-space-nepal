@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
+    path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
 
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
     path('available-add/', views.AvailableFacilityCreate.as_view(), name='available-add'),

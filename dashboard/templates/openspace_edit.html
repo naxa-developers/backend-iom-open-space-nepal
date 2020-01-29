@@ -15,7 +15,8 @@
                 <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
             </div>
             <div class="col-lg-5 col-md-6 col-sm-12">
-                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -42,63 +43,77 @@
 
                     <div class="form-group">
                         <label for="id_title">Title</label>
-                        <input  class="form-control" type="text" name="title" maxlength="1000" required id="id_title">
+                        <input class="form-control" type="text" name="title" maxlength="1000"
+                               value="{{ form.instance.title }}" required id="id_title">
                     </div>
                     <div class="form-group">
                         <label for="id_description">Description</label>
-                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description"></textarea>
+                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description">{{ form.instance.description }}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="id_issue">Issue</label>
-                        <input  class="form-control" type="text" name="issue" maxlength="1000" id="id_issue">
+                        <input class="form-control" type="text" name="issue" maxlength="1000"
+                               value="{{ form.instance.issue }}" id="id_issue">
                     </div>
 
 
                     <div class="form-group">
                         <label for="id_current_land_use">Current land use:</label>
-                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use"></textarea>
+                        <textarea class="form-control" name="current_land_use" cols="40" rows="10"
+                                  id="id_current_land_use">{{ form.instance.current_land_use }}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="id_catchment_area">Catchment area</label>
-                        <input  class="form-control" type="text" name="catchment_area" maxlength="1000" id="id_catchment_area">
+                        <input class="form-control" type="text" name="catchment_area" maxlength="1000"
+                               value="{{ form.instance.catchment_area }}" id="id_catchment_area">
                     </div>
 
                     <div class="form-group">
                         <label for="id_ownership">Ownership</label>
-                        <input  class="form-control" type="text" name="ownership" maxlength="1000" id="id_ownership">
+                        <input class="form-control" type="text" name="ownership" maxlength="1000"
+                               value="{{ form.instance.ownership }}" id="id_ownership">
                     </div>
 
                     <div class="form-group">
                         <label for="id_elevation">Elevation</label>
-                        <input  class="form-control" type="text" name="elevation" maxlength="1000" id="id_elevation">
+                        <input class="form-control" type="text" name="elevation" maxlength="1000"
+                               value="{{ form.instance.elevation }}" id="id_elevation">
                     </div>
 
                     <div class="form-group">
                         <label for="id_access_to_site">Access to site</label>
-                        <input  class="form-control" type="text" name="access_to_site" maxlength="1000" id="id_access_to_site">
+                        <input class="form-control" type="text" name="access_to_site" maxlength="1000"
+                               value="{{ form.instance.access_to_site }}" id="id_access_to_site">
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <label for="id_special_feature">Special feature</label>
-                        <textarea class="form-control" name="special_feature" cols="40" rows="10" id="id_special_feature"></textarea>
+                        <textarea class="form-control" name="special_feature" cols="40" rows="10"
+                                  value="{{ form.instance.special_feature }}" id="id_special_feature"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="id_address">Address</label>
-                        <input  class="form-control" type="text" name="address" maxlength="1000" id="id_address">
+                        <input class="form-control" type="text" name="address" maxlength="1000"
+                               value="{{ form.instance.address }}" id="id_address">
                     </div>
-
 
 
                     <div class="form-group">
                         <label for="id_province">Province </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2 province_class" name="province" id="id_province"  data-placeholder="Select">
-                                <option selected>--- Select Province  ---</option>
+                            <select class="custom-select show-tick ms select2 province_class" name="province"
+                                    id="id_province" data-placeholder="Select">
+                                <option selected>{{form.instance.province.name}}-</option>
                                 {% for province in provinces %}
+                                {% if form.instance.province.id == province.id %}
+                                <option value="{{ province.id }}" selected>{{ province.name }}</option>
+                                {% else %}
                                 <option value="{{ province.id }}">{{ province.name }}</option>
+                                {% endif %}
+
                                 {% endfor %}
                             </select>
                         </div>
@@ -106,16 +121,18 @@
                     <div class="form-group">
                         <label for="id_district">District </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2 district_class" name="district" id="id_district"  data-placeholder="Select">
-                                <option>--- Select Province First ---</option>
+                            <select class="custom-select show-tick ms select2 district_class" name="district"
+                                    id="id_district" data-placeholder="Select">
+                                <option value="{{ form.instance.district.id }}" selected>{{form.instance.district.name}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="id_municipality">municipality </label>
                         <div class="select-option">
-                            <select class="custom-select show-tick ms select2 mun_class" name="municipality" id="id_municipality"  data-placeholder="Select">
-                                <option>--- Select District First ---</option>
+                            <select class="custom-select show-tick ms select2 mun_class" name="municipality"
+                                    id="id_municipality" data-placeholder="Select">
+                                <option value="{{ form.instance.municipality.id }}">{{form.instance.municipality}}</option>
                             </select>
                         </div>
                     </div>
@@ -123,29 +140,42 @@
 
                     <div class="form-group">
                         <label for="id_ward">Ward</label>
-                        <input  class="form-control" type="text" name="ward" maxlength="1000" id="id_ward">
+                        <input class="form-control" type="text" name="ward" maxlength="1000"
+                               value="{{ form.instance.ward }}" id="id_ward">
                     </div>
 
                     <div class="form-group">
                         <label for="id_capacity">Capacity</label>
-                        <input  class="form-control" type="number" name="capacity" value="0" step="any" id="id_capacity">
+                        <input class="form-control" type="number" name="capacity" value="{{form.instance.capacity}}"
+                               step="any" id="id_capacity">
                     </div>
 
                     <div class="form-group">
                         <label for="id_total_area">Total area</label>
-                        <input  class="form-control" type="number" name="total_area" step="any" id="id_total_area">
+                        <input class="form-control" type="number" name="total_area"
+                               value="{{ form.instance.total_area }}" step="any" id="id_total_area">
                     </div>
 
                     <div class="form-group">
                         <label for="id_usable_area">Usable area</label>
-                        <input  class="form-control" type="text" name="usable_area" maxlength="1000" id="id_usable_area">
+                        <input class="form-control" type="text" name="usable_area" maxlength="1000"
+                               value="{{ form.instance.usable_area }}" id="id_usable_area">
+                    </div>
+
+                    <div class="form-group" style="margin-left:160px">
+                        <p>Current Image :</p>
+                        {% if form.instance.image %}
+                        <img src="{{form.instance.image.url}}" alt="User"  height="350px" width="350px">
+                        {% else %}
+                        <img src="/static/dashboard/images/pf.png" alt="User" >
+                        {% endif %}
+
                     </div>
 
 
+                    <label for="id_image">Change Image:</label>
 
-                    <label for="id_image">Image:</label>
-
-                                <input class="form-control" id="id_image" name="image" type="file">
+                    <input class="form-control" id="id_image" name="image" type="file">
 
 
                     <div class="form-footer pull-right">
