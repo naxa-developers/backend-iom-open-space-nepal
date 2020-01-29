@@ -71,9 +71,13 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
         user = self.request.user
         # user_data = UserProfile.objects.get(user=user)
+        url = 'openspace-list/' 
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'OpenSpace'
-        data['url'] = 'openspace-list'
+        data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'openspace'
         return data
