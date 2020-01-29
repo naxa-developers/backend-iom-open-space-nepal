@@ -7,11 +7,10 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Question list</h2>
+                    <h2>EIA </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Questions</li>
-                        <li class="breadcrumb-item active">Question list</li>
+                        <li class="breadcrumb-item active">EIA list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -21,6 +20,10 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                    <a class="btn float-right" href="/dashboard/question-add"><i class="la la-plus"></i> Add EIA</a>
+
+                </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -56,10 +59,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/question-add"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>
