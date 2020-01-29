@@ -360,6 +360,25 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy('question-list')
 
 
+class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpace
+    template_name = 'openspace_edit.html'
+    form_class = OpenSpaceForm
+    success_message = 'Open successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        # data['user'] = user_data
+        data['provinces'] = Province.objects.all().order_by('id')
+        data['active'] = 'openspace'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-list')
+
+
 class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = QuestionList
     template_name = 'question_edit.html'
