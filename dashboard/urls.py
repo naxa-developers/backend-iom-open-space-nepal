@@ -8,6 +8,7 @@ urlpatterns = [
     path('delete/<str:model>/<int:id>/<str:url>', views.deleteData, name='delete'),
     path('delete_front/<str:model>/<int:id>/<str:url>', views.deleteDataFront, name='delete'),
 
+    path('upload-shapefile/', views.importShapefile, name='upload-shapefile'),
     path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
     path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
@@ -58,14 +59,20 @@ urlpatterns = [
     path('slider-add/', views.SliderCreate.as_view(), name='slider-create'),
 
     path('openspace-definition-list/', views.OpenSpaceDefinitionList.as_view(), name='openspace-definition-list'),
-    path('openspace-definition-update/<int:pk>', views.OpenSpaceDefinitionUpdate.as_view(), name='openspace-definition-update'),
+    path('openspace-definition-update/<int:pk>', views.OpenSpaceDefinitionUpdate.as_view(),
+         name='openspace-definition-update'),
 
-    path('openspace-identification-list/', views.OpenSpaceIdentificationList.as_view(), name='openspace-identification-list'),
-    path('openspace-identification-update/<int:pk>', views.OpenSpaceIdentificationUpdate.as_view(), name='openspace-identification-update'),
+    path('openspace-identification-list/', views.OpenSpaceIdentificationList.as_view(),
+         name='openspace-identification-list'),
+    path('openspace-identification-update/<int:pk>', views.OpenSpaceIdentificationUpdate.as_view(),
+         name='openspace-identification-update'),
 
-    path('openspace-identification-process-list/', views.OpenSpaceIdentificationProcessList.as_view(), name='openspace-identification-process-list'),
-    path('openspace-identification-process-update/<int:pk>', views.OpenSpaceIdentificationProcessUpdate.as_view(), name='openspace-identification-process-update'),
-    path('openspace-identification-process-create/', views.OpenSpaceIdentificationProcessCreate.as_view(), name='openspace-identification-process-create'),
+    path('openspace-identification-process-list/', views.OpenSpaceIdentificationProcessList.as_view(),
+         name='openspace-identification-process-list'),
+    path('openspace-identification-process-update/<int:pk>', views.OpenSpaceIdentificationProcessUpdate.as_view(),
+         name='openspace-identification-process-update'),
+    path('openspace-identification-process-create/', views.OpenSpaceIdentificationProcessCreate.as_view(),
+         name='openspace-identification-process-create'),
 
     path('footer-list/', views.FooterList.as_view(), name='footer-list'),
     path('footer-update/<int:pk>', views.FooterUpdate.as_view(), name='footer-update'),

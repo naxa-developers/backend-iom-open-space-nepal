@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery
@@ -106,3 +107,16 @@ class GalleryForm(ModelForm):
     class Meta:
         model = Gallery
         fields = '__all__'
+
+
+CHARACTER_ENCODINGS = [("ascii", "ASCII"),
+                       ("latin1", "Latin-1"),
+                       ("utf8", "UTF-8")]
+
+
+class ImportShapefileForm(forms.Form):
+    """ This form defines the parameters used to import a shapefile.
+    """
+    import_file = forms.FileField(label="Select a Zipped Shapefile")
+    character_encoding = forms.ChoiceField(choices=CHARACTER_ENCODINGS,
+                                           initial="utf8")
