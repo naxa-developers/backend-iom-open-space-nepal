@@ -13,13 +13,18 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
-    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm
+    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
 from django.apps import apps
 from django.contrib import messages
 import base64
+import os
+from django.contrib.gis.utils import LayerMapping
+from django.shortcuts import render_to_response
+from dashboard import shapefileIO
+from django.contrib.gis.gdal import DataSource
 
 
 # Create your views here.
@@ -60,6 +65,41 @@ class HomePage(TemplateView):
         return render(request, 'dashboard.html',
                       {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
                        'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict})
+
+
+def UploadShapeFile(request):
+    if "GET" == request.method:
+        return render(request, 'upload_shapefile.html')
+    else:
+        print(request.FILES.getlist("shapefile")[0])
+        shp_file = request.FILES.getlist("shapefile")
+        file = open(shp_file)
+        os.path.realpath(file.name)
+        ds = DataSource(shp_file)
+
+        return HttpResponse('a')
+
+
+def importShapefile(request):
+    """ Let the user import a new shapefile.
+    """
+    if request.method == "GET":
+        form = ImportShapefileForm()
+        return render(request, "upload_shapefile.html", {'form': form, 'errMsg': None})
+
+    elif request.method == "POST":
+        errMsg = None  # initially.
+
+        form = ImportShapefileForm(request.POST, request.FILES)
+        if form.is_valid():
+            shapefile = request.FILES['import_file']
+            encoding = request.POST['character_encoding']
+            errMsg = shapefileIO.importData(shapefile, encoding)
+            print(errMsg)
+            if errMsg == None:
+                return HttpResponseRedirect("/dashboard/upload-shapefile")
+
+        return render(request, "upload_shapefile.html", {'form': form, 'errMsg': errMsg})
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):

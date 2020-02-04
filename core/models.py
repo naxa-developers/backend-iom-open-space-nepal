@@ -6,6 +6,8 @@ import os.path
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+
+
 # Create your models here.
 
 
@@ -197,7 +199,7 @@ class OpenSpace(models.Model):
     total_area = models.FloatField(blank=True, null=True)
     # total_area = models.CharField(max_length=100,
     #                                  blank=True, null=True)
-    usable_area = models.CharField(max_length=1000,  blank=True, null=True)
+    usable_area = models.CharField(max_length=1000, blank=True, null=True)
     image = models.ImageField(upload_to='space', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
@@ -264,7 +266,8 @@ class OpenSpace(models.Model):
         if self.ward:
             self.address = 'Ward' + ' ' + str(self.ward) + ',' + self.municipality.name
         else:
-            self.address = self.municipality.name
+            if self.ward:
+                self.address = self.municipality.name
 
         super(OpenSpace, self).save(*args, **kwargs)
 
@@ -287,7 +290,7 @@ class Report(models.Model):
     title = models.CharField(max_length=100)
     name = models.CharField(max_length=100, null=True, blank=True)
     message = models.TextField(null=True, blank=True)
-    date = models.DateField(auto_now_add=True,  null=True, blank=True)
+    date = models.DateField(auto_now_add=True, null=True, blank=True)
     urgency = models.CharField(choices=URGENCY_CHOICES, max_length=15, default='high')
     status = models.CharField(choices=STATUS_CHOICES, max_length=15, default='pending')
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
@@ -410,7 +413,7 @@ class AvailableFacility(models.Model):
     district = models.ForeignKey('District', related_name='facility_district',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
-    email = models.EmailField(blank=True,null=True)
+    email = models.EmailField(blank=True, null=True)
     municipality = models.ForeignKey('Municipality',
                                      related_name='facility_municipality',
                                      on_delete=models.SET_NULL,
@@ -443,4 +446,3 @@ class AvailableFacility(models.Model):
 
     def __str__(self):
         return self.name
-
