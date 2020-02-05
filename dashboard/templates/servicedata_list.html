@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Service  Data </h2>
+                    <h2>On Site Amenities </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Service Data</li>
-                        <li class="breadcrumb-item active">Service Data list</li>
+                        <li class="breadcrumb-item">On Site Amenities</li>
+                        <li class="breadcrumb-item active">On Site Amenities</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -22,10 +22,10 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/servicedata-add/{{ open_space_id }}"><i class="la la-plus"></i> Add Services</a>
+                    <a class="btn float-right" href="/dashboard/servicedata-add/{{ open_space_id }}"><i class="la la-plus"></i> Add On Site Amenities</a>
 
                 </div>
-
+             <h5 >{{ list.first.open_space.title }}</h5>
             <div class="card project_list">
                 <div class="table-responsive">
                      {% if messages %}
@@ -39,8 +39,8 @@
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
                             <tr>
-                                <th>S.N</th>
-                                <th>open space</th>
+<!--                                <th>S.N</th>-->
+<!--                                <th>open space</th>-->
                                 <th>service</th>
                                 <th>description</th>
                                 <th>action</th>
@@ -49,8 +49,8 @@
                         <tbody>
                             {% for data in list %}
                             <tr>
-                                <td>{{ data.id }}</td>
-                                <td>{{ data.open_space }}</td>
+<!--                                <td>{{ data.id }}</td>-->
+<!--                                <td>{{ data.open_space }}</td>-->
                                 <td>{{ data.service }}</td>
                                 <td>{{ data.description }}</td>
                                 <td class="table-action">
