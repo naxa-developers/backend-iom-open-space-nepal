@@ -24,7 +24,7 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/gallery-add/{{ open_space_id }}"><i class="la la-plus"></i> Add output</a>
+                    <a class="btn float-right" href="/dashboard/gallery-add/{{ open_space_id }}"><i class="la la-plus"></i> Add Gallery Image</a>
 
                 </div>
             <div class="card project_list">
@@ -56,7 +56,7 @@
                             <td>{{ data.type }}</td>
                             <td>
                                    {% if data.image %}
-                            <img src="{{ data.image.url }}" alt="org" height="157px" width="224px"/>
+                            <img src="{{ data.thumbnail.url }}" alt="org" height="157px" width="224px"/>
                             {% else %}
                             <img src="{% static 'dashboard/images/organization.svg' %}" height="157px" width="224px" alt="org"/>
                             {% endif %}

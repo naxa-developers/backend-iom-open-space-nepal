@@ -96,7 +96,7 @@
                                 {% else %}
 
                                 <a href="/dashboard/servicedata-list/{{ open.id }}" class="btn"> <i
-                                    class="la la-edit"> </i> Manage Amenities</a>
+                                    class="la la-edit"> </i> Manage on site Amenities</a>
 
                                 {% endif %}
 
@@ -123,7 +123,7 @@
 
 
                             <td>{{ open.title }}</td>
-                            <td>{{ open.description }}</td>
+                            <td><span style="display: block;width:800px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ open.description }}</span></td>
                             <td>{{ open.ownership }}</td>
                             <td>{{ open.province }}</td>
                             <td>{{ open.district }}</td>
