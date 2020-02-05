@@ -14,8 +14,8 @@
             }).addTo(map);
 
            var style = ({
-                    fillColor: "green",
-                    fillOpacity: 0.7,
+                    fillColor: "red",
+                    fillOpacity: 0.5,
                     weight: 2,
                     opacity: 0.2,
                     color: 'black',
@@ -23,7 +23,7 @@
             });
 
             var style_open = ({
-                    fillColor: "red",
+                    fillColor: "green",
                     fillOpacity: 0.8,
                     weight: 2,
                     opacity: 0.2,
