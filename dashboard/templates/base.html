@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="{% static 'dashboard/plugins/datatable/dataTables.bs4-custom.css' %}"/>
     <!-- Custom Css -->
     <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+
+    <style>
+        .sidebar-tab{
+            font-size:14px
+        }
+    </style>
+
 </head>
 
 <body class="">
@@ -122,20 +129,20 @@
             <!--            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span>Dashboard</span></a>-->
 
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span>Manage Open Space</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Manage Open Space</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/openspace-list"> View openspace </a></li>
                     <!--                    <li><a href="project-form.html">create Projects</a></li>-->
                 </ul>
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-signal"></i><span>Manage Nearby Amenities</span></a>
+                    class="la la-signal"></i><span class="sidebar-tab">Nearby Amenities Types</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>
                 </ul>
             </li>
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-object-group"></i><span>Manage Report</span></a>
+                    class="la la-object-group"></i><span class="sidebar-tab">Manage Report</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/report-list">View Report </a></li>
 
@@ -143,7 +150,7 @@
             </li>
 
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-line-chart"></i><span>Manage EIA Table</span></a>
+                    class="la la-line-chart"></i><span class="sidebar-tab">EIA Questions</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/question-list">View EIA </a></li>
 <!--                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>-->
@@ -151,19 +158,19 @@
             </li>
 
             <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-transgender-alt"></i><span>Manage Suggested Use</span></a>
+                    class="la la-transgender-alt"></i><span class="sidebar-tab">Suggested Use Types</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>
 <!--                    <li><a href="/dashboard/suggestdata-list/">Suggested Data List</a></li>-->
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span>Manage On site Amenities</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Onsite Amenities Types</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/service-list">View on site Amenities</a></li>
 <!--                    <li><a href="/dashboard/servicedata-list">Service Data List</a></li>-->
                 </ul>
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span>Manage Resources</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Resources</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/resource-list">View Resources </a></li>
                     <li><a href="/dashboard/resource-category-list">View Resources Categories</a></li>
@@ -171,7 +178,7 @@
                 </ul>
             </li>
 
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span>Manage Page</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Pagewise Contents </span></a>
                 <ul class="ml-menu">
 <!--                    <li><a href=''>Home Page</a></li>-->
                     <li>
@@ -204,7 +211,7 @@
                 </ul>
             </li>
 
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span>Authentication</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User</span></a>
                 <ul class="ml-menu">
                     <li><a href="/dashboard/create-user">Create User</a></li>
 <!--                    <li><a href="sign-up.html">Sign Up</a></li>-->

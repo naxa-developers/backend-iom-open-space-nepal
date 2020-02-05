@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Question Data list</h2>
+                    <h2>EIA Question </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Question Data</li>
-                        <li class="breadcrumb-item active">Question Data list</li>
+                        <li class="breadcrumb-item">EIA Question</li>
+                        <li class="breadcrumb-item active">EIA Question list</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -25,6 +25,7 @@
                     <a class="btn float-right" href="/dashboard/questiondata-add/{{ open_space_id }}"><i class="la la-plus"></i> Add EIA</a>
 
                 </div>
+            <h5 >{{ list.first.open_space.title }}</h5>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -38,8 +39,8 @@
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
                             <tr>
-                                <th>S.N</th>
-                                <th>open space</th>
+<!--                                <th>S.N</th>-->
+<!--                                <th>open space</th>-->
                                 <th>question</th>
                                 <th>answer</th>
 
@@ -49,8 +50,8 @@
                         <tbody>
                             {% for data in list %}
                             <tr>
-                                <td>{{ data.id }}</td>
-                                <td>{{ data.open_space }}</td>
+<!--                                <td>{{ data.id }}</td>-->
+<!--                                <td>{{ data.open_space }}</td>-->
                                 <td>{{ data.question }}</td>
                                 <td>{{ data.ans }}</td>
                                 <td class="table-action">
