@@ -33,12 +33,29 @@ class HomePage(TemplateView):
     def get(self, request, *args, **kwargs):
         # category = ProductCategory.objects.order_by('id')
         # product = Product.objects.order_by('id')
-
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        group = Group.objects.get(user=user)
         data_list1 = []
         data_list2 = []
-        open_space_total = list(OpenSpace.objects.filter(municipality__id=96).values_list('total_area', flat=True))
-        open_space_usable = list(OpenSpace.objects.filter(municipality__id=96).values_list('usable_area', flat=True))
-        open_space_name = list(OpenSpace.objects.filter(municipality__id=96).values_list('title', flat=True))
+        if group.name == 'admin':
+            open_space_total = list(
+                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('total_area',
+                                                                                                 flat=True))
+            open_space_usable = list(
+                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('usable_area',
+                                                                                                 flat=True))
+            open_space_name = list(
+                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('title', flat=True))
+            mun_id = user_data.municipality.id
+        else:
+            open_space_total = list(OpenSpace.objects.values_list('total_area', flat=True))
+            open_space_usable = list(
+                OpenSpace.objects.values_list('usable_area', flat=True))
+            open_space_name = list(OpenSpace.objects.values_list('title', flat=True))
+
+            mun_id = 0
+
         service_list = ServiceList.objects.order_by('id')
 
         columns = []
@@ -46,7 +63,12 @@ class HomePage(TemplateView):
         color_dict = {}
 
         for l in service_list:
-            count = ServiceData.objects.filter(open_space__municipality=96, service__id=l.id).count()
+            if group.name == 'admin':
+                count = ServiceData.objects.filter(open_space__municipality=user_data.municipality.id,
+                                                   service__id=l.id).count()
+            else:
+                count = ServiceData.objects.filter(service__id=l.id).count()
+
             columns_dict.update({'data' + str(l.id): l.name})
             service = ['data' + str(l.id), count]
             columns.append(service)
@@ -64,7 +86,8 @@ class HomePage(TemplateView):
 
         return render(request, 'dashboard.html',
                       {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
-                       'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict})
+                       'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
+                       'mun_id': mun_id, 'user': user_data})
 
 
 def UploadShapeFile(request):
@@ -97,7 +120,7 @@ def importShapefile(request):
             errMsg = shapefileIO.importData(shapefile, encoding)
             print(errMsg)
             if errMsg == None:
-                return HttpResponseRedirect("/dashboard/upload-shapefile")
+                return HttpResponseRedirect("/dashboard/openspace-list")
 
         return render(request, "upload_shapefile.html", {'form': form, 'errMsg': errMsg})
 
@@ -108,9 +131,15 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceList, self).get_context_data(**kwargs)
-        query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
+        group = Group.objects.get(user=user)
+        if group.name == "admin":
+            query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province', 'district',
+                                                                                      'municipality').order_by('id')
+        else:
+            query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+
         url = 'openspace-list/'
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -118,7 +147,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'OpenSpace'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'openspace'
         return data
 

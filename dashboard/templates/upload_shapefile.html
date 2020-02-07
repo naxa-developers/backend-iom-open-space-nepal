@@ -1,25 +1,74 @@
-<html>
-    <head>
-        <title>ShapeEditor</title>
-    </head>
-    <body>
-        <h1>Import Shapefile</h1>
-        {% if errMsg %}
-        <b><i>{{ errMsg }}</i></b>
-        {% endif %}
-        {% if form.errors %}
-        <b>Sorry, the following error occurred:</b>
-        <br/>
-        {% endif %}
-        <form enctype="multipart/form-data" method="post" action={% url "upload-shapefile" %}>
-        {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Submit"/>
-            <button type="button"
-                onClick='window.location="/shape-editor";'>
-                Cancel
-            </button>
-        </form>
-    </body>
-</html>
 
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Shapefile Upload </h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> iom</a></li>
+                    <li class="breadcrumb-item active"><a href="/dashboard/openspace-list/">Openspace</a></li>
+                    <li class="breadcrumb-item active">Openspace</li>
+                </ul>
+                <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                </button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn btn-primary float-right right_icon_toggle_btn" type="button"><i
+                        class="la la-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+        <div class="card">
+            <div class="card-body">
+                {% if errMsg %}
+                <b><i>{{ errMsg }}</i></b>
+                {% endif %}
+                {% if form.errors %}
+                <b>Sorry, the following error occurred:</b>
+                <br/>
+                {% endif %}
+                <form enctype="multipart/form-data" method="POST" action={% url "upload-shapefile" %}>
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="custom-upload">
+                        <h3>Upload Shapefile</h3>
+                        <label class="custom-upload__button" for="id_import_file" data-element="custom-upload-button">Upload
+                            Files </label>
+                        <input class="custom-upload__input" type="file" name="import_file" required id="id_import_file"
+                               data-behaviour="custom-upload-input" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_character_encoding">Character Encoding</label>
+                    <div class="select-option">
+                        <select class="custom-select show-tick ms select2" name="character_encoding" id="id_character_encoding">
+
+
+                        <option value="ascii">ASCII</option>
+
+                        <option value="latin1">Latin-1</option>
+
+                        <option value="utf8" selected>UTF-8</option>
+
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-footer pull-right">
+                    <button type="submit" class="btn" role="button">Save</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
