@@ -97,7 +97,7 @@ def importShapefile(request):
             errMsg = shapefileIO.importData(shapefile, encoding)
             print(errMsg)
             if errMsg == None:
-                return HttpResponseRedirect("/dashboard/upload-shapefile")
+                return HttpResponseRedirect("/dashboard/openspace-list")
 
         return render(request, "upload_shapefile.html", {'form': form, 'errMsg': errMsg})
 
