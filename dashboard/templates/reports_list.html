@@ -75,11 +75,87 @@
                             <td>{{ data.open_space }}</td>
                             <td>{{ data.reported_by }}</td>
                             <td class="table-action">
-                                <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
-                                   class="btn remove"> <i class="la la-trash-o"></i> View</a>
-                                <!--                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>-->
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModalCenter{{ data.id }}">
+                                   View
+                                </button>
                             </td>
                         </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter{{ data.id }}" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">{{data.title}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Openspace</label>
+                                            <input class="form-control" type="text"  value="{{ data.open_space }}" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Message</label>
+                                             <textarea class="form-control"  cols="20" rows="5"  readonly>{{ data.message }}</textarea>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Address</label>
+                                            <input class="form-control" type="text"  value="{{ data.name }}" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Urgency</label>
+                                            <input class="form-control" type="text"  value="{{ data.urgency }}" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Status</label>
+                                            <input class="form-control" type="text"  value="{{ data.status }}" readonly>
+                                        </div>
+
+
+                                         <div class="form-group">
+                                            <label for="id_issue">Reported By</label>
+                                            <input class="form-control" type="text"  value="{{ data.reported_by }}" readonly>
+                                        </div>
+
+                                        <div class="form_image" style="margin-left:160px">
+                                            {% if data.image %}
+                                            <img src="{{ data.image.url }}" alt="org" height="157px" width="224px"/>
+                                            {% else %}
+                                            <img src="{% static 'dashboard/images/organization.svg' %}" height="157px"
+                                                 width="224px" alt="org"/>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_issue">Reply</label>
+                                             <textarea class="form-control"  cols="20" rows="5"  ></textarea>
+                                        </div>
+
+
+
+                                    </div>
+
+
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- modal end-->
                         {% endfor %}
 
                         </tbody>
@@ -92,5 +168,7 @@
             </div>
         </div>
     </div>
+
+
 </section>
 {% endblock %}
