@@ -298,6 +298,8 @@ class Report(models.Model):
     reported_by = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='space',
                               blank=True, null=True)
+    reply = models.TextField(null=True, blank=True)
+    token = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.title

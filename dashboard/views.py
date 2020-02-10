@@ -134,9 +134,12 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         group = Group.objects.get(user=user)
+        print(user_data)
         if group.name == "admin":
-            query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province', 'district',
-                                                                                      'municipality').order_by('id')
+            query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province',
+                                                                                                             'district',
+                                                                                                             'municipality').order_by(
+                'id')
         else:
             query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
 
@@ -152,6 +155,35 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         return data
 
 
+class UserList(LoginRequiredMixin, ListView):
+    template_name = 'user_list.html'
+    model = UserProfile
+
+    def get_context_data(self, **kwargs):
+        data = super(UserList, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        query_data = UserProfile.objects.all()
+        print('test', self.request.user)
+        data['list'] = query_data
+        data['user'] = user_data
+        data['active'] = 'user'
+        return data
+
+
+def activate_user(request, **kwargs):
+    user = User.objects.get(id=kwargs['id'])
+    # user_data = UserProfile.objects.get(user=user)
+
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+
+    user.save()
+    return redirect('user-list')
+
+
 class AvailableFacilityList(LoginRequiredMixin, ListView):
     template_name = 'available_list.html'
     model = AvailableFacility
@@ -160,11 +192,11 @@ class AvailableFacilityList(LoginRequiredMixin, ListView):
         data = super(AvailableFacilityList, self).get_context_data(**kwargs)
         query_data = AvailableFacility.objects.select_related('province', 'district', 'municipality').order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
         data['model'] = 'AvailableFacility'
         data['url'] = 'available-list'
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -177,15 +209,13 @@ class ReportList(LoginRequiredMixin, ListView):
         data = super(ReportList, self).get_context_data(**kwargs)
         query_data = Report.objects.select_related('open_space', ).order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'report-list/'
-        url_bytes = url.encode('ascii')
-        base64_bytes = base64.b64encode(url_bytes)
-        base64_url = base64_bytes.decode('ascii')
+
         data['list'] = query_data
         data['model'] = 'Report'
-        data['url'] = base64_url
-        # data['user'] = user_data
+        # data['url'] = base64_url
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -198,7 +228,7 @@ class QuestionsList(LoginRequiredMixin, ListView):
         data = super(QuestionsList, self).get_context_data(**kwargs)
         query_data = QuestionList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'question-list/'
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -206,7 +236,7 @@ class QuestionsList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'QuestionList'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'question'
         return data
 
@@ -243,7 +273,7 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         data = super(SuggestedUseLists, self).get_context_data(**kwargs)
         query_data = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'suggest-list/'
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -251,7 +281,7 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'SuggestedUseList'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -266,7 +296,7 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
             'open_space').order_by('id')
 
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'suggestdata-list/' + str(self.kwargs['id'])
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -275,7 +305,7 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'SuggestedUseData'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -288,7 +318,7 @@ class GalleryLists(LoginRequiredMixin, ListView):
         data = super(GalleryLists, self).get_context_data(**kwargs)
         query_data = Gallery.objects.filter(open_space=self.kwargs['id']).order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'gallery-list/' + str(self.kwargs['id'])
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -297,7 +327,7 @@ class GalleryLists(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'Gallery'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'gallery'
         return data
 
@@ -310,7 +340,7 @@ class ServiceLists(LoginRequiredMixin, ListView):
         data = super(ServiceLists, self).get_context_data(**kwargs)
         query_data = ServiceList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'service-list/'
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -318,7 +348,7 @@ class ServiceLists(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'ServiceList'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -332,7 +362,7 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         query_data = ServiceData.objects.filter(open_space=self.kwargs['id']).select_related('open_space',
                                                                                              'service', ).order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         url = 'servicedata-list/' + str(self.kwargs['id'])
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
@@ -341,7 +371,7 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['model'] = 'ServiceData'
         data['url'] = base64_url
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -354,9 +384,9 @@ class ResourceList(LoginRequiredMixin, ListView):
         data = super(ResourceList, self).get_context_data(**kwargs)
         query_data = Resource.objects.select_related('category', 'document_type', ).order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'resource'
         return data
 
@@ -369,11 +399,11 @@ class ResourceCategoryList(LoginRequiredMixin, ListView):
         data = super(ResourceCategoryList, self).get_context_data(**kwargs)
         query_data = ResourceCategory.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
         data['model'] = 'ResourceCategory'
         data['url'] = 'resource-category-list'
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'resource'
         return data
 
@@ -386,9 +416,9 @@ class ResourceDocumentList(LoginRequiredMixin, ListView):
         data = super(ResourceDocumentList, self).get_context_data(**kwargs)
         query_data = ResourceDocumentType.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'resource'
         return data
 
@@ -402,8 +432,8 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         return data
@@ -421,8 +451,8 @@ class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateVie
     def get_context_data(self, **kwargs):
         data = super(AvailableFacilityCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'available'
         return data
 
@@ -439,8 +469,8 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(QuestionCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'question'
         return data
 
@@ -457,8 +487,8 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         return data
@@ -476,8 +506,8 @@ class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(QuestionUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'question'
         return data
 
@@ -498,8 +528,8 @@ class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
                                                                                            'municipality').order_by(
             'id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'question'
         return data
 
@@ -521,8 +551,8 @@ class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
                                                                                            'district',
                                                                                            'municipality').order_by(
             'id')
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'question'
         return data
 
@@ -539,8 +569,8 @@ class SuggestedCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(SuggestedCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'suggest'
         return data
 
@@ -557,8 +587,8 @@ class SuggestedUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(SuggestedUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'suggest'
         return data
 
@@ -580,8 +610,8 @@ class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             'id')
         data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'suggest'
         return data
 
@@ -602,8 +632,8 @@ class SuggestedDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             'id')
         data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'suggest'
         return data
 
@@ -622,8 +652,8 @@ class ServiceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         # data['open_space'] = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
         # data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'service'
         return data
 
@@ -644,8 +674,8 @@ class GalleryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             'id')
         # data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'service'
         return data
 
@@ -675,8 +705,8 @@ class ServiceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(ServiceUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'suggest'
         return data
 
@@ -697,8 +727,8 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             'id')
         data['service'] = ServiceList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'service'
         return data
 
@@ -719,8 +749,8 @@ class GalleryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             'id')
         # data['suggest'] = SuggestedUseList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'openspace'
         return data
 
@@ -741,8 +771,8 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             'id')
         data['service'] = ServiceList.objects.order_by('id')
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'service'
         return data
 
@@ -759,8 +789,8 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
     def get_context_data(self, **kwargs):
         data = super(ResourceCategoryCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'resource'
         return data
 
@@ -777,8 +807,8 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
     def get_context_data(self, **kwargs):
         data = super(ResourceCategoryCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'resource'
         return data
 
@@ -794,9 +824,9 @@ class HeaderList(LoginRequiredMixin, ListView):
         data = super(HeaderList, self).get_context_data(**kwargs)
         query_data = Header.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'header'
         return data
 
@@ -811,8 +841,8 @@ class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         print('abc')
         data = super(HeaderUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'header'
         return data
 
@@ -829,11 +859,11 @@ class SliderList(LoginRequiredMixin, ListView):
         data = super(SliderList, self).get_context_data(**kwargs)
         query_data = Slider.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
         data['model'] = 'Slider'
         data['url'] = 'slider-list'
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'slider'
         return data
 
@@ -848,8 +878,8 @@ class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         print('abc')
         data = super(SliderUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'header'
         return data
 
@@ -866,8 +896,8 @@ class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(SliderCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'slider'
         return data
 
@@ -884,9 +914,9 @@ class OpenSpaceDefinitionList(LoginRequiredMixin, ListView):
         data = super(OpenSpaceDefinitionList, self).get_context_data(**kwargs)
         query_data = OpenSpaceDef.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'open_def'
         return data
 
@@ -901,8 +931,8 @@ class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateV
         print('abc')
         data = super(OpenSpaceDefinitionUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'open_def'
         return data
 
@@ -919,9 +949,9 @@ class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
         data = super(OpenSpaceIdentificationList, self).get_context_data(**kwargs)
         query_data = OpenSpaceIde.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'open_ide'
         return data
 
@@ -936,8 +966,8 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
         print('abc')
         data = super(OpenSpaceIdentificationUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'open_ide'
         return data
 
@@ -955,11 +985,11 @@ class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
         data = super(OpenSpaceIdentificationProcessList, self).get_context_data(**kwargs)
         query_data = CreateOpenSpace.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
         data['model'] = 'CreateOpenSpace'
         data['url'] = 'openspace-identification-process-list'
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'open_ide_process'
         return data
 
@@ -974,8 +1004,8 @@ class OpenSpaceIdentificationProcessUpdate(SuccessMessageMixin, LoginRequiredMix
         print('abc')
         data = super(OpenSpaceIdentificationProcessUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'open_ide_process'
         return data
 
@@ -992,8 +1022,8 @@ class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMix
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceIdentificationProcessCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'open_ide_process'
         return data
 
@@ -1010,9 +1040,9 @@ class FooterList(LoginRequiredMixin, ListView):
         data = super(FooterList, self).get_context_data(**kwargs)
         query_data = Contact.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'footer'
         return data
 
@@ -1027,8 +1057,8 @@ class FooterUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         print('abc')
         data = super(FooterUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'footer'
         return data
 
@@ -1045,11 +1075,11 @@ class AppList(LoginRequiredMixin, ListView):
         data = super(AppList, self).get_context_data(**kwargs)
         query_data = OpenSpaceApp.objects.all()
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
+        user_data = UserProfile.objects.get(user=user)
         data['list'] = query_data
         data['model'] = 'OpenSpaceApp'
         data['url'] = 'app-list'
-        # data['user'] = user_data
+        data['user'] = user_data
         data['active'] = 'app'
         print(data)
         return data
@@ -1065,8 +1095,8 @@ class AppUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         print('abc')
         data = super(AppUpdate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'app'
         return data
 
@@ -1083,8 +1113,8 @@ class AppCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(AppCreate, self).get_context_data(**kwargs)
         user = self.request.user
-        # user_data = UserProfile.objects.get(user=user)
-        # data['user'] = user_data
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
         data['active'] = 'open_ide_process'
         return data
 
