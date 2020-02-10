@@ -225,9 +225,9 @@
 
 
             {% if user.user.groups.all.0.name == 'super_admin' %}
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User {{ user.user.groups.all.0 }}</span></a>
+            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User </span></a>
                 <ul class="ml-menu">
-                    <li><a href="/dashboard/create-user">Create User </a></li>
+                    <li><a href="/dashboard/user-list">View All User </a></li>
 
                 </ul>
             </li>

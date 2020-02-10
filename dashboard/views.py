@@ -135,8 +135,10 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user_data = UserProfile.objects.get(user=user)
         group = Group.objects.get(user=user)
         if group.name == "admin":
-            query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province', 'district',
-                                                                                      'municipality').order_by('id')
+            query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province',
+                                                                                                             'district',
+                                                                                                             'municipality').order_by(
+                'id')
         else:
             query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
 
@@ -150,6 +152,35 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         data['user'] = user_data
         data['active'] = 'openspace'
         return data
+
+
+class UserList(LoginRequiredMixin, ListView):
+    template_name = 'user_list.html'
+    model = OpenSpace
+
+    def get_context_data(self, **kwargs):
+        data = super(UserList, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        group = Group.objects.get(user=user)
+        query_data = UserProfile.objects.all()
+        data['list'] = query_data
+        data['user'] = user_data
+        data['active'] = 'user'
+        return data
+
+
+def activate_user(request, **kwargs):
+    user = User.objects.get(id=kwargs['id'])
+    # user_data = UserProfile.objects.get(user=user)
+
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+
+    user.save()
+    return redirect('user-list')
 
 
 class AvailableFacilityList(LoginRequiredMixin, ListView):
