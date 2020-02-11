@@ -94,7 +94,8 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-
+                                    <form enctype="multipart/form-data" method="POST" action={% url "reply-report" %}>
+                                        {% csrf_token %}
                                         <div class="form-group">
                                             <label for="id_issue">Openspace</label>
                                             <input class="form-control" type="text"  value="{{ data.open_space }}" readonly>
@@ -124,8 +125,14 @@
 
                                          <div class="form-group">
                                             <label for="id_issue">Reported By</label>
-                                            <input class="form-control" type="text"  value="{{ data.reported_by }}" readonly>
+                                            <input class="form-control" type="text" name="name"  value="{{ data.reported_by }}" readonly>
                                         </div>
+
+
+                                        <input class="form-control" type="text"  name="token"  value="{{ data.token }}" hidden>
+                                        <input class="form-control" type="text"  name="id"  value="{{ data.id }}" hidden>
+                                        <input class="form-control" type="text" name="title"   value="{{ data.title }}" hidden>
+
 
                                         <div class="form_image" style="margin-left:160px">
                                             {% if data.image %}
@@ -138,7 +145,12 @@
 
                                         <div class="form-group">
                                             <label for="id_issue">Reply</label>
-                                             <textarea class="form-control"  cols="20" rows="5"  ></textarea>
+                                            {% if data.reply %}
+                                             <textarea class="form-control" name="reply"  cols="20" rows="5"  readonly>{{ data.reply }}</textarea>
+                                            {% else %}
+                                            <textarea class="form-control" name="reply"  cols="20" rows="5"  ></textarea>
+                                            {% endif %}
+
                                         </div>
 
 
@@ -150,8 +162,9 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                         </button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary">Reply</button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

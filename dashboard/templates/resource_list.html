@@ -13,49 +13,52 @@
                         <li class="breadcrumb-item">Resource</li>
                         <li class="breadcrumb-item active">Resource list</li>
                     </ul>
-                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                    </button>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
-                    <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i></button>
+                    <button class="btn float-right right_icon_toggle_btn" type="button"><i
+                            class="la la-arrow-right"></i></button>
                 </div>
             </div>
+        </div>
+        <div class="">
+            <a class="btn float-right" href="/dashboard/resource-add/"><i class="la la-plus"></i> Add Resource</a>
+
         </div>
         <div class="container-fluid">
             <div class="card project_list">
                 <div class="table-responsive">
                     <table id="Beneficiary_table" class="table table-hover c_table">
                         <thead>
-                            <tr>
-                                <th>S.N</th>
-                                <th>Title</th>
-                                <th>description</th>
-                                <th>category</th>
-                                <th>document type</th>
-                                <th>action</th>
-                            </tr>
+                        <tr>
+                            <th>S.N</th>
+                            <th>Title</th>
+                            <th>description</th>
+                            <th>category</th>
+                            <th>document type</th>
+                            <th>action</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for data in list %}
-                            <tr>
-                                <td>{{ data.id }}</td>
-                                <td>{{ data.title }}</td>
-                                <td>{{ data.description }}</td>
-                                <td>{{ data.category }}</td>
-                                <td>{{ data.document_type }}</td>
-                                <td class="table-action">
-                                    <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="#" class="btn"> <i class="la la-edit"> </i> Edit</a>
-                                </td>
-                            </tr>
+                        {% for data in list %}
+                        <tr>
+                            <td>{{ data.id }}</td>
+                            <td>{{ data.title }}</td>
+                            <td>{{ data.description }}</td>
+                            <td>{{ data.category }}</td>
+                            <td>{{ data.document_type }}</td>
+                            <td class="table-action">
+                                <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
+                                <a href="/dashboard/resource-edit/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                            </td>
+                        </tr>
                         {% endfor %}
 
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="output-form.html"><i class="la la-plus"></i> Add output</a>
 
-                </div>
             </div>
         </div>
     </div>

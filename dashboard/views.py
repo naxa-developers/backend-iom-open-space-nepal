@@ -26,6 +26,7 @@ from django.contrib.gis.utils import LayerMapping
 from django.shortcuts import render_to_response
 from dashboard import shapefileIO
 from django.contrib.gis.gdal import DataSource
+from fcm_django.models import FCMDevice
 
 
 # Create your views here.
@@ -453,6 +454,26 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy('openspace-list')
 
 
+class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Resource
+    template_name = 'resource_add.html'
+    form_class = ResourceForm
+    success_message = 'Resource successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
+        data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-list')
+
+
 class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = AvailableFacility
     template_name = 'available_facility_add.html'
@@ -487,6 +508,26 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('question-list')
+
+
+class ResourceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Resource
+    template_name = 'resource_edit.html'
+    form_class = ResourceForm
+    success_message = 'Resource Updated Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
+        data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-list')
 
 
 class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
@@ -1190,6 +1231,23 @@ def CreateUser(request, **kwargs):
     form = UserCreationForm()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
     return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
+
+
+def report_reply(request, **kwargs):
+    if request.method == 'POST':
+        data = FCMDevice.objects.filter(device_id=request.POST['id'])
+        if data.count() < 1:
+            FCMDevice.objects.create(name=request.POST['name'], device_id=request.POST['id'],
+                                     registration_id=request.POST['token'], type='android')
+
+        device = FCMDevice.objects.get(device_id=request.POST['id'])
+
+        print('aaaaaaaaaaaaaaaaaaaaa', device)
+        device.send_message(request.POST['title'], request.POST['reply'])
+        Report.objects.filter(id=request.POST['id']).update(reply=request.POST['reply'], status="replied")
+        return redirect('/dashboard/report-list')
+    else:
+        return redirect('/dashboard/report-list')
 
 
 def deleteData(request, **kwargs):
