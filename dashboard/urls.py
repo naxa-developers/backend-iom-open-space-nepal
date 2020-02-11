@@ -52,8 +52,12 @@ urlpatterns = [
 
     path('resource-category-list/', views.ResourceCategoryList.as_view(), name='resource-category-list'),
     path('resource-category-add/', views.ResourceCategoryCreate.as_view(), name='resource-category-add'),
+    path('resource-category-edit/<int:pk>', views.ResourceCategoryUpdate.as_view(), name='resource-category-edit'),
 
     path('resource-document-list/', views.ResourceDocumentList.as_view(), name='resource-document-list'),
+    path('resource-document-add/', views.ResourceDocumentTypeCreate.as_view(), name='resource-document-add'),
+    path('resource-document-edit/<int:pk>', views.ResourceDocumentTypeUpdate.as_view(), name='resource-document-edit'),
+
     path('header-list/', views.HeaderList.as_view(), name='header-list'),
     path('header-update/<int:pk>', views.HeaderUpdate.as_view(), name='header-update'),
     path('slider-list/', views.SliderList.as_view(), name='slider-list'),
