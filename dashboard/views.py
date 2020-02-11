@@ -455,22 +455,23 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 
 class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
-    model = OpenSpace
+    model = Resource
     template_name = 'resource_add.html'
     form_class = ResourceForm
-    success_message = 'Open successfully Created'
+    success_message = 'Resource successfully Created'
 
     def get_context_data(self, **kwargs):
         data = super(ResourceCreate, self).get_context_data(**kwargs)
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
-        data['provinces'] = Province.objects.all().order_by('id')
-        data['active'] = 'openspace'
+        data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
+        data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
+        data['active'] = 'resource'
         return data
 
     def get_success_url(self):
-        return reverse_lazy('openspace-list')
+        return reverse_lazy('resource-list')
 
 
 class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -507,6 +508,26 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('question-list')
+
+
+class ResourceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = Resource
+    template_name = 'resource_edit.html'
+    form_class = ResourceForm
+    success_message = 'Resource Updated Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
+        data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-list')
 
 
 class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

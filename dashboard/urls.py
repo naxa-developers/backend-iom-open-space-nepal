@@ -50,6 +50,8 @@ urlpatterns = [
     path('servicedata-edit/<int:pk>/<int:id>', views.ServiceDataUpdate.as_view(), name='servicedata-edit'),
 
     path('resource-list/', views.ResourceList.as_view(), name='resource-list'),
+    path('resource-add/', views.ResourceCreate.as_view(), name='resource-add'),
+    path('resource-edit/<int:pk>', views.ResourceUpdate.as_view(), name='resource-edit'),
 
     path('resource-category-list/', views.ResourceCategoryList.as_view(), name='resource-category-list'),
     path('resource-category-add/', views.ResourceCategoryCreate.as_view(), name='resource-category-add'),
