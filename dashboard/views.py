@@ -13,7 +13,8 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
-    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm
+    OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
+    ResourceDocumentTypeForm, ResourceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -400,9 +401,13 @@ class ResourceCategoryList(LoginRequiredMixin, ListView):
         query_data = ResourceCategory.objects.order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
+        url = 'resource-category-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'ResourceCategory'
-        data['url'] = 'resource-category-list'
+        data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'resource'
         return data
@@ -417,6 +422,12 @@ class ResourceDocumentList(LoginRequiredMixin, ListView):
         query_data = ResourceDocumentType.objects.order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
+        url = 'resource-document-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['model'] = 'ResourceDocumentType'
+        data['url'] = base64_url
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'resource'
@@ -798,14 +809,14 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
         return reverse_lazy('resource-category-list')
 
 
-class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
-    model = ResourceCategory
-    template_name = 'resourcecategory_add.html'
-    form_class = ResourceCategoryForm
-    success_message = 'Resource Category successfully Created'
+class ResourceDocumentTypeCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = ResourceDocumentType
+    template_name = 'resourcedocument_add.html'
+    form_class = ResourceDocumentTypeForm
+    success_message = 'Resource Document Type successfully Created'
 
     def get_context_data(self, **kwargs):
-        data = super(ResourceCategoryCreate, self).get_context_data(**kwargs)
+        data = super(ResourceDocumentTypeCreate, self).get_context_data(**kwargs)
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
@@ -813,7 +824,7 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
         return data
 
     def get_success_url(self):
-        return reverse_lazy('resource-category-list')
+        return reverse_lazy('resource-document-list')
 
 
 class HeaderList(LoginRequiredMixin, ListView):
@@ -885,6 +896,42 @@ class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('slider-list')
+
+
+class ResourceCategoryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = ResourceCategory
+    template_name = 'resourcecategory_edit.html'
+    form_class = ResourceCategoryForm
+    success_message = 'Resource Category successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceCategoryUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-category-list')
+
+
+class ResourceDocumentTypeUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = ResourceDocumentType
+    template_name = 'resourcedocument_edit.html'
+    form_class = ResourceDocumentTypeForm
+    success_message = 'Resource Document Type successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(ResourceDocumentTypeUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'resource'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('resource-document-list')
 
 
 class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
