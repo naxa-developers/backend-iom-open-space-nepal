@@ -5,6 +5,7 @@ from dashboard import views
 urlpatterns = [
     path('home/', views.HomePage.as_view(), name='home'),
     path('create-user/', views.CreateUser, name='create-user'),
+    path('reply-report/', views.report_reply, name='reply-report'),
     path('user-list/', views.UserList.as_view(), name='user-list'),
     path('activate/<int:id>', views.activate_user, name='activate'),
     path('delete/<str:model>/<int:id>/<str:url>', views.deleteData, name='delete'),

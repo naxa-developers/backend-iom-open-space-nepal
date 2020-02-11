@@ -42,7 +42,12 @@ INSTALLED_APPS = [
     'front',
     'corsheaders',
     'dashboard',
+    'fcm_django',
 ]
+
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY": "AAAAH6WwXgs:APA91bHFjowFLvbl9rMgu7SMGjpiklVu4fMNeosgNv8D1_QlNEa8q5uBnfvGdm0pXwCPQpRLBg4nnsGNt1qEj0nSGBer7xfzIVt-cneBj0MonP9ogddgXdjqo98l9RpwkbqsrpMm6gZI "
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

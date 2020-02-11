@@ -170,7 +170,7 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ('id', 'title', 'name', 'message', 'date', 'urgency',
-                  'status', 'open_space', 'reported_by', 'image', 'location', 'count', 'address')
+                  'status', 'open_space', 'reported_by', 'image', 'location', 'token', 'count', 'address')
 
     def get_location(self, instance):
         center = []
