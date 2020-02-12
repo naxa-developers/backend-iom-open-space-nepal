@@ -162,7 +162,7 @@ class ReportViewSet(viewsets.ModelViewSet):
         open_space = self.request.query_params.get('id')
         start_date_str = self.request.query_params.get('start_date')
         end_date_str = self.request.query_params.get('end_date')
-
+        token = self.request.query_params.get('token')
 
         if start_date_str and end_date_str and status and open_space:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
@@ -192,6 +192,9 @@ class ReportViewSet(viewsets.ModelViewSet):
 
         elif open_space:
             return queryset.filter(open_space=open_space)
+
+        elif token:
+            return queryset.filter(token=token)
 
         else:
             return queryset
@@ -684,7 +687,7 @@ class OpenSpaceNearBy(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def post(self,request):
+    def post(self, request):
         api_json = {}
         latitude = self.request.data.get('latitude')
         longitude = self.request.data.get('longitude')
@@ -694,9 +697,9 @@ class OpenSpaceNearBy(APIView):
             location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
 
         open_space = OpenSpace.objects \
-                                .filter(polygons__distance_lte=(location, D(km=distance))) \
-                                .annotate(distance=Distance('polygons', location)) \
-                                .order_by('distance')
+            .filter(polygons__distance_lte=(location, D(km=distance))) \
+            .annotate(distance=Distance('polygons', location)) \
+            .order_by('distance')
 
         resource_json = OpenSpaceAttributeSerializer(open_space, many=True)
         json = JSONRenderer().render(resource_json.data)
@@ -704,9 +707,6 @@ class OpenSpaceNearBy(APIView):
         data = JSONParser().parse(stream)
         api_json['open_space'] = data
         return Response(api_json)
-
-
-
 
 
 class AvailableFacilityViewSet(viewsets.ModelViewSet):
