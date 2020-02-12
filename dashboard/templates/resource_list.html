@@ -49,8 +49,11 @@
                             <td>{{ data.category }}</td>
                             <td>{{ data.document_type }}</td>
                             <td class="table-action">
-                                <a href="#" class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                <a href="/dashboard/resource-edit/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
+                                   onclick="return confirm('Are you sure you want to delete this item?');"
+                                   class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
+                                <a href="/dashboard/resource-edit/{{ data.id }}" class="btn"> <i
+                                        class="la la-edit"> </i> Edit</a>
                             </td>
                         </tr>
                         {% endfor %}
