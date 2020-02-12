@@ -196,10 +196,10 @@ class OpenSpace(models.Model):
     ward = models.CharField(max_length=1000, blank=True, null=True)
     capacity = models.FloatField(blank=True, null=True, default=Decimal('0.0000'))
     # capacity = models.CharField(max_length=100, blank=True, null=True)
-    total_area = models.FloatField(blank=True, null=True)
+    total_area = models.FloatField(blank=True, null=True, default=0)
     # total_area = models.CharField(max_length=100,
     #                                  blank=True, null=True)
-    usable_area = models.CharField(max_length=1000, blank=True, null=True)
+    usable_area = models.CharField(max_length=1000, blank=True, null=True, default=0)
     image = models.ImageField(upload_to='space', blank=True, null=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
