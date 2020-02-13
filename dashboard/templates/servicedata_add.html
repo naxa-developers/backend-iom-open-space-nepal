@@ -27,7 +27,6 @@
                 <form action=" " method="post">
 
                     {% csrf_token %}
-
                     {% if form.errors %}
                     {% for field in form %}
                     {% for error in field.errors %}
@@ -61,6 +60,17 @@
                                 {% for service in service %}
                                 <option value="{{ service.id }}">{{service.name}}</option>
                                 {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="id_service">Is Available  </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" name="is_available" id="id_is_available">
+                              <option value="yes">YES</option>
+                              <option value="no" selected="">NO</option>
                             </select>
                         </div>
                     </div>
