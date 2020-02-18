@@ -85,11 +85,12 @@ class HomePage(TemplateView):
         data_list2.extend(open_space_usable)
         data_listt2 = [float(i) for i in data_list2]
         # print(service_open)
-
+        pen_count = Report.objects.filter(status='pending').count()
+        com_count = Report.objects.filter(status='replied').count()
         return render(request, 'dashboard.html',
                       {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
                        'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
-                       'mun_id': mun_id, 'user': user_data})
+                       'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count})
 
 
 def UploadShapeFile(request):

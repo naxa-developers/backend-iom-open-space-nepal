@@ -210,6 +210,8 @@ class OpenSpace(models.Model):
     polygons = MultiPolygonField(null=True, blank=True)
     thumbnail = models.ImageField(upload_to='thumbs', editable=False, null=True, blank=True)
     geoserver_url = models.CharField(max_length=500, blank=True, null=True)
+    layername = models.CharField(max_length=500, blank=True, null=True)
+    workspace = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         ordering = ['title']
