@@ -609,14 +609,32 @@ $(function() {
         });
         //pie-chart
         $(document).ready(function(){
+
             var chart = c3.generate({
                 bindto: '#phase-pie', // id of chart wrapper
                 data: {
-                    columns: pie_count,
-                    type: 'pie', // default type of chart
-                    
-                    colors: pie_color,
-                    names: pie_name
+                    columns: [
+                        // each columns data
+                        ['data1', pending],
+                        ['data2', replied],
+                    ],
+//                    columns: pie_count,
+                    type: 'pie',
+                    // default type of chart
+
+                    colors: {
+                        'data1': "#de6470",
+                        'data2': "#52ab66",
+
+                    },
+
+                    names: {
+                        // name of each serie
+                        'data1': 'Pending',
+                        'data2': 'Replied',
+                    }
+//                    colors: pie_color,
+//                    names: pie_name
                 },
                 axis: {
                 },

@@ -85,11 +85,12 @@ class HomePage(TemplateView):
         data_list2.extend(open_space_usable)
         data_listt2 = [float(i) for i in data_list2]
         # print(service_open)
-
+        pen_count = Report.objects.filter(status='pending').count()
+        com_count = Report.objects.filter(status='replied').count()
         return render(request, 'dashboard.html',
                       {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
                        'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
-                       'mun_id': mun_id, 'user': user_data})
+                       'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count})
 
 
 def UploadShapeFile(request):
@@ -387,6 +388,12 @@ class ResourceList(LoginRequiredMixin, ListView):
         query_data = Resource.objects.select_related('category', 'document_type', ).order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
+        url = 'resource-list/'
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['model'] = 'Resource'
+        data['url'] = base64_url
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'resource'

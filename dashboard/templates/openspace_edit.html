@@ -123,7 +123,9 @@
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 district_class" name="district"
                                     id="id_district" data-placeholder="Select">
-                                <option value="{{ form.instance.district.id }}" selected>{{form.instance.district.name}}</option>
+                                <option value="{{ form.instance.district.id }}" selected>
+                                    {{form.instance.district.name}}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -132,7 +134,8 @@
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 mun_class" name="municipality"
                                     id="id_municipality" data-placeholder="Select">
-                                <option value="{{ form.instance.municipality.id }}">{{form.instance.municipality}}</option>
+                                <option value="{{ form.instance.municipality.id }}">{{form.instance.municipality}}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -162,12 +165,18 @@
                                value="{{ form.instance.usable_area }}" id="id_usable_area">
                     </div>
 
+                    <div class="form-group">
+                        <label for="id_geoserver_url">Geoserver Url</label>
+                        <input class="form-control" type="text" name="geoserver_url" maxlength="1000"
+                               value="{{ form.instance.geoserver_url }}" id="id_geoserver_url">
+                    </div>
+
                     <div class="form-group" style="margin-left:160px">
                         <p>Current Image :</p>
                         {% if form.instance.image %}
-                        <img src="{{form.instance.image.url}}" alt="User"  height="350px" width="350px">
+                        <img src="{{form.instance.image.url}}" alt="User" height="350px" width="350px">
                         {% else %}
-                        <img src="/static/dashboard/images/pf.png" alt="User" >
+                        <img src="/static/dashboard/images/pf.png" alt="User">
                         {% endif %}
 
                     </div>

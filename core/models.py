@@ -89,6 +89,11 @@ class ServiceList(models.Model):
 
 
 class ServiceData(models.Model):
+    Available = (
+        ('yes', 'YES'),
+        ('no', 'NO')
+    )
+    is_available = models.CharField(choices=Available, max_length=15, default='no', blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     open_space = models.ForeignKey('OpenSpace', related_name='services',
                                    on_delete=models.CASCADE)
@@ -204,7 +209,9 @@ class OpenSpace(models.Model):
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     polygons = MultiPolygonField(null=True, blank=True)
     thumbnail = models.ImageField(upload_to='thumbs', editable=False, null=True, blank=True)
-    thumb_update = models.CharField(max_length=100, blank=True, null=True)
+    geoserver_url = models.CharField(max_length=500, blank=True, null=True)
+    layername = models.CharField(max_length=500, blank=True, null=True)
+    workspace = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         ordering = ['title']

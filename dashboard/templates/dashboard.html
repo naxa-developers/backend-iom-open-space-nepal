@@ -23,38 +23,15 @@
                             <div class="card-header">
                                 <h5>Project overview</h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="margin-bottom:89px;   ">
                                 <p>
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-
-
                                     Welcome to the digital inventory of open spaces in Nepal developed by the International Organization
                                     for Migration (IOM) under the leadership of Ministry of Home Affairs (MoHA) and technical support of Naxa Pvt. Ltd.
                                     with the objective of proper record keeping and dissemination of information about all
                                     identified open spaces in different locations around the country.
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                                    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+
                                 </p>
-                                <ul>
-<!--                                    <li><label>Name :</label><span>House Construction</span></li>-->
-<!--                                    <li><label>Project Manager :</label><span>Mr.Ramesh khadgi</span></li>-->
-<!--                                    <li><label>Province :</label><span>Province 2, Province 4</span></li>-->
-<!--                                    <li><label>district :</label><span>Gorkha, Makawanpur</span></li>-->
-<!--                                    <li><label>Municipality :</label><span>Thaha, Dhordi</span></li>-->
-<!--                                    <li><label>Start date :</label><span>01/01/2019</span></li>-->
-<!--                                    <li><label>End date :</label><span>01/05/2020</span></li>-->
-<!--                                    <li><label>reporting period :</label><span>Quarterly</span></li>-->
-                                </ul>
+
                             </div>
                         </div>
                     </div>
@@ -157,7 +134,7 @@
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>On site Amenities</h5>
+                                    <h5>Report Pending VS Replied</h5>
                                 </div>
                                 <div class="card-body">
                                     <div id="phase-pie"></div>
@@ -215,6 +192,11 @@ var mun_id = '{{ mun_id }}'
     var pie_count = {{ pie_count | safe  }}
     var pie_name = {{ pie_name | safe }}
     var pie_color = {{ pie_color | safe }}
+    var pending ={{ pending }}
+    var replied ={{ completed }}
+
+    console.log(pending)
+    console.log(replied)
 
 
 </script>
