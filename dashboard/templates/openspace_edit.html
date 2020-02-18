@@ -171,6 +171,18 @@
                                value="{{ form.instance.geoserver_url }}" id="id_geoserver_url">
                     </div>
 
+                    <div class="form-group">
+                        <label for="id_layername">Layername</label>
+                        <input class="form-control" type="text" name="layername" maxlength="1000"
+                               value="{{ form.instance.layername }}" id="id_layername">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_workspace">Workspace</label>
+                        <input class="form-control" type="text" name="workspace" value="{{ form.instance.workspace }}"
+                               maxlength="1000" id="id_workspace">
+                    </div>
+
                     <div class="form-group" style="margin-left:160px">
                         <p>Current Image :</p>
                         {% if form.instance.image %}
