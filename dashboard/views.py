@@ -27,6 +27,7 @@ from django.shortcuts import render_to_response
 from dashboard import shapefileIO
 from django.contrib.gis.gdal import DataSource
 from fcm_django.models import FCMDevice
+from django.shortcuts import render
 
 
 # Create your views here.
@@ -1274,3 +1275,7 @@ def deleteDataFront(request, **kwargs):
     messages.success(request, "Deleted SuccessFully")
     return redirect(kwargs['url'])
     # print(model)
+
+
+def homePageListView(request):
+    return render(request, 'home_page_list.html')

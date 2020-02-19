@@ -90,4 +90,9 @@ urlpatterns = [
     path('app-add/', views.AppCreate.as_view(), name='app-add'),
     path('app-update/<int:pk>', views.AppUpdate.as_view(), name='app-update'),
 
+    #home page list view
+    path('home_page_list/', views.homePageListView, name='app-update'),
+
+
+
 ]
