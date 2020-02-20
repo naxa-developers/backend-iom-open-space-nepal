@@ -28,6 +28,8 @@ from dashboard import shapefileIO
 from django.contrib.gis.gdal import DataSource
 from fcm_django.models import FCMDevice
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -1277,5 +1279,9 @@ def deleteDataFront(request, **kwargs):
     # print(model)
 
 
+@login_required
 def homePageListView(request):
-    return render(request, 'home_page_list.html')
+    user = request.user
+    user_data = UserProfile.objects.get(user=user)
+    return render(request, 'home_page_list.html', {'user': user_data})
+
