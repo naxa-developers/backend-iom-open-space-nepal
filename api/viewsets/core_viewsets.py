@@ -509,7 +509,8 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'province', 'district',
                                         'municipality', 'ward', 'capacity',
                                         'total_area', 'usable_area', 'image',
-                                        'maps', 'location', 'centroid', 'latitude'))
+                                        'maps', 'location', 'centroid', 'latitude', 'geoserver_url',
+                                        'layername', 'workspace'))
 
         # print(serializers)
         # a = OpenSpace.objects.filter(id=4)
@@ -538,7 +539,8 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
                                             'province', 'district',
                                             'municipality', 'ward', 'capacity',
                                             'total_area', 'usable_area', 'image',
-                                            'maps', 'location'))
+                                            'maps', 'location', 'geoserver_url',
+                                            'layername', 'workspace'))
 
 
         else:
@@ -552,7 +554,7 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
                                             'province', 'district',
                                             'municipality', 'ward', 'capacity',
                                             'total_area', 'usable_area', 'image',
-                                            'maps', 'location'))
+                                            'maps', 'location', 'geoserver_url', 'layername', 'workspace'))
 
         open_space_geo_json = json.loads(serializers)
         return Response(open_space_geo_json)

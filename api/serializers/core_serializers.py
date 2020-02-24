@@ -141,7 +141,7 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area',
                   'usable_area', 'image', 'description', 'centroid', 'municipality_name',
-                  'province_name', 'district_name', 'thumbnail')
+                  'province_name', 'district_name', 'thumbnail', 'geoserver_url', 'layername', 'workspace')
 
     # def get_centroid(self, obj):
     #     center = []
