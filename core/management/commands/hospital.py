@@ -28,8 +28,10 @@ class Command(BaseCommand):
                 # print(Point(float(df['Latitude'][row]), float(df['Longitude'][row])))
 
                 q=AvailableFacility.objects.create(
-                    name=df['Name'][row],
-                    type='helipad',
+                    name=df['name'][row],
+                    type='health facility',
+                    health_type='hospital',
+                    operator_type=df['operator_t'][row],
                     location=Point(float(df['Log'][row]), float(df['Lat'][row])),
                 )
                 print(row, q.name)

@@ -8,7 +8,7 @@ from django.contrib.gis.geos import Point
 
 
 class Command(BaseCommand):
-    help = 'load province data from province.xlsx file'
+    help = 'load college data from College.csv file'
 
     def add_arguments(self, parser):
         parser.add_argument('--path', type=str)
@@ -28,8 +28,10 @@ class Command(BaseCommand):
                 # print(Point(float(df['Latitude'][row]), float(df['Longitude'][row])))
 
                 q=AvailableFacility.objects.create(
-                    name=df['Name'][row],
-                    type='helipad',
+                    name=df['name'][row],
+                    type='education facility',
+                    education_type=df['isced_leve'][row],
+                    operator_type=df['operator_t'][row],
                     location=Point(float(df['Log'][row]), float(df['Lat'][row])),
                 )
                 print(row, q.name)

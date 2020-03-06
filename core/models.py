@@ -373,7 +373,11 @@ class AvailableFacility(models.Model):
         ('school', 'School'),
         ('college', 'College'),
         ('kindergarten', 'Kinder Garten'),
+        ('higher_secondary', 'Higher Secondary'),
+        ('lower_secondary', 'Lower Secondary'),
         ('driving_school', 'Driving School'),
+        ('primary', 'Primary'),
+        ('secondary', 'Secondary'),
         ('library', 'Library')
     )
 

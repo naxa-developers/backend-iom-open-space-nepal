@@ -1,0 +1,271 @@
+﻿FID,amenity,name,Lat,Log
+1,pharmacy,Star Pharmacy,27.6842374,85.300871
+2,pharmacy,Harati Pharmacy,27.6668481,85.4366047
+7,pharmacy,PrakashPharmacy,27.6960583,85.3073164
+11,pharmacy,Om Pharmacy,27.7033822,85.3127057
+12,pharmacy,Pabitra Progress Pharmacy,27.7134784,85.2990496
+16,pharmacy,Chandeswori Medical ,27.6302214,85.52216
+19,pharmacy,Manobal Pharmacy,27.7322083,85.344712
+20,pharmacy,Welcome Medical Hall,27.6853901,85.320677
+22,pharmacy,Rusi Medical Hall,27.7232476,85.3335001
+23,pharmacy,Adit Pharmacy,27.7167401,85.3303491
+24,pharmacy,Abiral Pharmacy,27.7188321,85.3309027
+25,pharmacy,Shiddibinayak Pharmacy,27.7199639,85.3312409
+26,pharmacy,Indira Pharmacy,27.6716477,85.3389251
+27,pharmacy,Safe Way Pharmacy,27.6716889,85.339032
+28,pharmacy,Krishna medical hall,27.7000109,85.3217711
+29,pharmacy,Nise Pharmacy,27.7029685,85.3226058
+30,pharmacy,Pharmaceuticals,27.7009367,85.3236517
+31,pharmacy,Sai baba Pharmacy,27.7040828,85.322769
+32,pharmacy,Shree Ram Pharmacy,27.7343909,85.3306653
+33,pharmacy,Bigyan Clinic,27.6827251,85.3362629
+34,pharmacy,Kalash Pharmacy,27.6871305,85.338184
+36,pharmacy,EpochPharmacy,27.6649735,85.3062381
+37,pharmacy,Niko Pharmacy and Clinic,27.6750274,85.3079865
+38,pharmacy,Karuna Pharmacy,27.674658,85.3204022
+39,pharmacy,Rasu Pharmacy,27.6715947,85.4239745
+40,pharmacy,Pharmacy,27.6704007,85.4281489
+41,pharmacy,Surya KiranPharmacy,27.6902774,85.3054214
+42,pharmacy,Durga Bhawani Pharmacy,27.7241073,85.3397875
+43,pharmacy,Kabhreli Medical Hall,27.7216188,85.338381
+44,pharmacy,Elexier Pharmacy,27.7184393,85.3150329
+45,pharmacy,Rishi Ayurvedic Medical Hall,27.7172593,85.3160946
+47,pharmacy,Hira MedPharmacy,27.7228749,85.3134657
+48,pharmacy,Manoj Medical,27.7209982,85.3129186
+49,pharmacy,Nagarik AyurvedPharmacy,27.724077,85.3138116
+50,pharmacy,Toran Pharmacy,27.7191787,85.3126519
+52,pharmacy,Medicap Pharmacy and Clinic,27.7212211,85.3097439
+53,pharmacy,Navascmriti Polyclinic,27.7213806,85.3097048
+54,pharmacy,SamyakPharmacy,27.7179918,85.3098754
+55,pharmacy,ShakyaPharmacy,27.7180689,85.3098128
+56,pharmacy,Ganga MedPharmacy,27.7169938,85.3117349
+57,pharmacy,Citizens Medical Clinic,27.7240811,85.3064617
+58,pharmacy,Paiya-Kalika Pharmacy and Doctor Clinic,27.7286264,85.3122052
+59,pharmacy,Chatraganga Medical Hall,27.7332379,85.311079
+61,pharmacy,Akhil Medical,27.6832751,85.348377
+62,pharmacy,Hey BindabasiniPharmacy,27.682969,85.3471815
+63,pharmacy,Sathi Pharmacy,27.6806548,85.34582
+66,pharmacy,Bachar Medical Pharmacy,27.6738575,85.379912
+67,pharmacy,machhe Pharmacy,27.5868704,85.51396
+68,pharmacy,NAXALPharmacy,27.7134802,85.3259117
+69,pharmacy,Amul Pharmacy,27.7184124,85.3314442
+70,pharmacy,NilamPharmacy,27.7180095,85.3352956
+71,pharmacy,Bishesh Pharmacy,27.7179461,85.335528
+72,pharmacy,SudhanPharmacy,27.6888275,85.3420998
+73,pharmacy,Akrit Pharmacy,27.6894481,85.342586
+74,pharmacy,Divya Jyoti Ausadhi Pasal,27.6895795,85.3424944
+75,pharmacy,Om Shree Medical Hall,27.6909882,85.3431842
+76,pharmacy,Sushil Poly Clinic,27.726512,85.3142719
+77,pharmacy,Barsha Pharmacy,27.723363,85.3243026
+79,pharmacy,Shanti Pharmacy,27.6768948,85.3160338
+82,pharmacy,New Amar Medical Hall,27.7208481,85.3265009
+84,pharmacy,Sahara Pharmacy,27.7373033,85.3261202
+85,pharmacy,Ayurvedic Medical Hall,27.7387352,85.3241906
+86,pharmacy,Biraj Medical Hall,27.7384091,85.3245945
+87,pharmacy,Palas Medical Hall,27.7183321,85.338634
+88,pharmacy,Kistern Pharmacy,27.7197441,85.3390598
+89,pharmacy,ZenuxPharmacyceuticals,27.7057891,85.3094095
+90,pharmacy,Ayushree Pharmacy,27.7186294,85.3307917
+92,pharmacy,JanaSwasthaPharmacy,27.677366,85.436775
+93,pharmacy,Openiz Medico Pharm,27.7178809,85.335847
+94,pharmacy,OKPharmacy,27.7216131,85.3357126
+95,pharmacy,Sandesh Pharmacy,27.7204021,85.324268
+97,pharmacy,Flowrence Medical,27.7163576,85.335525
+98,pharmacy,Pawan Pharmacy,27.7278171,85.3348496
+100,pharmacy,BinduPharmacy,27.718785,85.3367462
+101,pharmacy,SiddhiPharmacy,27.7147348,85.332335
+102,pharmacy,Ashish Medical Hall,27.7305875,85.3341933
+103,pharmacy,Balkumari Pharmacy,27.6695988,85.2779008
+104,pharmacy,New Medical Hall,27.7292421,85.3387663
+105,pharmacy,Riddhi Sidhhi Pharmacy,27.7129278,85.3278543
+106,pharmacy,Sanjeevani Medical Pharmacy,27.7129576,85.3276692
+107,pharmacy,Mahesh Medical Hall,27.7126193,85.3347381
+108,pharmacy,Guru Pharmacy,27.6715357,85.2793636
+109,pharmacy,Permeswor Phermacy,27.6706299,85.2791644
+110,pharmacy,Panacea Pharmacy,27.6855711,85.3196104
+111,pharmacy,FPAN,27.6816545,85.3155505
+112,pharmacy,unani aushadhalaya,27.6806686,85.3150698
+113,pharmacy,Pharmacy shop,27.7177733,85.3058839
+114,pharmacy,Akaram Medical Center,27.7353383,85.3376322
+115,pharmacy,Sunaulo Pharmacy,27.7350148,85.3311351
+116,pharmacy,Sai Nanglo Pharmacy,27.7351904,85.3314053
+117,pharmacy,Agrima Pharmacy,27.7348758,85.3312567
+119,pharmacy,Not named,27.7147995,85.3858137
+120,pharmacy,Saskar Pharmacy,27.7185236,85.3813253
+121,pharmacy,Basu Pharmacy,27.734949,85.331061
+122,pharmacy,Sabek Pharmacy,27.7349794,85.3311012
+124,pharmacy,KamalVinayakPharmacy,27.6773951,85.4368419
+125,pharmacy,panchamuni,27.6736091,85.3232492
+126,pharmacy,PS Medical,27.6962726,85.3374975
+128,pharmacy,clinic,27.6703796,85.4276644
+129,pharmacy,Bhanu Ayurved,27.6702616,85.428472
+130,pharmacy,Pashupati Medical Hall,27.6951547,85.3406385
+132,pharmacy,Dhapakhel Pharmacy,27.6284323,85.3280301
+133,pharmacy,Bhadrakali Medical Hall,27.6688271,85.4297346
+134,pharmacy,Punarjeevan Medical hall,27.6585239,85.3227092
+135,pharmacy,anushree medico,27.68377,85.3333664
+136,pharmacy,Bethesba Pharmacy,27.6709998,85.3116944
+138,pharmacy,rossin Pharmacy,27.6667771,85.3136499
+140,pharmacy,Shambhu Pharmacy,27.6541652,85.305659
+142,pharmacy,Mahaguthi Pharmacy,27.7175952,85.3062092
+143,pharmacy,Krishna Pharmacy,27.6724679,85.4320448
+144,pharmacy,sagar medical,27.7095468,85.3079605
+145,pharmacy,Baidhya nath bhandari ayurved dham,27.7105149,85.3383499
+146,pharmacy,Helping Hands Pharmacy,27.717272,85.3463666
+147,pharmacy,Samaj Dental Pharmacy,27.7173386,85.346328
+148,pharmacy,Medi Noor Pharmacy,27.7183162,85.3465601
+149,pharmacy,Space Pharmacy,27.7179892,85.3465718
+150,pharmacy,Sundaram Pharmacy,27.7182896,85.3465601
+151,pharmacy,Charu Medical Store,27.7168578,85.3455466
+152,pharmacy,Kanchan Pharmacy,27.7168291,85.3453957
+153,pharmacy,Siphal Pharmacy,27.7121179,85.3406126
+156,pharmacy,Sddhipur Pharmacy,27.6505808,85.3556101
+157,pharmacy,diyas Pharmacy,27.6527286,85.3046369
+158,pharmacy,Samita Pharmacy,27.654551,85.305597
+159,pharmacy,Venus Medical,27.7109063,85.3432788
+160,pharmacy,Patanjali Chikitsataya Sewa Kendra,27.6289042,85.5278325
+162,pharmacy,shree naulo medical hall,27.524214,85.4785872
+163,pharmacy,NabinPharmacy,27.6748706,85.2804596
+164,pharmacy,Rina Medical Hall,27.6747905,85.2806125
+165,pharmacy,Jaya DasDil Wasa Pasa (Pharmacy),27.674771,85.2801149
+166,pharmacy,Jhigu DasPharmacy n Dental Care,27.67474,85.2785976
+167,pharmacy,Surya Chandra Pharmacy,27.6746919,85.2803588
+168,pharmacy,Sai Shankar medical store,27.7116487,85.341605
+169,pharmacy,Depesh Pharmacy,27.7111668,85.3425486
+174,pharmacy,Chandrakesh Pharmacy,27.7124722,85.3286325
+175,pharmacy,Namrata Medical Hall,27.7104644,85.3280299
+176,pharmacy,Shree Di SeiPharmacy,27.7127821,85.3286684
+177,pharmacy,Aashirvad Pharmacy,27.7105873,85.3110775
+178,pharmacy,Deraj Pharmacy,27.7105555,85.3108371
+179,pharmacy,Himshrinkhala Pharmacy,27.7104771,85.3119538
+181,pharmacy,Mount Fuji Home kathmandu,27.7195444,85.3118476
+182,pharmacy,Elite Pathology Clinic & dental House,27.7009054,85.3398692
+187,pharmacy,Red Cross Blood Bank,27.7022117,85.320028
+188,pharmacy,Appolo Medical & Pharmacy,27.7040932,85.3323537
+189,pharmacy,Dhaneshwor Pharmacy,27.663682,85.3357007
+190,pharmacy,Kotdevi Pharmacy,27.6735719,85.3514197
+191,pharmacy,medical shop,27.7018245,85.3282014
+192,pharmacy,Blood Transfusion Centre,27.7359267,85.3306929
+193,pharmacy,Gynaecology,27.7361997,85.3305518
+194,pharmacy,MedivetPharmacyceuticals Pvt Ltd,27.716751,85.3334118
+195,pharmacy,PhytoPharmacy Nepal Pvt. ltd.,27.7167354,85.3334995
+196,pharmacy,Sapana Pharmacy,27.6286417,85.3183397
+197,pharmacy,Hasii Medical Hall,27.674693,85.3003788
+198,pharmacy,Gajur Mukhi Medical Hall,27.7220406,85.3483963
+199,pharmacy,Dev Darshan Pharmacy,27.7224729,85.3491836
+200,pharmacy,Mahabi Medical Centre,27.7351652,85.2974899
+201,pharmacy,Buddha Meditech Pvt Ltd,27.7262081,85.3038142
+202,pharmacy,Nepal clinic Pharmacy,27.6873549,85.3758109
+203,pharmacy,Hit Medical,27.6829493,85.3879828
+204,pharmacy,PadmaPharmacy,27.7130939,85.2942004
+205,pharmacy,Wasa Polyclinic Pvt. Ltd.,27.6730024,85.3243534
+206,pharmacy,Bungamati Medical Center,27.6280871,85.3032288
+207,pharmacy,Patanjali Ayurvedic Seva Kendra,27.6287993,85.5284852
+208,pharmacy,Shiva ram Pharmacy,27.6319097,85.5138471
+209,pharmacy,Chinese People's Hospital Pharmacy,27.7205197,85.3619323
+210,pharmacy,Baudhanath MedicoPharmacy,27.7207064,85.3623085
+211,pharmacy,Pawan Medical Hall,27.6624144,85.3190018
+212,pharmacy,Subisi Pharmacy,27.673191,85.3796594
+213,pharmacy,Laxmi Clinical Pharmacy,27.6737496,85.3807981
+214,pharmacy,ChandiPharmacy,27.6341098,85.5275414
+215,pharmacy,Nawajyoti Gases Pvt. Ltd.,27.6015522,85.5300342
+219,pharmacy,MuskanPharmacy,27.7237239,85.4545247
+221,pharmacy,Welcome,27.7108028,85.3084658
+222,pharmacy,DI Skin Hospital and Research Center,27.7370522,85.3336732
+223,pharmacy,Maun Man Pharmacy,27.7350951,85.3312561
+225,pharmacy,Udaya Medical Hall,27.6306456,85.5202001
+226,pharmacy,sarbaswor Pharmacy,27.7133002,85.3669142
+227,pharmacy,OhmPharmacyceuticals,27.6699683,85.4685939
+228,pharmacy,Ayurvedic Pasal,27.6741144,85.3210629
+229,pharmacy,Nura House,27.6996162,85.3111636
+230,pharmacy,Ashna Pharmacy,27.7243954,85.3398077
+231,pharmacy,Dynasty Medical Centre Pvt. Ltd,27.7214983,85.3461251
+232,pharmacy,Marcopolo Medical Centre Pvt.Ltd,27.7356126,85.3423327
+233,pharmacy,AyushPharmacy,27.6768003,85.3192717
+235,pharmacy,Madhabi Health Care Centre,27.717402,85.3427295
+236,pharmacy,Kusum Pharmacy,27.6776339,85.3207489
+237,pharmacy,Jeevan Dhara Medical Store,27.6778303,85.3208937
+238,pharmacy,Shuva-labh Pharmacy,27.7070439,85.3228506
+239,pharmacy,Pradip Medical,27.7365986,85.3479565
+240,pharmacy,Su-Pratiksha Medical Store,27.7326017,85.3449811
+241,pharmacy,Ayourbadik Ausadhi Pasal,27.7323677,85.3448331
+242,pharmacy,Community Pharmacy,27.724931,85.3398358
+243,pharmacy,Mandala Pharmacy,27.7151263,85.3110529
+245,pharmacy,Apollo MedicalPharmacy,27.6764463,85.3190653
+246,pharmacy,Jagat AamaPharmacy,27.6958368,85.3526603
+247,pharmacy,Aarambha Pharmacy & Doctor's clinic,27.7148493,85.3566243
+249,pharmacy,Al Sifa Pharmacy,27.7385547,85.3491051
+250,pharmacy,Sanjeevani Medical Hall,27.7454294,85.3330985
+251,pharmacy,SanghaPharmacy,27.7350432,85.3309287
+252,pharmacy,Sai Milan Pharmacy,27.7217121,85.3354579
+253,pharmacy,Manamaneshwari Pharmacy,27.7039708,85.3328419
+254,pharmacy,MilanPharmacy,27.7013067,85.3402862
+255,pharmacy,Bhawani Durga Pharmacy,27.6888001,85.3355442
+256,pharmacy,Chatramaharaj Ayurvedic Aushadhyalaya,27.6897576,85.3355547
+257,pharmacy,Smriti Medical,27.6895539,85.3355656
+258,pharmacy,Pal Medicals,27.693228,85.2800695
+259,pharmacy,Hunuman Pharmacy,27.7058644,85.3134131
+260,pharmacy,Megan Pharmacy,27.7058776,85.3133189
+262,pharmacy,Aayush Pharmacy,27.7058551,85.3134511
+263,pharmacy,KS Pharmacy,27.7058442,85.3134915
+264,pharmacy,RF Pharmacy,27.7057842,85.3138258
+265,pharmacy,Satyam Pharmacy,27.7058778,85.3132276
+266,pharmacy,Upkar Sewa Pharmacy,27.7058916,85.3131854
+267,pharmacy,Prabin Medical Hall,27.5982964,85.3704702
+268,pharmacy,Jivanta Pharmacy,27.707866,85.3385637
+269,pharmacy,Ahana Pharmacy,27.674855,85.3150185
+270,pharmacy,Bidhya Allah Pharmacy,27.6747259,85.3148718
+271,pharmacy,K.C drug store,27.7266773,85.3408628
+272,pharmacy,Saharobar Pharmacy,27.7383298,85.3395258
+273,pharmacy,Nikita Medical Center,27.7395815,85.33755
+274,pharmacy,Maharajgunj Pharmacy,27.7353147,85.3319532
+276,pharmacy,Shiva ShaktiPharmacy,27.7270349,85.415968
+277,pharmacy,Abiskar Pharmacy,27.7263986,85.4047684
+278,pharmacy,Timilsina Residence,27.7239612,85.34256
+279,pharmacy,Medical Clinic,27.656395,85.3485184
+280,pharmacy,Nikita Medical Centre,27.7400051,85.3373709
+281,pharmacy,GPP Mankind Pharmacy,27.6686631,85.3216887
+283,pharmacy,Wasa Pasa,27.6730114,85.3243798
+285,pharmacy,Saubhaygya Ayurvedic Pharmacy,27.7165604,85.3043182
+286,pharmacy,Bharosa Pharmacy,27.6943458,85.3371208
+287,pharmacy,Nirogam aayurbed aausadhalaya,27.7080562,85.3362087
+290,pharmacy,Rohan Pharmacy,27.6552208,85.3170409
+293,pharmacy,Green Pharmacy,27.7398707,85.3368436
+294,pharmacy,Vital Medical Concern,27.7397761,85.3370198
+295,pharmacy,Bhojraj Pharmacy,27.681369,85.3318105
+296,pharmacy,WellnessPharmacy,27.724868,85.3373224
+297,pharmacy,Bishowshanti Aushadhi Ghar,27.6839142,85.3324721
+298,pharmacy,Deurali Pharmacy,27.6873958,85.330049
+299,pharmacy,Marshield Pharmacy,27.6887611,85.3355547
+300,pharmacy,Shuva Prabhat Medical Store and Clinic,27.7370252,85.311276
+301,pharmacy,DiplomatPharmacy,27.7180698,85.3112995
+302,pharmacy,Chuna Pharmacy,27.6859038,85.3162689
+303,pharmacy,Miracle Pharmacy,27.6861111,85.3168745
+304,pharmacy,Astanga AyurvedaPharmacy,27.6805554,85.3491522
+305,pharmacy,Nirmul Pharmacy,27.7668956,85.3573516
+306,pharmacy,Nidan Pharmacy,27.6791239,85.316628
+307,pharmacy,Suryamsha Pharmacy,27.7359559,85.3567175
+310,pharmacy,Chhabi Adhakari Medical,27.732796,85.2913947
+311,pharmacy,Deepsa Pharmacy,27.7346715,85.3141597
+312,pharmacy,Melamchi Pharmacy,27.7219556,85.3753401
+313,pharmacy,Umakanta Pharmacy,27.7559555,85.419123
+314,pharmacy,Alright Pharmacy,27.7443165,85.3411289
+315,pharmacy,Sajedhari medical shop,27.728438,85.359014
+316,pharmacy,NamanPharmacyceuticals Pvt. Ltd.,27.7175352,85.3039211
+317,pharmacy,Apollo International Polyclinic,27.7182692,85.3119011
+318,pharmacy,Sanogaucharan Pharmacy,27.7120599,85.3319818
+320,pharmacy,Safal Medical,27.6990451,85.2811729
+321,pharmacy,Ishwori Medical Hall,27.7311523,85.326796
+322,pharmacy,RS Pharmacy,27.7087922,85.3315106
+324,pharmacy,Naradevi Jivan Kalyan AayurvedikPharmacy,27.7078863,85.3065499
+325,pharmacy,Maa Durga Pharmacy,27.7186927,85.3464726
+326,pharmacy,Medi Plus Pharmacy,27.7186619,85.3464834
+327,pharmacy,Aaryab Pharmacy,27.7782844,85.3607345
+328,pharmacy,Naraynathan Pharmacy,27.7780444,85.3608456
+330,pharmacy,CARE PLUS Pharmacy,27.7553427,85.3029768
+331,pharmacy,Surya stockist,27.6762506,85.4419356
+332,pharmacy,Lumanti Pharmacy,27.7198787,85.3092061
+333,pharmacy,Trekkers Medicine Concern Pharmacy,27.7147248,85.3105195
+334,pharmacy,Binu Pharmacy,27.6474654,85.3665067
+335,pharmacy,Abika Pharmacy,27.6645426,85.3300699
+336,pharmacy,Bluemoon Meditech,27.7172193,85.3281327
