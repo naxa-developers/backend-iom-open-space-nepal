@@ -486,7 +486,7 @@ class GlimpseOfOpenSpace(APIView):
         total_capacity = OpenSpace.objects.aggregate(
             Sum('capacity')).get('capacity__sum')
 
-        districts = OpenSpace.objects.values('district__name').distinct('district__code')
+        districts = OpenSpace.objects.values('district__name').order_by('district__name').distinct('district__code')
         count = districts.count()
 
         for i in range(0, count):
@@ -494,7 +494,7 @@ class GlimpseOfOpenSpace(APIView):
 
         print(district_list)
 
-        municipalities = OpenSpace.objects.values('municipality__name').distinct('municipality__hlcit_code')
+        municipalities = OpenSpace.objects.values('municipality__name').order_by('municipality__name').distinct('municipality__hlcit_code')
 
         for i in range(0, municipality):
             municipality_list.append(municipalities[i]['municipality__name'])
