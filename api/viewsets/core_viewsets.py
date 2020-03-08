@@ -475,6 +475,8 @@ class GlimpseOfOpenSpace(APIView):
     permission_classes = []
 
     def get(self, request):
+        district_list = []
+        municipality_list = []
         open_space = OpenSpace.objects.all().count()
         district = OpenSpace.objects.values('district').distinct().count()
         municipality = OpenSpace.objects.values(
@@ -484,10 +486,26 @@ class GlimpseOfOpenSpace(APIView):
         total_capacity = OpenSpace.objects.aggregate(
             Sum('capacity')).get('capacity__sum')
 
+        districts = OpenSpace.objects.values('district').distinct()
+        count = districts.count()
+
+        for i in range(0, count):
+            district_list.append(districts[i]['district'])
+
+        print(district_list)
+
+        municipalities = OpenSpace.objects.values('municipality').distinct()
+
+        for i in range(0, municipality):
+            municipality_list.append(municipalities[i]['municipality'])
+            print(municipality_list)
+
         data = {
             "open_space": open_space,
             "district": district,
+            'district_list': district_list,
             "municipality": municipality,
+            "municipality_list": municipality_list,
             "total_area": total_area,
             "total_capacity": total_capacity,
 
