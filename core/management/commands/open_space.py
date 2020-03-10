@@ -43,28 +43,28 @@ class Command(BaseCommand):
                 total_area=total_area,
                 usable_area=df['Usable_Area'][row],
                 capacity=capacity,
-                current_land_use=df['Current Land Use'][row],
-                catchment_area=df['Catchment Area'][row],
+                # current_land_use=df['Current Land Use'][row],
+                # catchment_area=df['Catchment Area'][row],
                 access_to_site=df['Access_to_Site'][row],
                 ownership=df['Ownership'][row],
                 special_feature=df['Special_features_of_Site'][row],
                 polygons=GEOSGeometry(df['the_geom'][row]),
             )
             try:
-                use = df['Suggested Use'][row]
-                if use != '':
-                    suggested_uses = use.split(',')
-                    for suggested_use in suggested_uses:
-                        a = suggested_use.lstrip()
-                        b = a.rstrip()
-                        try:
-                            sug = SuggestedUseList.objects.get(name=b)
-                            sug_data = SuggestedUseData.objects.create(open_space=open_space, suggested_use=sug)
-                        except ObjectDoesNotExist:
-                            pass
-
-                else:
-                    pass
+                # use = df['Suggested Use'][row]
+                # if use != '':
+                #     suggested_uses = use.split(',')
+                #     for suggested_use in suggested_uses:
+                #         a = suggested_use.lstrip()
+                #         b = a.rstrip()
+                #         try:
+                #             sug = SuggestedUseList.objects.get(name=b)
+                #             sug_data = SuggestedUseData.objects.create(open_space=open_space, suggested_use=sug)
+                #         except ObjectDoesNotExist:
+                #             pass
+                #
+                # else:
+                #     pass
 
                 description = df['WASH_Facility'][row]
                 wash_facility = ServiceList.objects.get(name='WASH Facilities')
@@ -72,7 +72,7 @@ class Command(BaseCommand):
                                                     service=wash_facility)
 
                 wifi_des = df['WiFi'][row]
-                wifi_facility = ServiceList.objects.get(name='Wi-Fi')
+                wifi_facility = ServiceList.objects.get(name='Internet')
                 wi_data = ServiceData.objects.create(description=wifi_des, open_space=open_space,
                                                      service=wifi_facility)
 
