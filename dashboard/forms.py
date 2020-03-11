@@ -9,7 +9,7 @@ from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceD
 class OpenSpaceForm(ModelForm):
     class Meta:
         model = OpenSpace
-        fields = '__all__'
+        exclude = ('polygons', )
 
 
 class AvailableFacilityForm(ModelForm):
