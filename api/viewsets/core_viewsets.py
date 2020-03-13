@@ -497,7 +497,7 @@ class GlimpseOfOpenSpace(APIView):
         municipalities = OpenSpace.objects.values('municipality__name', 'municipality__hlcit_code').order_by('municipality__name').distinct()
 
         for i in range(0, municipality):
-            municipality_list.append({municipalities[i]['municipality__name'],
+            municipality_list.append({municipalities[i]['municipality__name']:
                                       municipalities[i]['municipality__hlcit_code']})
             print(municipality_list)
 
