@@ -149,7 +149,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         else:
             query_data = OpenSpace.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).select_related('province', 'district', 'municipality').order_by('id')
 
-        url = 'openspace-list/'
+        url = 'openspace-list/'+self.kwargs['hlcit_code']
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
         base64_url = base64_bytes.decode('ascii')
@@ -1227,7 +1227,7 @@ class OpenSpaceMuniList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         print('footer')
         data = super(OpenSpaceMuniList, self).get_context_data(**kwargs)
-        municipality = OpenSpace.objects.values('municipality__name', 'province__name','municipality__hlcit_code').order_by('municipality__name').distinct()
+        municipality = OpenSpace.objects.values('municipality__name', 'province__name', 'municipality__hlcit_code').order_by('municipality__name').distinct()
         # print(municipality)
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
@@ -1307,9 +1307,14 @@ class AvailableAmenityFacilityList(LoginRequiredMixin, ListView):
         query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title']).select_related('province', 'district', 'municipality').order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
+
+        url = 'available_ameni_list/' + self.kwargs['title']
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'AvailableFacility'
-        data['url'] = 'available-list'
+        data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
         return data
