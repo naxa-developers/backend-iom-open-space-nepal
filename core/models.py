@@ -376,26 +376,26 @@ class AvailableSubType(models.Model):
 
 
 class AvailableFacility(models.Model):
-    TYPE_CHOICES = (
-        ('health facility', 'Health Facility'),
-        ('education facility', 'Education Facility'),
-        ('security force', 'Security Force'),
-        ('place of worship', 'Place Of Worship'),
-        ('financial institution', 'Financial Institution'),
-        ('helipad', 'Helipad'),
-        ('fire', 'Fire')
-    )
-    EDUCATION_TYPE_CHOICES = (
-        ('school', 'School'),
-        ('college', 'College'),
-        ('kindergarten', 'Kinder Garten'),
-        ('higher_secondary', 'Higher Secondary'),
-        ('lower_secondary', 'Lower Secondary'),
-        ('driving_school', 'Driving School'),
-        ('primary', 'Primary'),
-        ('secondary', 'Secondary'),
-        ('library', 'Library')
-    )
+    # TYPE_CHOICES = (
+    #     ('health facility', 'Health Facility'),
+    #     ('education facility', 'Education Facility'),
+    #     ('security force', 'Security Force'),
+    #     ('place of worship', 'Place Of Worship'),
+    #     ('financial institution', 'Financial Institution'),
+    #     ('helipad', 'Helipad'),
+    #     ('fire', 'Fire')
+    # )
+    # EDUCATION_TYPE_CHOICES = (
+    #     ('school', 'School'),
+    #     ('college', 'College'),
+    #     ('kindergarten', 'Kinder Garten'),
+    #     ('higher_secondary', 'Higher Secondary'),
+    #     ('lower_secondary', 'Lower Secondary'),
+    #     ('driving_school', 'Driving School'),
+    #     ('primary', 'Primary'),
+    #     ('secondary', 'Secondary'),
+    #     ('library', 'Library')
+    # )
 
     OPERATOR_TYPE = (
         ('private', 'Private'),
@@ -404,22 +404,22 @@ class AvailableFacility(models.Model):
         ('public', 'Public')
     )
 
-    FINANCIAL_INSTITUTION_CHOICES = (
-        ('bank', 'bank'),
-        ('atm', 'atm'),
-        ('bureau_de_change', 'bureau_de_change')
-    )
+    # FINANCIAL_INSTITUTION_CHOICES = (
+    #     ('bank', 'bank'),
+    #     ('atm', 'atm'),
+    #     ('bureau_de_change', 'bureau_de_change')
+    # )
 
-    HEALTH_FACILITY_CHOICES = (
-        ('hospital', 'Hospital'),
-        ('veterinary', 'Veterinary'),
-        ('clinic', 'Clinic'),
-        ('dentist', 'Dentist'),
-        ('pharmacy', 'Pharmacy'),
-        ('health post', 'Health Post'),
-        ('social facility', 'Social Facility'),
-        ('doctors', 'Doctors')
-    )
+    # HEALTH_FACILITY_CHOICES = (
+    #     ('hospital', 'Hospital'),
+    #     ('veterinary', 'Veterinary'),
+    #     ('clinic', 'Clinic'),
+    #     ('dentist', 'Dentist'),
+    #     ('pharmacy', 'Pharmacy'),
+    #     ('health post', 'Health Post'),
+    #     ('social facility', 'Social Facility'),
+    #     ('doctors', 'Doctors')
+    # )
 
     BANK_TYPE = (
         ('development', 'Development'),
@@ -430,8 +430,8 @@ class AvailableFacility(models.Model):
     )
 
     name = models.CharField(max_length=1000, null=True, blank=True)
-    type = models.CharField(choices=TYPE_CHOICES, max_length=30,
-                            null=True, blank=True)
+    # type = models.CharField(choices=TYPE_CHOICES, max_length=30,
+    #                         null=True, blank=True)
     available_type = models.ForeignKey('AvailableType', on_delete=models.CASCADE, related_name='facility_avai_type',
                                        blank=True, null=True)
     available_sub_type = models.ForeignKey('AvailableSubType', on_delete=models.CASCADE,
@@ -452,14 +452,14 @@ class AvailableFacility(models.Model):
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
     opening_hours = models.CharField(max_length=200, null=True, blank=True)
-    education_type = models.CharField(choices=EDUCATION_TYPE_CHOICES,
-                                      max_length=30, null=True, blank=True)
-    financial_type = models.CharField(choices=FINANCIAL_INSTITUTION_CHOICES,
-                                      max_length=30, null=True, blank=True)
+    # education_type = models.CharField(choices=EDUCATION_TYPE_CHOICES,
+    #                                   max_length=30, null=True, blank=True)
+    # financial_type = models.CharField(choices=FINANCIAL_INSTITUTION_CHOICES,
+    #                                   max_length=30, null=True, blank=True)
     bank_type = models.CharField(choices=BANK_TYPE, max_length=30,
                                  null=True, blank=True)
-    health_type = models.CharField(choices=HEALTH_FACILITY_CHOICES,
-                                   max_length=30, null=True, blank=True)
+    # health_type = models.CharField(choices=HEALTH_FACILITY_CHOICES,
+    #                                max_length=30, null=True, blank=True)
 
     phone_number = models.CharField(max_length=300, null=True, blank=True)
     comments = models.TextField(blank=True, null=True)
