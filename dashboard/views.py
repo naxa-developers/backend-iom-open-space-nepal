@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType
 from .models import UserProfile
 import json
 import random
@@ -14,7 +14,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
-    ResourceDocumentTypeForm, ResourceForm
+    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -147,7 +147,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
                                                                                                              'municipality').order_by(
                 'id')
         else:
-            query_data = OpenSpace.objects.select_related('province', 'district', 'municipality').order_by('id')
+            query_data = OpenSpace.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).select_related('province', 'district', 'municipality').order_by('id')
 
         url = 'openspace-list/'
         url_bytes = url.encode('ascii')
@@ -1220,6 +1220,26 @@ class AppCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return reverse_lazy('app-list')
 
 
+class OpenSpaceMuniList(LoginRequiredMixin, ListView):
+    template_name = 'open_muni_list.html'
+    model = OpenSpace
+
+    def get_context_data(self, **kwargs):
+        print('footer')
+        data = super(OpenSpaceMuniList, self).get_context_data(**kwargs)
+        municipality = OpenSpace.objects.values('municipality__name', 'province__name','municipality__hlcit_code').order_by('municipality__name').distinct()
+        # print(municipality)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        # open_space = OpenSpace.objects.filter(municipality__id=self.kwargs['id'])
+        data['list'] = municipality
+        data['model'] = 'OpenSpaceApp'
+        data['url'] = 'app-list'
+        data['user'] = user_data
+        data['active'] = 'app'
+        return data
+
+
 def CreateUser(request, **kwargs):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -1258,6 +1278,77 @@ def report_reply(request, **kwargs):
         return redirect('/dashboard/report-list')
     else:
         return redirect('/dashboard/report-list')
+
+
+class AmenityTypeList(LoginRequiredMixin, ListView):
+    template_name = 'amenity_type_list.html'
+    model = AvailableType
+
+    def get_context_data(self, **kwargs):
+        data = super(AmenityTypeList, self).get_context_data(**kwargs)
+        query_data = AvailableType.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'AvailableType'
+        data['url'] = 'amenity_type'
+        data['user'] = user_data
+        data['active'] = 'amenity_type'
+        return data
+
+
+class AvailableAmenityFacilityList(LoginRequiredMixin, ListView):
+    template_name = 'available_amenity_list.html'
+    model = AvailableFacility
+
+    def get_context_data(self, **kwargs):
+        print('aaaa')
+        data = super(AvailableAmenityFacilityList, self).get_context_data(**kwargs)
+        query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title']).select_related('province', 'district', 'municipality').order_by('id')
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'AvailableFacility'
+        data['url'] = 'available-list'
+        data['user'] = user_data
+        data['active'] = 'available'
+        return data
+
+
+class AvailableAmenityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = AvailableType
+    template_name = 'amenity_type_add.html'
+    form_class = AvailableTypeForm
+    success_message = 'Amenity type Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(AvailableAmenityCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'amenity_type'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('amenity_type')
+
+
+class AvailableAmenityUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = AvailableType
+    template_name = 'amenity_type_update.html'
+    form_class = AvailableTypeForm
+    success_message = 'Amenity type successfully updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(AvailableAmenityUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'amenity_type'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('amenity_type')
 
 
 def deleteData(request, **kwargs):

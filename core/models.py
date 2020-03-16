@@ -359,6 +359,22 @@ class Resource(models.Model):
         return self.title
 
 
+class AvailableType(models.Model):
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
+class AvailableSubType(models.Model):
+    title = models.CharField(max_length=100)
+    type = models.ForeignKey('AvailableType', on_delete=models.CASCADE, related_name='available_sub_type',
+                             blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
 class AvailableFacility(models.Model):
     TYPE_CHOICES = (
         ('health facility', 'Health Facility'),
@@ -416,6 +432,10 @@ class AvailableFacility(models.Model):
     name = models.CharField(max_length=1000, null=True, blank=True)
     type = models.CharField(choices=TYPE_CHOICES, max_length=30,
                             null=True, blank=True)
+    available_type = models.ForeignKey('AvailableType', on_delete=models.CASCADE, related_name='facility_avai_type',
+                                       blank=True, null=True)
+    available_sub_type = models.ForeignKey('AvailableSubType', on_delete=models.CASCADE,
+                                           related_name='facility_avai_sub_type', blank=True, null=True)
     operator_type = models.CharField(choices=OPERATOR_TYPE,
                                      max_length=30, null=True, blank=True)
     address = models.TextField(null=True, blank=True)

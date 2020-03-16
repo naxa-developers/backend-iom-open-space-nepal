@@ -509,7 +509,6 @@ class GlimpseOfOpenSpace(APIView):
             "municipality_list": municipality_list,
             "total_area": total_area,
             "total_capacity": total_capacity,
-
         }
 
         return Response({"data": data})
@@ -640,9 +639,9 @@ class NearByMeViewSet(APIView):
         latitude = open_space.centroid[1]
         openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
         resource_queryset = AvailableFacility.objects \
-                                .filter(location__distance_lte=(openspace_location, D(km=distance)), type=type) \
-                                .annotate(distance=Distance('location', openspace_location)) \
-                                .order_by('distance')[0:count]
+                                .filter(location__distance_lte=(openspace_location, D(km=distance)),
+                                        available_type__title=type) \
+                                .annotate(distance=Distance('location', openspace_location)).order_by('distance')[0:count]
         print(resource_queryset)
         resource_json = AvailableFacilitySerializer(resource_queryset, many=True, context={'request': request})
         json = JSONRenderer().render(resource_json.data)
