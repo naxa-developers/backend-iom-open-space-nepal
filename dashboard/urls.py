@@ -12,7 +12,7 @@ urlpatterns = [
     path('delete_front/<str:model>/<int:id>/<str:url>', views.deleteDataFront, name='delete'),
 
     path('upload-shapefile/', views.importShapefile, name='upload-shapefile'),
-    path('openspace-list/', views.OpenSpaceList.as_view(), name='openspace-list'),
+    path('openspace-list/<str:hlcit_code>', views.OpenSpaceList.as_view(), name='openspace-list'),
     path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
     path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
 
@@ -94,5 +94,12 @@ urlpatterns = [
     path('home_page_list/', views.homePageListView, name='app-update'),
 
 
+    path('open_new_list/', views.OpenSpaceMuniList.as_view(), name='open_muni'),
+
+    path('amenity_type/', views.AmenityTypeList.as_view(), name='amenity_type'),
+
+    path('available_ameni_list/<str:title>', views.AvailableAmenityFacilityList.as_view(), name='available_ameni_list'),
+    path('amenity_type_add/', views.AvailableAmenityCreate.as_view(), name='amenity_type_add'),
+    path('amenity_type_update/<int:pk>', views.AvailableAmenityUpdate.as_view(), name='amenity_type_update'),
 
 ]
