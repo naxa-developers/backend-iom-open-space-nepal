@@ -87,20 +87,29 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
     latitude = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
     # distance = serializers.SerializerMethodField()
+    type = serializers.CharField(source='available_type.title')
+    # sub_type = serializers.CharField(source='available_sub_type.title')
+    sub_type = serializers.SerializerMethodField()
 
     class Meta:
         model = AvailableFacility
-        fields = ('id', 'name', 'type', 'operator_type', 'address', 'location',
-                  'province', 'district', 'municipality', 'email', 'opening_hours',
-                  'education_type', 'financial_type', 'bank_type', 'health_type',
-                  'phone_number', 'comments', 'website', 'bank_network', 'icon',
-                  'latitude', 'longitude')
+        fields = ('id', 'name', 'type', 'available_type', 'available_sub_type', 'operator_type', 'address', 'location',
+                  'province', 'district','sub_type', 'municipality', 'email', 'opening_hours',
+                  'bank_type', 'phone_number', 'comments', 'website',
+                  'bank_network', 'icon', 'latitude', 'longitude')
 
     def get_latitude(self, instance):
         return instance.location.y
 
     def get_longitude(self, instance):
         return instance.location.x
+
+    def get_sub_type(self,instance):
+        if instance.available_sub_type is not None:
+            return instance.available_sub_type.title
+        else:
+            return None
+
 
     # def get_distance(self, instance):
     #     open_space_id = self.context['request'].query_params.get('id')
