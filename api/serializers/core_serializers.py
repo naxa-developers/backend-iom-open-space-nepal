@@ -5,6 +5,18 @@ from rest_framework import serializers
 from datetime import date, datetime
 from django.contrib.gis.geos import Point
 from django.contrib.gis.geos import GEOSGeometry
+from dashboard.models import AgencyMessage
+
+
+class AgencyMessageSerializer(serializers.ModelSerializer):
+    agency_name = serializers.CharField(source='agency.agency_name')
+    municipality_name = serializers.CharField(source='municipality.name')
+    openspace_title = serializers.CharField(source='open_space.title')
+
+    class Meta:
+        model = AgencyMessage
+        fields = ('agency', 'municipality', 'open_space', 'message',
+                  'agency_name', 'municipality_name', 'openspace_title')
 
 
 class SliderSerializer(serializers.ModelSerializer):

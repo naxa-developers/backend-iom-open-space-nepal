@@ -5,6 +5,9 @@ from api.serializers.front_serializer import OpenSpaceDefSerializer,\
     OpenSpaceIdeSerializer, HeaderSerializer, ContactSerializer,\
     OpenSpaceAppSerializer
 
+from api.serializers.core_serializers import AgencyMessageSerializer
+from dashboard.models import AgencyMessage
+
 
 class HeaderViewSet(viewsets.ModelViewSet):
     serializer_class = HeaderSerializer
@@ -33,6 +36,12 @@ class ContactViewSet(viewsets.ModelViewSet):
 class OpenSpaceAppViewSet(viewsets.ModelViewSet):
     serializer_class = OpenSpaceAppSerializer
     queryset = OpenSpaceApp.objects.all()
+    permission_classes = []
+
+
+class MessageViewSet(viewsets.ModelViewSet):
+    serializer_class = AgencyMessageSerializer
+    queryset = AgencyMessage.objects.all()
     permission_classes = []
 
 

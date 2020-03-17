@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>User </h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
+                        <li class="breadcrumb-item active">User list</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                    </button>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12">
+                    <button class="btn float-right right_icon_toggle_btn" type="button"><i
+                            class="la la-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="">
+                <a class="btn float-right" href="/dashboard/create-user"><i class="la la-plus"></i> Create User</a>
+
+            </div>
+            <div class="card project_list">
+                <div class="table-responsive">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <table id="Beneficiary_table" class="table table-hover c_table">
+                        <thead>
+                        <tr>
+                            <th>S.N</th>
+                            <th>Username</th>
+                            <th>agency name</th>
+                            <th>email</th>
+                            <th>address</th>
+                            <th>contact</th>
+                            <th>action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for data in list %}
+                        <tr>
+                            <td>{{ data.id }}</td>
+                            <td>{{ data.user.username }}</td>
+                            <td>{{ data.agency_name }}</td>
+                            <td>{{ data.email }}</td>
+                            <td>{{ data.address }}</td>
+                            <td>{{ data.contact }}</td>
+                            <td class="table-action">
+
+                                {% if data.user.is_active %}
+
+                                <a href="/dashboard/activate_agency/{{ data.user.id }}"
+                                   onclick="return confirm('Are you sure you want to continue?');" class="btn"> <i
+                                        class="la la-ban"> </i> Deactivate</a>
+
+                                {% else %}
+
+                                <a href="/dashboard/activate_agency/{{ data.user.id }}"
+                                   onclick="return confirm('Are you sure you want to continue?');"
+                                   class="btn remove"> <i class="la la-trash-o"></i> Activate</a>
+
+
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
