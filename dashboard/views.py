@@ -6,7 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
     Municipality, Slider, CreateOpenSpace, Gallery, AvailableType
-from .models import UserProfile
+from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
 from django.urls import reverse_lazy
@@ -29,6 +29,7 @@ from django.contrib.gis.gdal import DataSource
 from fcm_django.models import FCMDevice
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -39,61 +40,67 @@ class HomePage(TemplateView):
         # category = ProductCategory.objects.order_by('id')
         # product = Product.objects.order_by('id')
         user = self.request.user
-        user_data = UserProfile.objects.get(user=user)
-        group = Group.objects.get(user=user)
-        data_list1 = []
-        data_list2 = []
-        if group.name == 'admin':
-            open_space_total = list(
-                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('total_area',
-                                                                                                 flat=True))
-            open_space_usable = list(
-                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('usable_area',
-                                                                                                 flat=True))
-            open_space_name = list(
-                OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('title', flat=True))
-            mun_id = user_data.municipality.id
-        else:
-            open_space_total = list(OpenSpace.objects.values_list('total_area', flat=True))
-            open_space_usable = list(
-                OpenSpace.objects.values_list('usable_area', flat=True))
-            open_space_name = list(OpenSpace.objects.values_list('title', flat=True))
 
-            mun_id = 0
+        try:
+            if user.agency:
+                return redirect('agency_message')
 
-        service_list = ServiceList.objects.order_by('id')
-
-        columns = []
-        columns_dict = {}
-        color_dict = {}
-
-        for l in service_list:
+        except ObjectDoesNotExist:
+            user_data = UserProfile.objects.get(user=user)
+            group = Group.objects.get(user=user)
+            data_list1 = []
+            data_list2 = []
             if group.name == 'admin':
-                count = ServiceData.objects.filter(open_space__municipality=user_data.municipality.id,
-                                                   service__id=l.id).count()
+                open_space_total = list(
+                    OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('total_area',
+                                                                                                     flat=True))
+                open_space_usable = list(
+                    OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('usable_area',
+                                                                                                     flat=True))
+                open_space_name = list(
+                    OpenSpace.objects.filter(municipality__id=user_data.municipality.id).values_list('title', flat=True))
+                mun_id = user_data.municipality.id
             else:
-                count = ServiceData.objects.filter(service__id=l.id).count()
+                open_space_total = list(OpenSpace.objects.values_list('total_area', flat=True))
+                open_space_usable = list(
+                    OpenSpace.objects.values_list('usable_area', flat=True))
+                open_space_name = list(OpenSpace.objects.values_list('title', flat=True))
 
-            columns_dict.update({'data' + str(l.id): l.name})
-            service = ['data' + str(l.id), count]
-            columns.append(service)
-            r = random.randint(0, 255)
-            g = random.randint(0, 255)
-            b = random.randint(0, 255)
-            rgb = 'rgb' + str((r, g, b))
-            color_dict.update({'data' + str(l.id): rgb})
+                mun_id = 0
 
-        open_spaces = json.dumps(open_space_name)
-        data_list1.extend(open_space_total)
-        data_list2.extend(open_space_usable)
-        data_listt2 = [float(i) for i in data_list2]
-        # print(service_open)
-        pen_count = Report.objects.filter(status='pending').count()
-        com_count = Report.objects.filter(status='replied').count()
-        return render(request, 'dashboard.html',
-                      {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
-                       'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
-                       'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count})
+            service_list = ServiceList.objects.order_by('id')
+
+            columns = []
+            columns_dict = {}
+            color_dict = {}
+
+            for l in service_list:
+                if group.name == 'admin':
+                    count = ServiceData.objects.filter(open_space__municipality=user_data.municipality.id,
+                                                       service__id=l.id).count()
+                else:
+                    count = ServiceData.objects.filter(service__id=l.id).count()
+
+                columns_dict.update({'data' + str(l.id): l.name})
+                service = ['data' + str(l.id), count]
+                columns.append(service)
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                rgb = 'rgb' + str((r, g, b))
+                color_dict.update({'data' + str(l.id): rgb})
+
+            open_spaces = json.dumps(open_space_name)
+            data_list1.extend(open_space_total)
+            data_list2.extend(open_space_usable)
+            data_listt2 = [float(i) for i in data_list2]
+            # print(service_open)
+            pen_count = Report.objects.filter(status='pending').count()
+            com_count = Report.objects.filter(status='replied').count()
+            return render(request, 'dashboard.html',
+                          {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
+                           'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
+                           'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count})
 
 
 def UploadShapeFile(request):
@@ -177,6 +184,21 @@ class UserList(LoginRequiredMixin, ListView):
         return data
 
 
+class AgencyList(LoginRequiredMixin, ListView):
+    template_name = 'agency_list.html'
+    model = UserAgency
+
+    def get_context_data(self, **kwargs):
+        data = super(AgencyList, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        query_data = UserAgency.objects.all()
+        data['list'] = query_data
+        data['user'] = user_data
+        data['active'] = 'user'
+        return data
+
+
 def activate_user(request, **kwargs):
     user = User.objects.get(id=kwargs['id'])
     # user_data = UserProfile.objects.get(user=user)
@@ -188,6 +210,20 @@ def activate_user(request, **kwargs):
 
     user.save()
     return redirect('user-list')
+
+
+def activate_agency(request, **kwargs):
+    user = User.objects.get(id=kwargs['id'])
+
+    print(user)
+
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+
+    user.save()
+    return redirect('agency_list')
 
 
 class AvailableFacilityList(LoginRequiredMixin, ListView):
@@ -1263,6 +1299,22 @@ def CreateUser(request, **kwargs):
     return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
 
 
+def create_agency(request, **kwargs):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            UserAgency.objects.create(user=user, agency_name=request.POST['agency_name'], email=request.POST['email'],
+                                      address=request.POST['address'], contact=request.POST['contact'])
+
+            return redirect('/dashboard/agency_list/')
+        else:
+            return render(request, 'create_agency.html', {'form':form})
+
+    else:
+        return render(request, 'create_agency.html')
+
+
 def report_reply(request, **kwargs):
     if request.method == 'POST':
         data = FCMDevice.objects.filter(device_id=request.POST['id'])
@@ -1354,6 +1406,29 @@ class AvailableAmenityUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView
 
     def get_success_url(self):
         return reverse_lazy('amenity_type')
+
+
+# class AgencyLogIn(LoginRequiredMixin,)
+
+class AgencyMessageList(LoginRequiredMixin, ListView):
+    template_name = 'messages_list.html'
+    model = AgencyMessage
+
+    def get_context_data(self, **kwargs):
+        data = super(AgencyMessageList, self).get_context_data(**kwargs)
+        user = self.request.user
+        query_data = AgencyMessage.objects.filter(agency__user=user)
+        # url = 'available_ameni_list/' + self.kwargs['title']
+        # url_bytes = url.encode('ascii')
+        # base64_bytes = base64.b64encode(url_bytes)
+        # base64_url = base64_bytes.decode('ascii')
+        data['list'] = query_data
+        data['model'] = 'AgencyMessage'
+        # data['url'] = base64_url
+        data['user'] = user
+        data['active'] = 'agency_message'
+        return data
+
 
 
 def deleteData(request, **kwargs):

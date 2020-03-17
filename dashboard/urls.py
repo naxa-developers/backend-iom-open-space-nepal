@@ -102,4 +102,11 @@ urlpatterns = [
     path('amenity_type_add/', views.AvailableAmenityCreate.as_view(), name='amenity_type_add'),
     path('amenity_type_update/<int:pk>', views.AvailableAmenityUpdate.as_view(), name='amenity_type_update'),
 
+    path('create_agency/', views.create_agency, name='create_agency'),
+    path('activate_agency/<int:id>/', views.activate_agency, name='activate_agency'),
+    path('agency_list/', views.AgencyList.as_view(), name='agency_list'),
+
+    path('agency_message/', views.AgencyMessageList.as_view(), name='agency_message')
+
+
 ]
