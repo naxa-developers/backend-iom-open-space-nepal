@@ -14,7 +14,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
-    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm
+    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -191,10 +191,10 @@ class AgencyList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super(AgencyList, self).get_context_data(**kwargs)
         user = self.request.user
-        user_data = UserProfile.objects.get(user=user)
+        # user_data = UserProfile.objects.get(user=user)
         query_data = UserAgency.objects.all()
         data['list'] = query_data
-        data['user'] = user_data
+        # data['user'] = user_data
         data['active'] = 'user'
         return data
 
@@ -1418,16 +1418,64 @@ class AgencyMessageList(LoginRequiredMixin, ListView):
         data = super(AgencyMessageList, self).get_context_data(**kwargs)
         user = self.request.user
         query_data = AgencyMessage.objects.filter(agency__user=user)
-        # url = 'available_ameni_list/' + self.kwargs['title']
+        url = 'agency_message/'
         # url_bytes = url.encode('ascii')
         # base64_bytes = base64.b64encode(url_bytes)
         # base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'AgencyMessage'
         # data['url'] = base64_url
+        data['url'] = 'agency_message'
         data['user'] = user
         data['active'] = 'agency_message'
         return data
+
+
+class AgencyMessageCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = AgencyMessage
+    template_name = 'agency_add_message.html'
+    form_class = AgencyMessageForm
+    success_message = 'Message Successfully Added'
+
+    def get_context_data(self, **kwargs):
+        data = super(AgencyMessageCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # user_data = UserProfile.objects.get(user=user)
+        agency = UserAgency.objects.get(user=user)
+        municipality = Municipality.objects.all()
+        open_space = OpenSpace.objects.all()
+        # data['user'] = user_data
+        data['agencies'] = agency
+        data['open_spaces'] = open_space
+        data['municipalities'] = municipality
+        data['active'] = 'agency_message'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('agency_message')
+
+
+class AgencyMessageUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = AgencyMessage
+    template_name = 'agency_update_message.html'
+    form_class = AgencyMessageForm
+    success_message = 'Message successfully updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(AgencyMessageUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        # agency = UserAgency.objects.get(user=user)
+        municipality = Municipality.objects.all()
+        open_space = OpenSpace.objects.all()
+        # data['user'] = user_data
+        # data['agencies'] = agency
+        data['open_spaces'] = open_space
+        data['municipalities'] = municipality
+        data['active'] = 'agency_message'
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('agency_message')
 
 
 
@@ -1448,6 +1496,13 @@ def deleteDataFront(request, **kwargs):
     messages.success(request, "Deleted SuccessFully")
     return redirect(kwargs['url'])
     # print(model)
+
+
+def deleteDataDashboard(request, **kwargs):
+    model = apps.get_model(app_label='dashboard', model_name=kwargs['model'])
+    delete = model.objects.filter(id=kwargs['id']).delete()
+    messages.success(request, "Deleted SuccessFully")
+    return redirect(kwargs['url'])
 
 
 @login_required

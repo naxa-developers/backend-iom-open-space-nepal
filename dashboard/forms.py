@@ -5,6 +5,13 @@ from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsDat
     AvailableType
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef
+from dashboard.models import AgencyMessage
+
+
+class AgencyMessageForm(ModelForm):
+    class Meta:
+        model = AgencyMessage
+        fields = '__all__'
 
 
 class OpenSpaceForm(ModelForm):

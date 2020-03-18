@@ -44,5 +44,13 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = AgencyMessage.objects.all()
     permission_classes = []
 
+    def filter_queryset(self, queryset):
+        open_space_id = self.request.query_params.get('id', None)
+        if open_space_id:
+            return queryset.filter(open_space__id=open_space_id)
+        else:
+            return queryset
+
+
 
 
