@@ -137,114 +137,123 @@
             <!--            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span>Dashboard</span></a>-->
 
             </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Manage Open Space</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/open_new_list"> View openspace </a></li>
-                    <!--                    <li><a href="project-form.html">create Projects</a></li>-->
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-signal"></i><span class="sidebar-tab">Types</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/amenity_type">View Nearby Amenities</a></li>
-<!--                    <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>-->
-                    <li><a href="/dashboard/service-list">View on site Amenities</a></li>
-                    <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-object-group"></i><span class="sidebar-tab">Manage Report</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/report-list">View Report </a></li>
 
-                </ul>
-            </li>
-
-            <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="la la-line-chart"></i><span class="sidebar-tab">EIA Questions</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/question-list">View EIA </a></li>
-                    <!--                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>-->
-                </ul>
-            </li>
-
-<!--            <li><a href="javascript:void(0);" class="menu-toggle"><i-->
-<!--                    class="la la-transgender-alt"></i><span class="sidebar-tab">Suggested Use Types</span></a>-->
-<!--                <ul class="ml-menu">-->
-<!--                    <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>-->
-<!--                    &lt;!&ndash;                    <li><a href="/dashboard/suggestdata-list/">Suggested Data List</a></li>&ndash;&gt;-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Onsite Amenities Types</span></a>-->
-<!--                <ul class="ml-menu">-->
-<!--                    <li><a href="/dashboard/service-list">View on site Amenities</a></li>-->
-<!--                    &lt;!&ndash;                    <li><a href="/dashboard/servicedata-list">Service Data List</a></li>&ndash;&gt;-->
-<!--                </ul>-->
-<!--            </li>-->
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Resources</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/resource-list">View Resources </a></li>
-                    <li><a href="/dashboard/resource-category-list">View Resources Categories</a></li>
-                    <li><a href="/dashboard/resource-document-list">View Resources Documents Types</a></li>
-                </ul>
-            </li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Agencies</span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/agency_list/">View Agencies</a></li>
-                </ul>
-            </li>
-
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Pagewise Contents </span></a>
-                <ul class="ml-menu">
-                    <!--                    <li><a href=''>Home Page</a></li>-->
-                    <li>
-                        <a href="/dashboard/home_page_list" class="menu-toggle"><i
-                                class="la la-sellsy"></i><span>Home Page</span></a>
-<!--                        <ul class="ml-menu">-->
-<!--                            &lt;!&ndash;                            <li>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <a href="javascript:void(1);" class="menu-toggle"><i class="la la-sellsy"></i><span>Header</span></a>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <ul class="ml-menu">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                    <li><a href="/dashboard/service-list">Header List</a></li>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                </ul>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                            </li>&ndash;&gt;-->
-<!--                            <li><a href="/dashboard/header-list">Open Space Portal for Humanitarian Assistance</a></li>-->
-<!--                            <li><a href="/dashboard/slider-list">Slider</a></li>-->
-<!--                            <li><a href="/dashboard/openspace-definition-list">Open Space Definition</a></li>-->
-<!--                            <li><a href="/dashboard/openspace-identification-list">Open Space Identification Process</a>-->
-<!--                            </li>-->
-<!--                            <li><a href="/dashboard/openspace-identification-process-list">Open Space Identification-->
-<!--                                Process Images</a></li>-->
-<!--                            <li><a href="/dashboard/footer-list">Footer</a></li>-->
-<!--                        </ul>-->
-                    </li>
-
-
-                    <li>
-                        <a href="/dashboard/app-list" class="menu-toggle"><i
-                                class="la la-sellsy"></i><span>App Page</span></a>
-<!--                        <ul class="ml-menu">-->
-<!--                            <li><a href="/dashboard/app-list">App List</a></li>-->
-<!--                        </ul>-->
-                    </li>
-
-
-                </ul>
-            </li>
-
-
-            {% if user.user.groups.all.0.name == 'super_admin' %}
-            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User </span></a>
-                <ul class="ml-menu">
-                    <li><a href="/dashboard/user-list">View All User </a></li>
-
-                </ul>
-            </li>
-
+            {% if user.agency %}
+<!--                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Message List</span></a>-->
+<!--                    <ul class="ml-menu">-->
+                        <li><a href="/dashboard/agency_message/">View Messages</a></li>
+                    </ul>
+<!--                </li>-->
             {% else %}
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Manage Open Space</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/open_new_list"> View openspace </a></li>
+                        <!--                    <li><a href="project-form.html">create Projects</a></li>-->
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="la la-signal"></i><span class="sidebar-tab">Types</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/amenity_type">View Nearby Amenities</a></li>
+    <!--                    <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>-->
+                        <li><a href="/dashboard/service-list">View on site Amenities</a></li>
+                        <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="la la-object-group"></i><span class="sidebar-tab">Manage Report</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/report-list">View Report </a></li>
+
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Agencies</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/agency_list/">View Agencies</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="la la-line-chart"></i><span class="sidebar-tab">EIA Questions</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/question-list">View EIA </a></li>
+                        <!--                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>-->
+                    </ul>
+                </li>
+
+    <!--            <li><a href="javascript:void(0);" class="menu-toggle"><i-->
+    <!--                    class="la la-transgender-alt"></i><span class="sidebar-tab">Suggested Use Types</span></a>-->
+    <!--                <ul class="ml-menu">-->
+    <!--                    <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>-->
+    <!--                    &lt;!&ndash;                    <li><a href="/dashboard/suggestdata-list/">Suggested Data List</a></li>&ndash;&gt;-->
+    <!--                </ul>-->
+    <!--            </li>-->
+    <!--            <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Onsite Amenities Types</span></a>-->
+    <!--                <ul class="ml-menu">-->
+    <!--                    <li><a href="/dashboard/service-list">View on site Amenities</a></li>-->
+    <!--                    &lt;!&ndash;                    <li><a href="/dashboard/servicedata-list">Service Data List</a></li>&ndash;&gt;-->
+    <!--                </ul>-->
+    <!--            </li>-->
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Resources</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/resource-list">View Resources </a></li>
+                        <li><a href="/dashboard/resource-category-list">View Resources Categories</a></li>
+                        <li><a href="/dashboard/resource-document-list">View Resources Documents Types</a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Pagewise Contents </span></a>
+                    <ul class="ml-menu">
+                        <!--                    <li><a href=''>Home Page</a></li>-->
+                        <li>
+                            <a href="/dashboard/home_page_list" class="menu-toggle"><i
+                                    class="la la-sellsy"></i><span>Home Page</span></a>
+    <!--                        <ul class="ml-menu">-->
+    <!--                            &lt;!&ndash;                            <li>&ndash;&gt;-->
+    <!--                            &lt;!&ndash;                                <a href="javascript:void(1);" class="menu-toggle"><i class="la la-sellsy"></i><span>Header</span></a>&ndash;&gt;-->
+    <!--                            &lt;!&ndash;                                <ul class="ml-menu">&ndash;&gt;-->
+    <!--                            &lt;!&ndash;                                    <li><a href="/dashboard/service-list">Header List</a></li>&ndash;&gt;-->
+    <!--                            &lt;!&ndash;                                </ul>&ndash;&gt;-->
+    <!--                            &lt;!&ndash;                            </li>&ndash;&gt;-->
+    <!--                            <li><a href="/dashboard/header-list">Open Space Portal for Humanitarian Assistance</a></li>-->
+    <!--                            <li><a href="/dashboard/slider-list">Slider</a></li>-->
+    <!--                            <li><a href="/dashboard/openspace-definition-list">Open Space Definition</a></li>-->
+    <!--                            <li><a href="/dashboard/openspace-identification-list">Open Space Identification Process</a>-->
+    <!--                            </li>-->
+    <!--                            <li><a href="/dashboard/openspace-identification-process-list">Open Space Identification-->
+    <!--                                Process Images</a></li>-->
+    <!--                            <li><a href="/dashboard/footer-list">Footer</a></li>-->
+    <!--                        </ul>-->
+                        </li>
+
+
+                        <li>
+                            <a href="/dashboard/app-list" class="menu-toggle"><i
+                                    class="la la-sellsy"></i><span>App Page</span></a>
+    <!--                        <ul class="ml-menu">-->
+    <!--                            <li><a href="/dashboard/app-list">App List</a></li>-->
+    <!--                        </ul>-->
+                        </li>
+
+
+                    </ul>
+                </li>
+
+
+                {% if user.user.groups.all.0.name == 'super_admin' %}
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User </span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/user-list">View All User </a></li>
+
+                    </ul>
+                </li>
+
+                {% else %}
 
 
 
 
+                {% endif %}
             {% endif %}
 
 
