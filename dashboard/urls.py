@@ -10,6 +10,7 @@ urlpatterns = [
     path('activate/<int:id>', views.activate_user, name='activate'),
     path('delete/<str:model>/<int:id>/<str:url>', views.deleteData, name='delete'),
     path('delete_front/<str:model>/<int:id>/<str:url>', views.deleteDataFront, name='delete'),
+    path('delete_dashboard/<str:model>/<int:id>/<str:url>', views.deleteDataDashboard, name='delete_dashboard'),
 
     path('upload-shapefile/', views.importShapefile, name='upload-shapefile'),
     path('openspace-list/<str:hlcit_code>', views.OpenSpaceList.as_view(), name='openspace-list'),
@@ -93,7 +94,6 @@ urlpatterns = [
     #home page list view
     path('home_page_list/', views.homePageListView, name='app-update'),
 
-
     path('open_new_list/', views.OpenSpaceMuniList.as_view(), name='open_muni'),
 
     path('amenity_type/', views.AmenityTypeList.as_view(), name='amenity_type'),
@@ -106,7 +106,8 @@ urlpatterns = [
     path('activate_agency/<int:id>/', views.activate_agency, name='activate_agency'),
     path('agency_list/', views.AgencyList.as_view(), name='agency_list'),
 
-    path('agency_message/', views.AgencyMessageList.as_view(), name='agency_message')
-
+    path('agency_message/', views.AgencyMessageList.as_view(), name='agency_message'),
+    path('agency_message_add/', views.AgencyMessageCreate.as_view(), name='agency_message_add'),
+    path('agency_message_update/<int:pk>', views.AgencyMessageUpdate.as_view(), name='agency_message_update')
 
 ]
