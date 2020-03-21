@@ -8,6 +8,8 @@ from api.serializers.front_serializer import OpenSpaceDefSerializer,\
 from api.serializers.core_serializers import AgencyMessageSerializer
 from dashboard.models import AgencyMessage
 from rest_framework.views import APIView
+from rest_framework.response import Response
+
 
 
 class HeaderViewSet(viewsets.ModelViewSet):
@@ -58,6 +60,22 @@ class MessageViewSet(viewsets.ModelViewSet):
 
 
 # class FireBaseNotificationViewSet(APIView):
+
+
+class UniqueMunicipalityOfMessage(APIView):
+    permission_classes = []
+    authentication_classes = []
+
+    def get(self, request):
+        data = []
+        municipality_name = AgencyMessage.objects.values('municipality__name').order_by('municipality__name') \
+            .distinct()
+
+        for municipality in municipality_name:
+            data.append(municipality['municipality__name'])
+
+        return Response({'data': data})
+
 
 
 
