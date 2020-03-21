@@ -7,6 +7,7 @@ from api.serializers.front_serializer import OpenSpaceDefSerializer,\
 
 from api.serializers.core_serializers import AgencyMessageSerializer
 from dashboard.models import AgencyMessage
+from rest_framework.views import APIView
 
 
 class HeaderViewSet(viewsets.ModelViewSet):
@@ -46,10 +47,21 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         open_space_id = self.request.query_params.get('id', None)
+        # municipality_hlcit = self.request.query_params.get('hlcit_code', None)
         if open_space_id:
             return queryset.filter(open_space__id=open_space_id)
+
+        # elif municipality_hlcit:
+        #     return queryset.filter()
         else:
             return queryset
+
+
+# class FireBaseNotificationViewSet(APIView):
+
+
+
+
 
 
 
