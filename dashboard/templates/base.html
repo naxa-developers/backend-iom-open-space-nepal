@@ -112,7 +112,7 @@
 <aside id="leftsidebar" class="sidebar">
     <div class="navbar-brand">
         <button class="btn-menu ls-toggle-btn" type="button"><i class="la la-navicon"></i></button>
-        <a href="/dashboard/home"><img src="{% static 'dashboard/images/logo.png' %}" width="100"
+        <a href="/dashboard/home"><img src="{% static 'dashboard/images/open_logo.png' %}" width="100"
                                        alt="Practical Action"></a>
     </div>
     <div class="menu">
@@ -124,7 +124,7 @@
 
                     {% else %}
 
-                    <a class="image" href="/dashboard/home"><img src="{% static 'dashboard/images/pf.png' %}"
+                    <a class="image" href="/dashboard/home"><img src="{% static 'dashboard/images/user_icon.png' %}"
                                                                  alt="User"></a>
 
                     {% endif %}
@@ -145,23 +145,24 @@
                     </ul>
 <!--                </li>-->
             {% else %}
-                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Manage Open Space</span></a>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Open Space Data</span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/open_new_list"> View openspace </a></li>
                         <!--                    <li><a href="project-form.html">create Projects</a></li>-->
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="la la-signal"></i><span class="sidebar-tab">Types</span></a>
+                        class="la la-signal"></i><span class="sidebar-tab">Type Management</span></a>
                     <ul class="ml-menu">
-                        <li><a href="/dashboard/amenity_type">View Nearby Amenities</a></li>
+                        <li><a href="/dashboard/amenity_type">Nearby Amenities Types</a></li>
     <!--                    <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>-->
-                        <li><a href="/dashboard/service-list">View on site Amenities</a></li>
-                        <li><a href="/dashboard/suggest-list">View Suggested Use </a></li>
+                        <li><a href="/dashboard/service-list">On Site Amenities Types</a></li>
+                        <li><a href="/dashboard/suggest-list">Suggested Use Types</a></li>
+                        <li><a href="/dashboard/question-list">Environment Checklist Type</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="la la-object-group"></i><span class="sidebar-tab">Manage Report</span></a>
+                        class="la la-object-group"></i><span class="sidebar-tab">Encroachment Reports</span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/report-list">View Report </a></li>
 
@@ -174,13 +175,13 @@
                     </ul>
                 </li>
 
-                <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="la la-line-chart"></i><span class="sidebar-tab">EIA Questions</span></a>
-                    <ul class="ml-menu">
-                        <li><a href="/dashboard/question-list">View EIA </a></li>
-                        <!--                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>-->
-                    </ul>
-                </li>
+<!--                <li><a href="javascript:void(0);" class="menu-toggle"><i-->
+<!--                        class="la la-line-chart"></i><span class="sidebar-tab">EIA Questions</span></a>-->
+<!--                    <ul class="ml-menu">-->
+<!--                        <li><a href="/dashboard/question-list">View EIA </a></li>-->
+<!--                        &lt;!&ndash;                    <li><a href="/dashboard/questiondata-list">Question Data</a></li>&ndash;&gt;-->
+<!--                    </ul>-->
+<!--                </li>-->
 
     <!--            <li><a href="javascript:void(0);" class="menu-toggle"><i-->
     <!--                    class="la la-transgender-alt"></i><span class="sidebar-tab">Suggested Use Types</span></a>-->
@@ -198,8 +199,8 @@
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Resources</span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/resource-list">View Resources </a></li>
-                        <li><a href="/dashboard/resource-category-list">View Resources Categories</a></li>
-                        <li><a href="/dashboard/resource-document-list">View Resources Documents Types</a></li>
+                        <li><a href="/dashboard/resource-category-list">Manage Resource Categories</a></li>
+                        <li><a href="/dashboard/resource-document-list">Manage Document Types</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Pagewise Contents </span></a>
@@ -229,7 +230,7 @@
 
                         <li>
                             <a href="/dashboard/app-list" class="menu-toggle"><i
-                                    class="la la-sellsy"></i><span>App Page</span></a>
+                                    class="la la-sellsy"></i><span> Mobile App Page</span></a>
     <!--                        <ul class="ml-menu">-->
     <!--                            <li><a href="/dashboard/app-list">App List</a></li>-->
     <!--                        </ul>-->
@@ -241,7 +242,7 @@
 
 
                 {% if user.user.groups.all.0.name == 'super_admin' %}
-                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage User </span></a>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-lock"></i><span class="sidebar-tab">Manage Users </span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/user-list">View All User </a></li>
 
