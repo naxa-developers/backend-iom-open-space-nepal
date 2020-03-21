@@ -52,7 +52,9 @@ urlpatterns = [
     path('open_post_location', core_viewsets.OpenSpaceNearBy.as_view()),
     # path('distance', core_viewsets.DistanceApi.as_view()),
     path('near_by_openspace', core_viewsets.NearByMeOpenSpace.as_view()),
+    path('unique_municipality', front_viewset.UniqueMunicipalityOfMessage.as_view()),
     path('district-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.district_tile),
     path('municipality-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.municipality_tile),
     path('province-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.municipality_tile)
+
 ]
