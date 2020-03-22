@@ -149,24 +149,42 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user_data = UserProfile.objects.get(user=user)
         group = Group.objects.get(user=user)
         print(user_data)
+        url = 'openspace-list/'+self.kwargs['hlcit_code']
         if group.name == "admin":
             query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province',
                                                                                                              'district',
                                                                                                              'municipality').order_by(
                 'id')
+
+        elif group.name == 'municipality_admin':
+            query_data = OpenSpace.objects.filter(municipality__hlcit_code=user_data.municipality.hlcit_code).select_related('province', 'district', 'municipality').order_by('id')
+            url = 'openspace-list/' + user_data.municipality.hlcit_code
+            print(query_data)
+
         else:
             query_data = OpenSpace.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).select_related('province', 'district', 'municipality').order_by('id')
 
-        url = 'openspace-list/'+self.kwargs['hlcit_code']
         url_bytes = url.encode('ascii')
         base64_bytes = base64.b64encode(url_bytes)
         base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'OpenSpace'
+        data['code'] = user_data.municipality.hlcit_code
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'openspace'
         return data
+
+
+# class OpenSpaceListMunicipality(LoginRequiredMixin, ListView):
+#     template_name = 'openspace_municipality_list.html'
+#     model = OpenSpace
+#
+#     def get_context_data(self, **kwargs):
+#         data = super(OpenSpaceList, self).get_context_data(**kwargs)
+#         user = self.request.user
+#         user_data = UserProfile.objects.get(user=user)
+#         que
 
 
 class UserList(LoginRequiredMixin, ListView):
@@ -253,8 +271,15 @@ class ReportList(LoginRequiredMixin, ListView):
         query_data = Report.objects.select_related('open_space', ).order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
-        url = 'report-list/'
+        group = Group.objects.get(user=user)
 
+        if group.name == 'municipality_admin':
+            query_data = Report.objects.filter(open_space__municipality__hlcit_code=user_data.municipality.hlcit_code).select_related('open_space', ).order_by('id')
+
+        else:
+            query_data = Report.objects.select_related('open_space', ).order_by('id')
+
+        url = 'report-list/'
         data['list'] = query_data
         data['model'] = 'Report'
         # data['url'] = base64_url

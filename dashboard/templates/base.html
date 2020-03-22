@@ -149,7 +149,7 @@
             {% if user.user.groups.all.0.name == 'municipality_admin'%}
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Open Space Data</span></a>
                     <ul class="ml-menu">
-                        <li><a href="/dashboard/open_new_list"> View openspace </a></li>
+                        <li><a href="/dashboard/openspace-list/{{user.municipality.hlcit_code}}"> View openspace </a></li>
                         <!--                    <li><a href="project-form.html">create Projects</a></li>-->
                     </ul>
                 </li>

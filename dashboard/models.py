@@ -5,7 +5,7 @@ from core.models import Province, District, Municipality, OpenSpace
 
 # Create your models here.
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     name = models.CharField(max_length=300, null=True, blank=True)
     email = models.CharField(max_length=300, null=True, blank=True)
     # Province = models.ForeignKey(Province, on_delete=models.CASCADE, related_name='Province', null=True, blank=True)
