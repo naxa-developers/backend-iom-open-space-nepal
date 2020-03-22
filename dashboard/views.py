@@ -47,6 +47,7 @@ class HomePage(TemplateView):
 
         except ObjectDoesNotExist:
             user_data = UserProfile.objects.get(user=user)
+            print(user.groups.all())
             group = Group.objects.get(user=user)
             data_list1 = []
             data_list2 = []
