@@ -142,23 +142,15 @@
 <!--                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Message List</span></a>-->
 <!--                    <ul class="ml-menu">-->
                         <li><a href="/dashboard/agency_message/">View Messages</a></li>
-                    </ul>
+<!--                    </ul>-->
 <!--                </li>-->
             {% else %}
+
+            {% if user.user.groups.all.0.name == 'municipality_admin'%}
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Open Space Data</span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/open_new_list"> View openspace </a></li>
                         <!--                    <li><a href="project-form.html">create Projects</a></li>-->
-                    </ul>
-                </li>
-                <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="la la-signal"></i><span class="sidebar-tab">Type Management</span></a>
-                    <ul class="ml-menu">
-                        <li><a href="/dashboard/amenity_type">Nearby Amenities Types</a></li>
-    <!--                    <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>-->
-                        <li><a href="/dashboard/service-list">On Site Amenities Types</a></li>
-                        <li><a href="/dashboard/suggest-list">Suggested Use Types</a></li>
-                        <li><a href="/dashboard/question-list">Environment Checklist Type</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
@@ -169,9 +161,40 @@
                     </ul>
                 </li>
 
+            {% else %}
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-tasks"></i><span class="sidebar-tab">Open Space Data</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/open_new_list"> View openspace </a></li>
+                        <!--                    <li><a href="project-form.html">create Projects</a></li>-->
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="la la-object-group"></i><span class="sidebar-tab">Encroachment Reports</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/report-list">View Report </a></li>
+
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="la la-signal"></i><span class="sidebar-tab">Type Management</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/amenity_type">Nearby Amenities Types</a></li>
+    <!--                    <li><a href="/dashboard/available-list">View Nearby Amenities</a></li>-->
+                        <li><a href="/dashboard/service-list">On Site Amenities Types</a></li>
+                        <li><a href="/dashboard/suggest-list">Suggested Use Types</a></li>
+                        <li><a href="/dashboard/question-list">Environment Checklist Type</a></li>
+                    </ul>
+                </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Manage Agencies</span></a>
                     <ul class="ml-menu">
                         <li><a href="/dashboard/agency_list/">View Agencies</a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:void(0);" class="menu-toggle"><i class="la la-sellsy"></i><span class="sidebar-tab">Agency Messages</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/dashboard/agency_message/">View Agency Messages</a></li>
                     </ul>
                 </li>
 
@@ -256,6 +279,8 @@
 
                 {% endif %}
             {% endif %}
+            {% endif %}
+
 
 
         </ul>
