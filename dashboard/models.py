@@ -30,6 +30,7 @@ class UserAgency(models.Model):
 
 
 class AgencyMessage(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
     agency = models.ForeignKey(UserAgency, on_delete=models.CASCADE)
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE, related_name='user_agency')
     open_space = models.ForeignKey(OpenSpace, on_delete=models.CASCADE, related_name='user_agency')

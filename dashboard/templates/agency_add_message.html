@@ -51,6 +51,10 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="id_title">Title</label>
+                        <input class="form-control" type="text" name="title" maxlength="100" required id="id_title">
+                    </div>
+                    <div class="form-group">
                         <label for="id_municipality">municipality </label>
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 mun_class" name="municipality" required id="id_municipality"  data-placeholder="Select">
@@ -83,21 +87,26 @@
                         <button onclick="sendMessage()" type="submit" class="btn" role="button">Save</button>
                     </div>
                     <script>
-                        function sendMessage(var topic, var title, var message) {
-	                        var settings = {
-                                "url": "https://fcm.googleapis.com/fcm/send",
-                                "method": "POST",
-                                 "timeout": 0,
-                                  "headers": {
-                                    "Authorization": "key=AAAAH6WwXgs:APA91bHFjowFLvbl9rMgu7SMGjpiklVu4fMNeosgNv8D1_QlNEa8q5uBnfvGdm0pXwCPQpRLBg4nnsGNt1qEj0nSGBer7xfzIVt-cneBj0MonP9ogddgXdjqo98l9RpwkbqsrpMm6gZI",
-                                    "Content-Type": "application/json"
-                                  },
-                                   "data": JSON.stringify({"title":title,"to":"/topics/"+topic,"notification":{"title":title,"body":message,"click_action":"FLUTTER_NOTIFICATION_CLICK"},"data":{"title":"notification data","click_action":"FLUTTER_NOTIFICATION_CLICK","sound":"default","status":"done","screen":"contact/"}}),
-                                    };
-                                $.ajax(settings).done(function (response) {
-                                  console.log(response);
-                                });
-                            }
+
+                    var topic = document.getElementById("id_title").value
+                        title = document.getElementById("id_municipality").value
+                        message = document.getElementById("id_message").value;
+
+                    function sendMsg( topic, title, message) {
+                        var settings = {
+                            "url": "https://fcm.googleapis.com/fcm/send",
+                            "method": "POST",
+                            "timeout": 0,
+                            "headers": {
+                                "Authorization": "key=AAAAH6WwXgs:APA91bHFjowFLvbl9rMgu7SMGjpiklVu4fMNeosgNv8D1_QlNEa8q5uBnfvGdm0pXwCPQpRLBg4nnsGNt1qEj0nSGBer7xfzIVt-cneBj0MonP9ogddgXdjqo98l9RpwkbqsrpMm6gZI",
+                                "Content-Type": "application/json"
+                            },
+                            "data": JSON.stringify({"title":title,"to":"/topics/"+topic,"notification":{"title":title,"body":message,"click_action":"FLUTTER_NOTIFICATION_CLICK"},"data":{"title":"notification data","click_action":"FLUTTER_NOTIFICATION_CLICK","sound":"default","status":"done","screen":"contact/"}})
+                        }
+                        $.ajax(settings).done(function (response) {
+                            console.log(response);
+                          });
+                    }
                     </script>
                 </form>
 
