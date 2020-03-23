@@ -505,7 +505,6 @@ class GlimpseOfOpenSpace(APIView):
             open_space = OpenSpace.objects.filter(municipality__hlcit_code=municipality['municipality__hlcit_code']).count()
             open_count.append({municipality['municipality__name']: open_space})
 
-
         data = {
             "open_space": open_space,
             "district": district,

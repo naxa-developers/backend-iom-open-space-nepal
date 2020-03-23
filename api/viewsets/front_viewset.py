@@ -1,15 +1,15 @@
 from rest_framework import viewsets
 from front.models import OpenSpaceDef, OpenSpaceIde, Header, Contact,\
-    OpenSpaceApp
+    OpenSpaceApp, AboutHeader, CriteriaDescription, CriteriaType, OpenSpaceCriteria, WhyMapOpenIcon, WhyMapOpenSpace
 from api.serializers.front_serializer import OpenSpaceDefSerializer,\
     OpenSpaceIdeSerializer, HeaderSerializer, ContactSerializer,\
-    OpenSpaceAppSerializer
+    OpenSpaceAppSerializer, AboutHeaderSerializer, CriteriaDescriptionSerializer, CriteriaTypeSerializer, \
+    OpenSpaceCriteriaSerializer, WhyMapOpenSpaceSerializer, WhyMapOpenIconSerializer
 
 from api.serializers.core_serializers import AgencyMessageSerializer
 from dashboard.models import AgencyMessage
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 
 
 class HeaderViewSet(viewsets.ModelViewSet):
@@ -39,6 +39,44 @@ class ContactViewSet(viewsets.ModelViewSet):
 class OpenSpaceAppViewSet(viewsets.ModelViewSet):
     serializer_class = OpenSpaceAppSerializer
     queryset = OpenSpaceApp.objects.all()
+    permission_classes = []
+
+
+#About page viewsets
+
+class AboutHeaderViewSet(viewsets.ModelViewSet):
+    serializer_class = AboutHeaderSerializer
+    queryset = AboutHeader.objects.all()
+    permission_classes = []
+
+
+class CriteriaDescriptionViewSet(viewsets.ModelViewSet):
+    serializer_class = CriteriaDescriptionSerializer
+    queryset = CriteriaDescription.objects.all()
+    permission_classes = []
+
+
+class CriteriaTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = CriteriaTypeSerializer
+    queryset = CriteriaType.objects.all()
+    permission_classes = []
+
+
+class OpenSpaceCriteriaViewSet(viewsets.ModelViewSet):
+    serializer_class = OpenSpaceCriteriaSerializer
+    queryset = OpenSpaceCriteria.objects.all()
+    permission_classes = []
+
+
+class WhyMapOpenIconViewSet(viewsets.ModelViewSet):
+    serializer_class = WhyMapOpenIconSerializer
+    queryset = WhyMapOpenIcon.objects.all()
+    permission_classes = []
+
+
+class WhyMapOpenSpaceViewSet(viewsets.ModelViewSet):
+    serializer_class = WhyMapOpenSpaceSerializer
+    queryset = WhyMapOpenSpace.objects.all()
     permission_classes = []
 
 

@@ -53,7 +53,6 @@ class Contact(models.Model):
     description_nep = models.TextField(null=True, blank=True)
 
 
-
 class OpenSpaceApp(models.Model):
     title = models.CharField(max_length=100)
     title_nep = models.CharField(max_length=100, null=True, blank=True)
@@ -61,3 +60,55 @@ class OpenSpaceApp(models.Model):
     icon = models.FileField(upload_to="icon")
     description = models.TextField(null=True, blank=True)
     description_nep = models.TextField(null=True, blank=True)
+
+
+#about page models
+
+class AboutHeader(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class WhyMapOpenIcon(models.Model):
+    icon = models.FileField(upload_to="icon")
+    description = models.TextField(blank=True, null=True)
+    description_nep = models.TextField(blank=True, null=True)
+
+
+class WhyMapOpenSpace(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    description_nep = models.TextField(blank=True, null=True)
+
+
+class CriteriaType(models.Model):
+    title = models.CharField(max_length=300, blank=True, null=True)
+    title_nep = models.CharField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class CriteriaDescription(models.Model):
+    type = models.ForeignKey('CriteriaType', on_delete=models.CASCADE, related_name='criteria_description')
+    description = models.TextField(blank=True, null=True)
+    description_nep = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class OpenSpaceCriteria(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    description_nep = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
