@@ -28,6 +28,17 @@ router.register(r'open_space_app', front_viewset.OpenSpaceAppViewSet)
 router.register(r'gallery', core_viewsets.GalleryViewSet)
 router.register(r'message', front_viewset.MessageViewSet)
 
+# about page urls
+
+router.register(r'about_header', front_viewset.AboutHeaderViewSet)
+router.register(r'about_criteria_description', front_viewset.CriteriaDescriptionViewSet)
+router.register(r'about_criteria_type', front_viewset.CriteriaTypeViewSet)
+router.register(r'about_why_map_open_space', front_viewset.WhyMapOpenSpaceViewSet)
+router.register(r'about_why_map_open_icon', front_viewset.WhyMapOpenIconViewSet)
+router.register(r'about_open_space_criteria', front_viewset.OpenSpaceCriteriaViewSet)
+
+
+
 
 urlpatterns = [
     path('', include(router.urls)),
