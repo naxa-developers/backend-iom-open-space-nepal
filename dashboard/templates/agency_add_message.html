@@ -80,10 +80,24 @@
                     </div>
 
                     <div class="form-footer pull-right">
-                        <button onclick="myClickFunction()" type="submit" class="btn" role="button">Save</button>
+                        <button onclick="sendMessage()" type="submit" class="btn" role="button">Save</button>
                     </div>
                     <script>
-                        
+                        function sendMessage(var topic, var title, var message) {
+	                        var settings = {
+                                "url": "https://fcm.googleapis.com/fcm/send",
+                                "method": "POST",
+                                 "timeout": 0,
+                                  "headers": {
+                                    "Authorization": "key=AAAAH6WwXgs:APA91bHFjowFLvbl9rMgu7SMGjpiklVu4fMNeosgNv8D1_QlNEa8q5uBnfvGdm0pXwCPQpRLBg4nnsGNt1qEj0nSGBer7xfzIVt-cneBj0MonP9ogddgXdjqo98l9RpwkbqsrpMm6gZI",
+                                    "Content-Type": "application/json"
+                                  },
+                                   "data": JSON.stringify({"title":title,"to":"/topics/"+topic,"notification":{"title":title,"body":message,"click_action":"FLUTTER_NOTIFICATION_CLICK"},"data":{"title":"notification data","click_action":"FLUTTER_NOTIFICATION_CLICK","sound":"default","status":"done","screen":"contact/"}}),
+                                    };
+                                $.ajax(settings).done(function (response) {
+                                  console.log(response);
+                                });
+                            }
                     </script>
                 </form>
 

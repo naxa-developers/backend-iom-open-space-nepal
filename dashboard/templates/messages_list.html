@@ -23,9 +23,11 @@
             </div>
         </div>
         <div class="container-fluid">
+            {% if user.agency %}
             <div class="">
                     <a class="btn float-right" href="/dashboard/agency_message_add"><i class="la la-plus"></i> Add Agency Message</a>
                 </div>
+            {%endif%}
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}

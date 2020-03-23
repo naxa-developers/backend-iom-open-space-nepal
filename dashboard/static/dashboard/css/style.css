@@ -3526,7 +3526,8 @@ ul.pagination li.page-item.active a.page-link, ul.pagination li.page-item:hover 
 }
 .project-form.accordion-form .cluster-accordion .card .card-header h5 a:after {
   content: "";
-  /* fa-chevron-down */
+/* fa-chevron-down *//*
+
   font-family: "LineAwesome";
   position: absolute;
   right: 0;
@@ -3534,7 +3535,9 @@ ul.pagination li.page-item.active a.page-link, ul.pagination li.page-item:hover 
 }
 .project-form.accordion-form .cluster-accordion .card .card-header h5 a[aria-expanded=true]:after {
   content: "";
-  /* fa-chevron-up */
+  */
+/* fa-chevron-up *//*
+
 }
 .project-form.accordion-form .cluster-accordion .card .form-group .checkbox {
   margin: 0;
@@ -3562,14 +3565,18 @@ ul.pagination li.page-item.active a.page-link, ul.pagination li.page-item:hover 
 }
 .project-form.accordion-form .cluster-accordion.submission-acc .card .card-header h5 a:after {
   content: "";
-  /* fa-chevron-down */
+  */
+/* fa-chevron-down *//*
+
   font-family: "LineAwesome";
   position: absolute;
   right: 0;
 }
 .project-form.accordion-form .cluster-accordion.submission-acc .card .card-header h5 a[aria-expanded=true]:after {
   content: "";
-  /* fa-chevron-up */
+  */
+/* fa-chevron-up *//*
+
 }
 .project-form.accordion-form .cluster-accordion.submission-acc .card .card-header h5 .submission-count {
   position: absolute;
@@ -3793,4 +3800,6 @@ ul.pagination li.page-item.active a.page-link, ul.pagination li.page-item:hover 
   padding: 0.45rem 0.75rem;
 }
 
-/*# sourceMappingURL=style.css.map */
+*/
+/*# sourceMappingURL=style.css.map *//*
+
