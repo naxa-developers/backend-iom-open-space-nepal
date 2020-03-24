@@ -108,6 +108,7 @@ urlpatterns = [
 
     path('agency_message/', views.AgencyMessageList.as_view(), name='agency_message'),
     path('agency_message_add/', views.AgencyMessageCreate.as_view(), name='agency_message_add'),
-    path('agency_message_update/<int:pk>', views.AgencyMessageUpdate.as_view(), name='agency_message_update')
+    path('agency_message_update/<int:pk>', views.AgencyMessageUpdate.as_view(), name='agency_message_update'),
+    path('publish_report/<int:pk>', views.publish_report, name='publish_report'),
 
 ]

@@ -479,7 +479,6 @@ class GlimpseOfOpenSpace(APIView):
         municipality_list = []
         open_count = []
         open_space_c = OpenSpace.objects.all().count()
-        print(open_space_c)
         district = OpenSpace.objects.values('district').distinct().count()
         municipality = OpenSpace.objects.values(
             'municipality').distinct().count()
