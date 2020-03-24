@@ -307,7 +307,7 @@ class Report(models.Model):
                               blank=True, null=True)
     reply = models.TextField(null=True, blank=True)
     token = models.CharField(max_length=500, null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    date = models.DateField(auto_now_add=True, blank=True, null=True)
     is_published = models.BooleanField(default=False)
 
     def __str__(self):
@@ -350,7 +350,8 @@ class Resource(models.Model):
     image = models.ImageField(upload_to='resource_image',
                               null=True, blank=True)
     audio = models.FileField(upload_to='audio', null=True, blank=True)
-    video = models.FileField(upload_to='video', null=True, blank=True)
+    # video = models.FileField(upload_to='video', null=True, blank=True)
+    video = models.CharField(max_length=300, blank=True, null=True)
     date = models.DateField(auto_now_add=True)
     publication = models.FileField(upload_to='publication', null=True,
                                    blank=True)

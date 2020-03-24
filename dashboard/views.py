@@ -95,13 +95,14 @@ class HomePage(TemplateView):
             data_list1.extend(open_space_total)
             data_list2.extend(open_space_usable)
             data_listt2 = [float(i) for i in data_list2]
+            report = Report.objects.all()
             # print(service_open)
             pen_count = Report.objects.filter(status='pending').count()
             com_count = Report.objects.filter(status='replied').count()
             return render(request, 'dashboard.html',
                           {'data_list1': data_list1, 'data_list2': data_listt2, 'open_space_name': open_spaces,
                            'pie_count': columns, 'pie_name': columns_dict, 'pie_color': color_dict, 'group': group.name,
-                           'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count})
+                           'mun_id': mun_id, 'user': user_data, 'pending': pen_count, 'completed': com_count, 'report': report})
 
 
 def UploadShapeFile(request):
@@ -231,6 +232,18 @@ def activate_user(request, **kwargs):
     return redirect('user-list')
 
 
+def publish_report(request, **kwargs):
+    report = Report.objects.get(id=kwargs['pk'])
+
+    if report.is_published:
+        report.is_published = False
+    else:
+        report.is_published = True
+
+    report.save()
+    return redirect('report-list')
+
+
 def activate_agency(request, **kwargs):
     user = User.objects.get(id=kwargs['id'])
 
@@ -279,8 +292,11 @@ class ReportList(LoginRequiredMixin, ListView):
         else:
             query_data = Report.objects.select_related('open_space', ).order_by('id')
 
+        open_space = OpenSpace.objects.all()
+
         url = 'report-list/'
         data['list'] = query_data
+        data['open_spaces'] = open_space
         data['model'] = 'Report'
         # data['url'] = base64_url
         data['user'] = user_data
