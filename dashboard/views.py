@@ -174,6 +174,9 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'openspace'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -201,6 +204,9 @@ class UserList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'user'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -216,6 +222,9 @@ class AgencyList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         # data['user'] = user_data
         data['active'] = 'user'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -272,6 +281,9 @@ class AvailableFacilityList(LoginRequiredMixin, ListView):
         data['url'] = 'available-list'
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -301,6 +313,9 @@ class ReportList(LoginRequiredMixin, ListView):
         # data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -322,6 +337,9 @@ class QuestionsList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -346,6 +364,9 @@ class QuestionData(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -367,6 +388,9 @@ class SuggestedUseLists(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -391,6 +415,9 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -413,6 +440,9 @@ class GalleryLists(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'gallery'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -434,6 +464,9 @@ class ServiceLists(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -457,6 +490,9 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -478,6 +514,9 @@ class ResourceList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -499,6 +538,9 @@ class ResourceCategoryList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -520,6 +562,9 @@ class ResourceDocumentList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -536,6 +581,9 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -556,6 +604,9 @@ class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
         data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -574,6 +625,9 @@ class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateVie
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -592,6 +646,9 @@ class QuestionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -612,6 +669,9 @@ class ResourceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['resource_cat'] = ResourceCategory.objects.all().order_by('id')
         data['resource_doc'] = ResourceDocumentType.objects.all().order_by('id')
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -631,6 +691,9 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -649,6 +712,9 @@ class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -671,6 +737,9 @@ class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -694,6 +763,9 @@ class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -712,6 +784,9 @@ class SuggestedCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -730,6 +805,9 @@ class SuggestedUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -753,6 +831,9 @@ class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -775,6 +856,9 @@ class SuggestedDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -795,6 +879,9 @@ class ServiceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -817,6 +904,9 @@ class GalleryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -848,6 +938,9 @@ class ServiceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -870,6 +963,9 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -892,6 +988,9 @@ class GalleryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'openspace'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -914,6 +1013,9 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -932,6 +1034,9 @@ class ResourceCategoryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -950,6 +1055,9 @@ class ResourceDocumentTypeCreate(SuccessMessageMixin, LoginRequiredMixin, Create
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -968,6 +1076,9 @@ class HeaderList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -984,6 +1095,9 @@ class HeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1005,6 +1119,9 @@ class SliderList(LoginRequiredMixin, ListView):
         data['url'] = 'slider-list'
         data['user'] = user_data
         data['active'] = 'slider'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1021,6 +1138,9 @@ class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1039,6 +1159,9 @@ class ResourceCategoryUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1057,6 +1180,9 @@ class ResourceDocumentTypeUpdate(SuccessMessageMixin, LoginRequiredMixin, Update
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'resource'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1075,6 +1201,9 @@ class SliderCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'slider'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1094,6 +1223,9 @@ class OpenSpaceDefinitionList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'open_def'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1110,6 +1242,9 @@ class OpenSpaceDefinitionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateV
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'open_def'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1129,6 +1264,9 @@ class OpenSpaceIdentificationList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'open_ide'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1145,6 +1283,9 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'open_ide'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1167,6 +1308,9 @@ class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
         data['url'] = 'openspace-identification-process-list'
         data['user'] = user_data
         data['active'] = 'open_ide_process'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1183,6 +1327,9 @@ class OpenSpaceIdentificationProcessUpdate(SuccessMessageMixin, LoginRequiredMix
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'open_ide_process'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1201,6 +1348,9 @@ class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMix
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'open_ide_process'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1220,6 +1370,9 @@ class FooterList(LoginRequiredMixin, ListView):
         data['list'] = query_data
         data['user'] = user_data
         data['active'] = 'footer'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1236,6 +1389,9 @@ class FooterUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'footer'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1257,6 +1413,9 @@ class AppList(LoginRequiredMixin, ListView):
         data['url'] = 'app-list'
         data['user'] = user_data
         data['active'] = 'app'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         print(data)
         return data
 
@@ -1274,6 +1433,9 @@ class AppUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'app'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1292,6 +1454,9 @@ class AppCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'open_ide_process'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
     def get_success_url(self):
@@ -1315,10 +1480,14 @@ class OpenSpaceMuniList(LoginRequiredMixin, ListView):
         data['url'] = 'app-list'
         data['user'] = user_data
         data['active'] = 'app'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
 def CreateUser(request, **kwargs):
+    pen_count = Report.objects.filter(status='pending').count()
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -1330,18 +1499,20 @@ def CreateUser(request, **kwargs):
             UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
                                        municipality_id=int(request.POST['municipality']), )
 
-            return render(request, 'registered_message.html', {'user': request.POST['name']})
+            return render(request, 'registered_message.html', {'user': request.POST['name'], 'pending': pen_count})
         else:
 
             municipality = Municipality.objects.select_related('province', 'district', ).all()
-            return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
+            return render(request, 'create_user.html', {'form': form, 'municipalities': municipality, 'pending': pen_count})
 
     form = UserCreationForm()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
-    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality})
+
+    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality, 'pending': pen_count})
 
 
 def create_agency(request, **kwargs):
+    pen_count = Report.objects.filter(status='pending').count()
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -1351,10 +1522,10 @@ def create_agency(request, **kwargs):
 
             return redirect('/dashboard/agency_list/')
         else:
-            return render(request, 'create_agency.html', {'form':form})
+            return render(request, 'create_agency.html', {'form':form, 'pending': pen_count})
 
     else:
-        return render(request, 'create_agency.html')
+        return render(request, 'create_agency.html', {'pending': pen_count})
 
 
 def report_reply(request, **kwargs):
@@ -1388,6 +1559,9 @@ class AmenityTypeList(LoginRequiredMixin, ListView):
         data['url'] = 'amenity_type'
         data['user'] = user_data
         data['active'] = 'amenity_type'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1411,6 +1585,9 @@ class AvailableAmenityFacilityList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
         return data
 
 
@@ -1426,6 +1603,8 @@ class AvailableAmenityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'amenity_type'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
         return data
 
     def get_success_url(self):
@@ -1444,6 +1623,8 @@ class AvailableAmenityUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'amenity_type'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
         return data
 
     def get_success_url(self):
@@ -1459,7 +1640,14 @@ class AgencyMessageList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         data = super(AgencyMessageList, self).get_context_data(**kwargs)
         user = self.request.user
-        query_data = AgencyMessage.objects.filter(agency__user=user)
+        try:
+            if user.agency:
+                query_data = AgencyMessage.objects.filter(agency__user=user)
+                data['user'] = user
+        except:
+            query_data = AgencyMessage.objects.all()
+            user_data = UserProfile.objects.get(user=user)
+            data['user'] = user_data
         url = 'agency_message/'
         # url_bytes = url.encode('ascii')
         # base64_bytes = base64.b64encode(url_bytes)
@@ -1468,8 +1656,9 @@ class AgencyMessageList(LoginRequiredMixin, ListView):
         data['model'] = 'AgencyMessage'
         # data['url'] = base64_url
         data['url'] = 'agency_message'
-        data['user'] = user
         data['active'] = 'agency_message'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
         return data
 
 
@@ -1551,5 +1740,6 @@ def deleteDataDashboard(request, **kwargs):
 def homePageListView(request):
     user = request.user
     user_data = UserProfile.objects.get(user=user)
-    return render(request, 'home_page_list.html', {'user': user_data})
+    pen_count = Report.objects.filter(status='pending').count()
+    return render(request, 'home_page_list.html', {'user': user_data, 'pending': pen_count})
 
