@@ -7,11 +7,27 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
+                    {% if user.agency %}
                     <h2>{{ user.agency.agency_name.capitalize }} Message List</h2>
+                    {% else %}
+                    <h2>Agency Messages</h2>
+                    {% endif %}
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Message from {{ user.agency.agency_name }}</li>
-                        <li class="breadcrumb-item active">messages list</li>
+                        <li class="breadcrumb-item">
+                            {% if user.agency %}
+                                Message from {{ user.agency.agency_name }}
+                            {% else %}
+                                Agency Messages
+                            {% endif %}
+                        </li>
+                        <li class="breadcrumb-item active">
+                            {% if user.agency %}
+                                Message list
+                            {% else %}
+                                View Agency Messages
+                            {% endif %}
+                        </li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
                     </button>

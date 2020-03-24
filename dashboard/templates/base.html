@@ -45,6 +45,7 @@
 <div class="navbar-right">
     <ul class="navbar-nav">
         <!--        <li><a href="#search" class="main_search" title="Search..."><i class="la la-search"></i></a></li>-->
+        {% if user.user.groups.all.0.name == 'super_admin' %}
         <li class="dropdown show">
             <a href="javascript:void(0);" class="dropdown-toggle" title="Notifications" data-toggle="dropdown"
                role="button" aria-expanded="true"><i class="la la-bell"></i>
@@ -58,36 +59,41 @@
                         <li>
                             <a href="javascript:void(0);">
                                 <div class="menu-info">
-                                    <h4>8 New Members joined</h4>
-                                    <p><i class="la la-history"></i> 14 mins ago </p>
+                                    {% if pending != 0 %}
+                                        <h4> {{ pending }} pending reports</h4>
+                                    {% else %}
+                                        <h4>There are no pending reports</h4>
+                                    {% endif %}
+<!--                                    <p><i class="la la-history"></i> 14 mins ago </p>-->
                                 </div>
                             </a>
                         </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="menu-info">
-                                    <h4><b>Shyam</b> changes project list</h4>
-                                    <p><i class="la la-history"></i> 22 mins ago </p>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">
-                                <div class="menu-info">
-                                    <h4><b>Nancy Doe</b> add output</h4>
-                                    <p><i class="la la-history"></i> 3 hours ago </p>
-                                </div>
-                            </a>
-                        </li>
+<!--                        <li>-->
+<!--                            <a href="javascript:void(0);">-->
+<!--                                <div class="menu-info">-->
+<!--                                    <h4><b>Shyam</b> changes project list</h4>-->
+<!--                                    <p><i class="la la-history"></i> 22 mins ago </p>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <a href="javascript:void(0);">-->
+<!--                                <div class="menu-info">-->
+<!--                                    <h4><b>Nancy Doe</b> add output</h4>-->
+<!--                                    <p><i class="la la-history"></i> 3 hours ago </p>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                        </li>-->
 
 
                     </ul>
                 </li>
                 <li class="footer">
-                    <a href="javascript:void(0);">View All Notifications</a>
+                    <a href="/dashboard/report-list">View All Reports</a>
                 </li>
             </ul>
         </li>
+        {% endif %}
         <!---->
         <!--        <li><a href="javascript:void(0);" class="app_calendar" title="Calendar"><i class="la la-calendar"></i></a></li>-->
         <li class="dropdown">
