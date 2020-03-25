@@ -478,6 +478,7 @@ class GlimpseOfOpenSpace(APIView):
         district_list = []
         municipality_list = []
         open_count = []
+        municipality_format = []
         open_space_c = OpenSpace.objects.all().count()
         district = OpenSpace.objects.values('district').distinct().count()
         municipality = OpenSpace.objects.values(
@@ -501,6 +502,11 @@ class GlimpseOfOpenSpace(APIView):
             municipality_list.append({municipalities[i]['municipality__name']:
                                       municipalities[i]['municipality__hlcit_code']})
 
+            municipality_format.append({
+                'name': municipalities[i]['municipality__name'],
+                'hlcit_code': municipalities[i]['municipality__hlcit_code']
+            })
+
         for municipality in municipalities:
             open_space = OpenSpace.objects.filter(municipality__hlcit_code=municipality['municipality__hlcit_code']).count()
             open_count.append({municipality['municipality__name']: open_space})
@@ -511,6 +517,7 @@ class GlimpseOfOpenSpace(APIView):
             'district_list': district_list,
             "municipality": municipality,
             "municipality_list": municipality_list,
+            "municipality_format": municipality_format,
             "total_area": total_area,
             "total_capacity": total_capacity,
             "open_count": open_count
