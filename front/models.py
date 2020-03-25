@@ -75,6 +75,7 @@ class AboutHeader(models.Model):
 
 class WhyMapOpenIcon(models.Model):
     icon = models.FileField(upload_to="icon")
+    icon_class = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     description_nep = models.TextField(blank=True, null=True)
 

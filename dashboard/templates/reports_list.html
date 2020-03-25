@@ -100,7 +100,7 @@
 
                                 {% else %}
 
-                                <a href="/dashboard/activate/{{ data.user.id }}"
+                                <a href="/dashboard/publish_report/{{ data.id }}"
                                    onclick="return confirm('Are you sure you want to continue?');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Publish</a>
 
@@ -111,7 +111,7 @@
                         </tr>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter{{ data.id }}" tabindex="-1" role="dialog"
+                        <div class="modal fade" id="exampleModalCenter{{ data.id }}" tabindex="-1" role="dialog" size="lg"
                              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
