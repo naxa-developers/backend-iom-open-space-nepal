@@ -1,0 +1,72 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Shapefile Upload </h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> iom</a></li>
+                    <li class="breadcrumb-item active"><a href="/dashboard/openspace-list/">Openspace</a></li>
+                    <li class="breadcrumb-item active">Openspace</li>
+                </ul>
+                <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                </button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn btn-primary float-right right_icon_toggle_btn" type="button"><i
+                        class="la la-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+        <div class="card">
+            <div class="card-body">
+                <form enctype="multipart/form-data" method="POST" action={% url "upload-shapefile" %}>
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="custom-upload">
+                        <h3>Open Space Data</h3>
+                        <label class="custom-upload__button" for="id_open_space" data-element="custom-upload-button">Upload
+                            Files </label>
+                        <input class="custom-upload__input" type="file" name="open_space" required id="id_open_space"
+                               data-behaviour="custom-upload-input" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-upload">
+                        <h3>Upload eia</h3>
+                        <label class="custom-upload__button" for="id_eia_table" data-element="custom-upload-button">Upload
+                            Files </label>
+                        <input class="custom-upload__input" type="file" name="eia_table" required id="id_eia_table"
+                               data-behaviour="custom-upload-input" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-upload">
+                        <h3>Upload amenities</h3>
+                        <label class="custom-upload__button" for="id_nearby_amenities" data-element="custom-upload-button">Upload
+                            Files </label>
+                        <input class="custom-upload__input" type="file" name="nearby_amenities" required id="id_nearby_amenities"
+                               data-behaviour="custom-upload-input" />
+                    </div>
+                </div>
+
+
+                <div class="form-footer pull-right">
+                    <button type="submit" class="btn" role="button">Save</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

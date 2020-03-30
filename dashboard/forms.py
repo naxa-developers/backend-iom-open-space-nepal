@@ -152,3 +152,10 @@ class ImportShapefileForm(forms.Form):
     import_file = forms.FileField(label="Select a Zipped Shapefile")
     character_encoding = forms.ChoiceField(choices=CHARACTER_ENCODINGS,
                                            initial="utf8")
+
+
+class UploadNewOpenSpaceForm(forms.Form):
+    open_space = forms.FileField()
+    eia_table = forms.FileField()
+    nearby_amenities = forms.FileField()
+
