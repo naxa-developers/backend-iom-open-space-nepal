@@ -24,7 +24,8 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/openspace-add"><i class="la la-plus"></i> Add Open Space</a>
+<!--                    <a class="btn float-right" href="/dashboard/openspace-add"><i class="la la-plus"></i> Add Open Space</a>-->
+                    <a class="btn float-right" href="/dashboard/bulk_open_space_upload"><i class="la la-plus"></i>Upload Open Space</a>
                     <a class="btn float-right" href="/dashboard/upload-shapefile"><i class="la la-plus"></i> Upload Shapefilee</a>
 
                 </div>
@@ -42,10 +43,11 @@
                         <thead>
                         <tr>
 
-<!--                            <th>S.N</th>-->
+                            <th>S.N</th>
                             <th>Province</th>
                             <th>Municipality</th>
-                            <th>Open Space</th>
+                            <th>Open Space Data</th>
+                            <th>EIA Table</th>
                             <th>Onsite Amenities</th>
 
                         </tr>
@@ -53,15 +55,24 @@
                         <tbody>
                         {% for municipality in list %}
                         <tr>
-<!--                            <td>{{ open.id }}</td>-->
+                            <td>{{ forloop.counter }}</td>
                             <td><span style="display: block;width:270px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ municipality.province__name }}</span></td>
                             <td><span style="display: block;width:270px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ municipality.municipality__name }}</span></td>
                             <td>
                                 <a href="/dashboard/openspace-list/{{ municipality.municipality__hlcit_code }}" class="btn "> <i
-                                        class="la la-edit"> </i> Manage Open Space</a>
+                                        class="la la-edit"> </i> Manage Open Space Data</a>
                             </td>
                             <td>
-                                <a href="/dashboard/available-list/" class="btn"> <i
+                                <a href="/dashboard/question-list" class="btn "> <i
+                                        class="la la-edit"> </i> Manage EIA Table</a>
+                            </td>
+<!--                            <td>-->
+<!--                                <a href="/dashboard/available-list/" class="btn"> <i-->
+<!--                                    class="la la-edit"> </i> Manage on site Amenities</a>-->
+<!--                            </td>-->
+<!--                            -->
+                            <td>
+                                <a href="/dashboard/service-list/" class="btn"> <i
                                     class="la la-edit"> </i> Manage on site Amenities</a>
                             </td>
 

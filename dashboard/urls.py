@@ -111,4 +111,8 @@ urlpatterns = [
     path('agency_message_update/<int:pk>', views.AgencyMessageUpdate.as_view(), name='agency_message_update'),
     path('publish_report/<int:pk>', views.publish_report, name='publish_report'),
 
+    path('about_page', views.aboutPageListView, name='about_page'),
+
+    path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
+
 ]

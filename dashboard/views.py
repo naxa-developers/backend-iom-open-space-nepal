@@ -14,7 +14,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
-    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm
+    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
@@ -30,7 +30,7 @@ from fcm_django.models import FCMDevice
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-
+from .upload_functions import upload_eia, upload_amenities, upload_openspace
 
 
 # Create your views here.
@@ -140,6 +140,26 @@ def importShapefile(request):
         return render(request, "upload_shapefile.html", {'form': form, 'errMsg': errMsg})
 
 
+def uploadOpenSpaceFile(request):
+
+    if request.method == "GET":
+        form = UploadNewOpenSpaceForm()
+        return render(request, "upload_open_space.html", {'form': form})
+
+    elif request.method == "POST":
+        form = UploadNewOpenSpaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            open_space = request.FILES['open_space']
+            eia_table = request.FILES['eia_table']
+            nearby_amenities = request.FILES['nearby_amenities']
+
+            upload_openspace(open_space)
+            upload_openspace(eia_table)
+            upload_openspace(nearby_amenities)
+
+        return render(request, "upload_open_space.html", {'form': form})
+
+
 class OpenSpaceList(LoginRequiredMixin, ListView):
     template_name = 'openspace_list.html'
     model = OpenSpace
@@ -170,7 +190,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         base64_url = base64_bytes.decode('ascii')
         data['list'] = query_data
         data['model'] = 'OpenSpace'
-        data['code'] = user_data.municipality.hlcit_code
+        # data['code'] = user_data.municipality.hlcit_code
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'openspace'
@@ -1742,4 +1762,12 @@ def homePageListView(request):
     user_data = UserProfile.objects.get(user=user)
     pen_count = Report.objects.filter(status='pending').count()
     return render(request, 'home_page_list.html', {'user': user_data, 'pending': pen_count})
+
+
+@login_required
+def aboutPageListView(request):
+    user = request.user
+    user_data = UserProfile.objects.get(user=user)
+    pen_count = Report.objects.filter(status='pending').count()
+    return render(request, 'about_page_list.html', {'user': user_data, 'pending': pen_count})
 
