@@ -41,6 +41,36 @@ class CreateOpenSpaceViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
+class CreateNewOpenSpaceViewSet(APIView):
+    permission_classes = []
+    authentication_classes = []
+
+    def get(self, request):
+        data = []
+        querysets = CreateOpenSpace.objects.all()
+
+        for queryset in querysets:
+            queries = queryset.create_open.all()
+            i = []
+
+            for query in queries:
+                i.append({
+                    'title': query.title,
+                    'title_nep': query.title_nep
+                })
+
+            data.append({
+                'id': queryset.id,
+                'title': queryset.title,
+                'title_nep': queryset.title_nep,
+                'image': queryset.image.url,
+                'points': i
+            })
+
+        return Response({'data': data})
+
+
+
 class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     queryset = Resource.objects.all()

@@ -3,7 +3,7 @@ from core.models import Slider, Province, District, Municipality,\
     SuggestedUseData, OpenSpace, Report, CreateOpenSpace, Resource, \
     QuestionList, QuestionsData, AvailableFacility, Gallery, \
     SuggestedUseList, ServiceData, ServiceList, ResourceCategory, ResourceDocumentType, \
-    AvailableType, AvailableSubType
+    AvailableType, AvailableSubType, CreateOpenSpacePoints
 
 # Register your models here.
 
@@ -28,4 +28,5 @@ admin.site.register(ResourceCategory)
 admin.site.register(ResourceDocumentType)
 admin.site.register(AvailableType)
 admin.site.register(AvailableSubType)
+admin.site.register(CreateOpenSpacePoints)
 

@@ -61,6 +61,7 @@ urlpatterns = [
     path('alternative_near_by_me', core_viewsets.AlternativeNearByMeViewSet.as_view()),
     path('open_extra', core_viewsets.AddedOpenAPi.as_view()),
     path('open_post_location', core_viewsets.OpenSpaceNearBy.as_view()),
+    path('identify_open_space_new', core_viewsets.CreateNewOpenSpaceViewSet.as_view()),
     # path('distance', core_viewsets.DistanceApi.as_view()),
     path('near_by_openspace', core_viewsets.NearByMeOpenSpace.as_view()),
     path('unique_municipality', front_viewset.UniqueMunicipalityOfMessage.as_view()),
