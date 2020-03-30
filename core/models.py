@@ -330,6 +330,12 @@ class CreateOpenSpace(models.Model):
         return self.title
 
 
+class CreateOpenSpacePoints(models.Model):
+    title = models.CharField(max_length=500, blank=True, null=True)
+    title_nep = models.CharField(max_length=500, blank=True, null=True)
+    steps = models.ForeignKey('CreateOpenSpace', on_delete=models.CASCADE, related_name='create_open')
+
+
 class ResourceCategory(models.Model):
     name = models.CharField(max_length=100)
 
