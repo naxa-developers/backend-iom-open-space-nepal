@@ -119,6 +119,15 @@ urlpatterns = [
     path('why_map_open_icon_update/<int:pk>', views.WhyMapOpenSpaceIconUpdate.as_view(), name='why-openspace-update'),
     path('why_map_open_icon_add/', views.WhyMapOpenSpaceIconCreate.as_view(), name='why-openspace-add'),
 
+
+    path('about_header_list/', views.AboutHeaderList.as_view(), name='about-header-list'),
+    path('about_header_update/<int:pk>', views.AboutHeaderUpdate.as_view(), name='about-header-update'),
+
+    path('open_criteria_list/', views.OpenSpaceCriteriaList.as_view(), name='openspace-criteria-list'),
+    path('open_criteria_update/<int:pk>', views.OpenSpaceCriteriaUpdate.as_view(), name='openspace-criteria-update'),
+
+
+
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
 
 ]

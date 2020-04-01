@@ -15,10 +15,11 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
-    WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm
+    WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
-from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon
+from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
+    AboutHeader, OpenSpaceCriteria
 from django.apps import apps
 from django.contrib import messages
 import base64
@@ -1247,6 +1248,87 @@ class WhyMapOpenSpaceIconCreate(SuccessMessageMixin, LoginRequiredMixin, CreateV
     def get_success_url(self):
         return reverse_lazy('why-openicon-list')
 
+
+class AboutHeaderList(LoginRequiredMixin, ListView):
+    template_name = 'about_header_list.html'
+    model = AboutHeader
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(AboutHeaderList, self).get_context_data(**kwargs)
+        query_data = AboutHeader.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'AboutHeader'
+        data['url'] = 'about-header-list'
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class AboutHeaderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = AboutHeader
+    template_name = 'about_header_update.html'
+    form_class = AboutHeaderForm
+    success_message = 'About Page Header successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutHeaderUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('about-header-list')
+
+
+class OpenSpaceCriteriaList(LoginRequiredMixin, ListView):
+    template_name = 'about_open_criteria_list.html'
+    model = OpenSpaceCriteria
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceCriteriaList, self).get_context_data(**kwargs)
+        query_data = OpenSpaceCriteria.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'OpenSpaceCriteria'
+        data['url'] = 'openspace-criteria-list'
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class OpenSpaceCriteriaUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = OpenSpaceCriteria
+    template_name = 'about_open_criteria_update.html'
+    form_class = OpenSpaceCriteriaForm
+    success_message = 'About Page Header successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceCriteriaUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('openspace-criteria-list')
 
 
 class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):

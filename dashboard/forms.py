@@ -4,7 +4,8 @@ from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsDat
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery, Resource, ResourceDocumentType, \
     AvailableType
 
-from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon
+from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon, \
+    AboutHeader, OpenSpaceCriteria
 from dashboard.models import AgencyMessage
 
 
@@ -150,6 +151,18 @@ class WhyMapOpenSpaceForm(ModelForm):
 class WhyMapOpenSpaceIconForm(ModelForm):
     class Meta:
         model = WhyMapOpenIcon
+        fields = '__all__'
+
+
+class AboutHeaderForm(ModelForm):
+    class Meta:
+        model = AboutHeader
+        fields = '__all__'
+
+
+class OpenSpaceCriteriaForm(ModelForm):
+    class Meta:
+        model = OpenSpaceCriteria
         fields = '__all__'
 
 
