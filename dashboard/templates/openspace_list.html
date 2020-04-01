@@ -42,7 +42,7 @@
                         <thead>
                         <tr>
 
-<!--                            <th>S.N</th>-->
+                            <th>S.N</th>
                             <th>Title</th>
                             <th>action</th>
                             <th>Suggested Use</th>
@@ -71,7 +71,7 @@
                         <tbody>
                         {% for open in list %}
                         <tr>
-<!--                            <td>{{ open.id }}</td>-->
+                            <td>{{ forloop.counter }}</td>
                             <td><span style="display: block;width:270px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{ open.title }}</span></td>
                             <td class="table-action">
                                 <a href="/dashboard/delete/{{ model }}/{{ open.id }}/{{ url }}"
