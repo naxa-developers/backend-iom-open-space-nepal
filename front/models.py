@@ -103,7 +103,7 @@ class CriteriaDescription(models.Model):
     description_nep = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.type.title
 
 
 class OpenSpaceCriteria(models.Model):
