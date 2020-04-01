@@ -1,6 +1,7 @@
 from django.contrib import admin
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, Contact,\
-    OpenSpaceApp, AboutHeader, CriteriaDescription, CriteriaDescription, OpenSpaceCriteria, WhyMapOpenIcon, WhyMapOpenSpace
+    OpenSpaceApp, AboutHeader, CriteriaDescription, CriteriaDescription, OpenSpaceCriteria, WhyMapOpenIcon, \
+    WhyMapOpenSpace, CriteriaType
 
 # Register your models here.
 
@@ -11,6 +12,7 @@ admin.site.register(Contact)
 admin.site.register(OpenSpaceApp)
 admin.site.register(AboutHeader)
 admin.site.register(CriteriaDescription)
+admin.site.register(CriteriaType)
 admin.site.register(OpenSpaceCriteria)
 admin.site.register(WhyMapOpenIcon)
 admin.site.register(WhyMapOpenSpace)
