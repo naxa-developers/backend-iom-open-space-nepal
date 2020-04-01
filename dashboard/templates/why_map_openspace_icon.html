@@ -7,11 +7,12 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Open Space Definition</h2>
+                    <h2>Open Space Portal</h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Open Space Definition</li>
-                        <li class="breadcrumb-item active">Open Space Definition list</li>
+                        <li class="breadcrumb-item">Pagewise content</li>
+                        <li class="breadcrumb-item">Home Page</li>
+                        <li class="breadcrumb-item active">Why map Open Space Icon</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -21,6 +22,10 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                    <a class="btn float-right" href="/dashboard/why_map_open_icon_add"><i class="la la-plus"></i> Add New Why Map Open Icon</a>
+            </div>
+
             <div class="card project_list">
                 <div class="table-responsive">
                     <table id="Beneficiary_table" class="table table-hover c_table">
@@ -34,10 +39,10 @@
                         <tbody>
                             {% for data in list %}
                             <tr>
-                                <td>{{ data.id }}</td>
-                                <td>{{ data.video }}</td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ data.description }}</td>
                                 <td class="table-action">
-                                    <a href="/dashboard/openspace-definition-update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/why_map_open_icon_update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}

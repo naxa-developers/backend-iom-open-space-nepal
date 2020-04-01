@@ -112,6 +112,12 @@ urlpatterns = [
     path('publish_report/<int:pk>', views.publish_report, name='publish_report'),
 
     path('about_page', views.aboutPageListView, name='about_page'),
+    path('why_map_open_space_list', views.WhyMapOpenSpaceList.as_view(), name='why-openspace-list'),
+    path('why_map_open_space_update/<int:pk>', views.WhyMapOpenSpaceUpdate.as_view(), name='why-openspace-list'),
+
+    path('why_map_open_icon_list', views.WhyMapOpenSpaceIconList.as_view(), name='why-openicon-list'),
+    path('why_map_open_icon_update/<int:pk>', views.WhyMapOpenSpaceIconUpdate.as_view(), name='why-openspace-update'),
+    path('why_map_open_icon_add/', views.WhyMapOpenSpaceIconCreate.as_view(), name='why-openspace-add'),
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
 

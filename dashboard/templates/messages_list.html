@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
                     {% if user.agency %}
-                    <h2>{{ user.agency.agency_name.capitalize }} Message List</h2>
+                    <h2>Welcome to humantiraian activity notifcation tool please compose your message </h2>
                     {% else %}
                     <h2>Agency Messages</h2>
                     {% endif %}
@@ -16,7 +16,7 @@
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
                         <li class="breadcrumb-item">
                             {% if user.agency %}
-                                Message from {{ user.agency.agency_name }}
+                                 {{ user.agency.agency_name }} message list
                             {% else %}
                                 Agency Messages
                             {% endif %}

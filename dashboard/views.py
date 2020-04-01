@@ -14,10 +14,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
-    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm
+    ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
+    WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
-from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact
+from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon
 from django.apps import apps
 from django.contrib import messages
 import base64
@@ -1145,6 +1146,109 @@ class SliderList(LoginRequiredMixin, ListView):
         return data
 
 
+class WhyMapOpenSpaceList(LoginRequiredMixin, ListView):
+    template_name = 'why_map_openspace.html'
+    model = WhyMapOpenSpace
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(WhyMapOpenSpaceList, self).get_context_data(**kwargs)
+        query_data = WhyMapOpenSpace.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'WhyMapOpenSpace'
+        data['url'] = 'why-openspace-list'
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class WhyMapOpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = WhyMapOpenSpace
+    template_name = 'why_map_openspace_update.html'
+    form_class = WhyMapOpenSpaceForm
+    success_message = 'Openspace portal successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(WhyMapOpenSpaceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('why-openspace-list')
+
+
+class WhyMapOpenSpaceIconList(LoginRequiredMixin, ListView):
+    template_name = 'why_map_openspace_icon.html'
+    model = WhyMapOpenIcon
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(WhyMapOpenSpaceIconList, self).get_context_data(**kwargs)
+        query_data = WhyMapOpenIcon.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'WhyMapOpenIcon'
+        data['url'] = 'why-openicon-list'
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class WhyMapOpenSpaceIconUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = WhyMapOpenIcon
+    template_name = 'why_map_openicon_update.html'
+    form_class = WhyMapOpenSpaceIconForm
+    success_message = 'Openspace portal successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(WhyMapOpenSpaceIconUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'header'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('why-openicon-list')
+
+
+class WhyMapOpenSpaceIconCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = WhyMapOpenIcon
+    template_name = 'why_map_openicon_add.html'
+    form_class = WhyMapOpenSpaceIconForm
+    success_message = 'Why map open icon successfully created'
+
+    def get_context_data(self, **kwargs):
+        data = super(WhyMapOpenSpaceIconCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'why-openicon-list'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('why-openicon-list')
+
+
+
 class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Slider
     template_name = 'slider_edit.html'
@@ -1508,6 +1612,8 @@ class OpenSpaceMuniList(LoginRequiredMixin, ListView):
 
 def CreateUser(request, **kwargs):
     pen_count = Report.objects.filter(status='pending').count()
+    user = request.user
+    user_data = UserProfile.objects.get(user=user)
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -1519,7 +1625,7 @@ def CreateUser(request, **kwargs):
             UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
                                        municipality_id=int(request.POST['municipality']), )
 
-            return render(request, 'registered_message.html', {'user': request.POST['name'], 'pending': pen_count})
+            return render(request, 'registered_message.html', {'user': request.POST['name'], 'pending': pen_count,})
         else:
 
             municipality = Municipality.objects.select_related('province', 'district', ).all()
@@ -1528,7 +1634,7 @@ def CreateUser(request, **kwargs):
     form = UserCreationForm()
     municipality = Municipality.objects.select_related('province', 'district', ).all()
 
-    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality, 'pending': pen_count})
+    return render(request, 'create_user.html', {'form': form, 'municipalities': municipality, 'pending': pen_count, 'user': user_data})
 
 
 def create_agency(request, **kwargs):
