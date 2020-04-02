@@ -127,6 +127,21 @@ urlpatterns = [
     path('open_criteria_update/<int:pk>', views.OpenSpaceCriteriaUpdate.as_view(), name='openspace-criteria-update'),
 
 
+    path('about_criteria_type_list/', views.AboutCriteriaTypeList.as_view(), name='about-criteria-type-list'),
+    path('about_criteria_type_add/', views.AboutCriteriaTypeCreate.as_view(), name='about-criteria-type-add'),
+    path('about_criteria_type_update/<int:pk>', views.AboutCriteriaTypeUpdate.as_view(), name='about-criteria-type-update'),
+
+
+    path('about_criteria_type_description_list/<str:criteria_type>', views.AboutCriteriaTypeDescriptionList.as_view(), name='about-criteria-type-des-list'),
+    path('about_criteria_type_description_add/<str:criteria_type>', views.AboutCriteriaTypeDescriptionCreate.as_view(), name='about-criteria-type-description-add'),
+    path('about_criteria_type_description_update/<int:pk>/<str:criteria_type>', views.AboutCriteriaTypeDescriptionUpdate.as_view(), name='about-criteria-type-description-update'),
+
+
+    path('open_space_identification_points_list/<str:title>', views.OpenSpaceIdentificationPointList.as_view(), name='open-space-identification-point-list'),
+    path('open_space_identification_points_add/<str:title>', views.OpenSpaceIdentificationPointsCreate.as_view(), name='open-space-identification-point-add'),
+    path('open_space_identification_points_update/<int:pk>/<str:title>', views.OpenSpaceIdentificationPointsUpdate.as_view(), name='open-space-identification-point-update'),
+
+
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
 

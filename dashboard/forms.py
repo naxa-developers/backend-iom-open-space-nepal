@@ -2,10 +2,10 @@ from django import forms
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery, Resource, ResourceDocumentType, \
-    AvailableType
+    AvailableType, CreateOpenSpacePoints
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon, \
-    AboutHeader, OpenSpaceCriteria
+    AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
 from dashboard.models import AgencyMessage
 
 
@@ -163,6 +163,24 @@ class AboutHeaderForm(ModelForm):
 class OpenSpaceCriteriaForm(ModelForm):
     class Meta:
         model = OpenSpaceCriteria
+        fields = '__all__'
+
+
+class CriteriaTypeForm(ModelForm):
+    class Meta:
+        model = CriteriaType
+        fields = '__all__'
+
+
+class CriteriaDescriptionForm(ModelForm):
+    class Meta:
+        model = CriteriaDescription
+        fields = '__all__'
+
+
+class CreateOpenSpacePointsForm(ModelForm):
+    class Meta:
+        model = CreateOpenSpacePoints
         fields = '__all__'
 
 

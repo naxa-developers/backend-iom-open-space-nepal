@@ -7,13 +7,12 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Open Space Identification Process Steps</h2>
+                    <h2>Open Space Portal</h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Pagewise Content</li>
+                        <li class="breadcrumb-item">Pagewise content</li>
                         <li class="breadcrumb-item">About Page</li>
-                        <li class="breadcrumb-item">Open Space Identification Process</li>
-                        <li class="breadcrumb-item active">Open Space Identification Process List</li>
+                        <li class="breadcrumb-item active">Open Space Selection Criteria Features Types</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
@@ -23,6 +22,9 @@
             </div>
         </div>
         <div class="container-fluid">
+            <div class="">
+                <a class="btn float-right" href="/dashboard/about_criteria_type_add"><i class="la la-plus"></i>Add Features Type</a>
+            </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     <table id="Beneficiary_table" class="table table-hover c_table">
@@ -31,33 +33,29 @@
                                 <th>S.N</th>
                                 <th>Title</th>
                                 <th>action</th>
-                                <th>Sub-steps</th>
+                                <th>Feature Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in list %}
                             <tr>
-                                <td>{{ data.id }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ data.title }}</td>
                                 <td class="table-action">
-                                    <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
+                                    <a href="/dashboard/about_criteria_type_update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                    <a href="/dashboard/delete_front/{{ model }}/{{ data.id }}/{{ url }}"
                                    onclick="return confirm('Are you sure you want to delete this item?');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="/dashboard/openspace-identification-process-update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
-                                <td>
-                                    <a href="/dashboard/open_space_identification_points_list/{{ data.title }}" class="btn "> <i
-                                            class="la la-edit"> </i>Manage Sub Steps</a>
+                                 <td>
+                                    <a href="/dashboard/about_criteria_type_description_list/{{ data.title }}" class="btn "> <i
+                                            class="la la-edit"> </i>Manage Feature Description</a>
                                 </td>
                             </tr>
                         {% endfor %}
 
                         </tbody>
                     </table>
-                </div>
-                 <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/openspace-identification-process-create"><i class="la la-plus"></i> Add output</a>
-
                 </div>
             </div>
         </div>

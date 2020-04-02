@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
@@ -15,11 +15,12 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
-    WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm
+    WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
+    CriteriaTypeForm, CreateOpenSpacePointsForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
-    AboutHeader, OpenSpaceCriteria
+    AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
 from django.apps import apps
 from django.contrib import messages
 import base64
@@ -1331,6 +1332,140 @@ class OpenSpaceCriteriaUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateVie
         return reverse_lazy('openspace-criteria-list')
 
 
+class AboutCriteriaTypeList(LoginRequiredMixin, ListView):
+    template_name = 'about_criteria_type_list.html'
+    model = CriteriaType
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(AboutCriteriaTypeList, self).get_context_data(**kwargs)
+        query_data = CriteriaType.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'CriteriaType'
+        data['url'] = 'about-criteria-type-list'
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class AboutCriteriaTypeUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CriteriaType
+    template_name = 'about_criteria_type_update.html'
+    form_class = CriteriaTypeForm
+    success_message = 'Criteria Type successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutCriteriaTypeUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'criteria_type'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('about-criteria-type-list')
+
+
+class AboutCriteriaTypeCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CriteriaType
+    template_name = 'about_criteria_type_add.html'
+    form_class = CriteriaTypeForm
+    success_message = 'Criteria Type successfully created'
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutCriteriaTypeCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'criteria_type'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('about-criteria-type-list')
+
+
+class AboutCriteriaTypeDescriptionList(LoginRequiredMixin, ListView):
+    template_name = 'about_criteria_type_description_list.html'
+    model = CriteriaDescription
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutCriteriaTypeDescriptionList, self).get_context_data(**kwargs)
+        query_data = CriteriaDescription.objects.filter(type__title=self.kwargs['criteria_type'])
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        c_type = CriteriaType.objects.get(title=self.kwargs['criteria_type'])
+        data['list'] = query_data
+        data['model'] = 'CriteriaDescription'
+        url = 'about_criteria_type_description_list/' + str(self.kwargs['criteria_type'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        # print(base64_url)
+        data['url'] = base64_url
+        data['type'] = c_type
+        data['user'] = user_data
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class AboutCriteriaTypeDescriptionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CriteriaDescription
+    template_name = 'about_criteria_type_description_update.html'
+    form_class = CriteriaDescriptionForm
+    success_message = 'Criteria Type Description successfully  updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutCriteriaTypeDescriptionUpdate, self).get_context_data(**kwargs)
+        type = CriteriaType.objects.all()
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'criteria_type'
+        data['types'] = type
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/about_criteria_type_description_list/' + str(self.kwargs['criteria_type'])
+
+
+class AboutCriteriaTypeDescriptionCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CriteriaDescription
+    template_name = 'about_criteria_type_description_add.html'
+    form_class = CriteriaDescriptionForm
+    success_message = 'Criteria Type description successfully created'
+
+    def get_context_data(self, **kwargs):
+        data = super(AboutCriteriaTypeDescriptionCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        c_type = CriteriaType.objects.get(title=self.kwargs['criteria_type'])
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'criteria_type'
+        data['type'] = c_type
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/about_criteria_type_description_list/' + str(self.kwargs['criteria_type'])
+
+
 class SliderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Slider
     template_name = 'slider_edit.html'
@@ -1499,7 +1634,6 @@ class OpenSpaceIdentificationUpdate(SuccessMessageMixin, LoginRequiredMixin, Upd
 
 
 class OpenSpaceIdentificationProcessList(LoginRequiredMixin, ListView):
-    print('abc')
     template_name = 'open_space_identification_process_list.html'
     model = CreateOpenSpace
 
@@ -1561,6 +1695,78 @@ class OpenSpaceIdentificationProcessCreate(SuccessMessageMixin, LoginRequiredMix
 
     def get_success_url(self):
         return reverse_lazy('openspace-identification-process-list')
+
+
+class OpenSpaceIdentificationPointList(LoginRequiredMixin, ListView):
+    template_name = 'open_space_identification_point_list.html'
+    model = CreateOpenSpacePoints
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationPointList, self).get_context_data(**kwargs)
+        query_data = CreateOpenSpacePoints.objects.filter(steps__title=self.kwargs['title'])
+        step = CreateOpenSpace.objects.get(title=self.kwargs['title'])
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        url = 'open_space_identification_points_list/' + str(self.kwargs['title'])
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['list'] = query_data
+        data['model'] = 'CreateOpenSpacePoints'
+        data['url'] = url
+        data['user'] = user_data
+        data['active'] = 'open_ide_points'
+        data['step'] = step
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class OpenSpaceIdentificationPointsUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CreateOpenSpacePoints
+    template_name = 'open_space_identification_point_update.html'
+    form_class = CreateOpenSpacePointsForm
+    success_message = 'Open Space Identification Process sub steps Successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        print('abc')
+        data = super(OpenSpaceIdentificationPointsUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'open_ide_process'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/open_space_identification_points_list/' + str(self.kwargs['title'])
+
+
+class OpenSpaceIdentificationPointsCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CreateOpenSpacePoints
+    template_name = 'open_space_identification_point_add.html'
+    form_class = CreateOpenSpacePointsForm
+    success_message = 'Open Space Identification Process sub steps Successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(OpenSpaceIdentificationPointsCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        step = CreateOpenSpace.objects.get(title=self.kwargs['title'])
+        data['user'] = user_data
+        data['active'] = 'open_ide_process_point'
+        data['step'] = step
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def get_success_url(self):
+        return '/dashboard/open_space_identification_points_list/' + str(self.kwargs['title'])
 
 
 class FooterList(LoginRequiredMixin, ListView):
