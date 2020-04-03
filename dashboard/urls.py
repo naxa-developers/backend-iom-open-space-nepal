@@ -18,6 +18,9 @@ urlpatterns = [
     path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
 
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
+    path('add-municipality-available-amenities/<str:hlcit_code>', views.AddMunicipalityAvailableAmenities.as_view(),
+         name='add_municipality_amenities'),
+
     path('available-add/', views.AvailableFacilityCreate.as_view(), name='available-add'),
 
     path('report-list/', views.ReportList.as_view(), name='report-list'),
@@ -97,6 +100,8 @@ urlpatterns = [
     path('open_new_list/', views.OpenSpaceMuniList.as_view(), name='open_muni'),
 
     path('amenity_type/', views.AmenityTypeList.as_view(), name='amenity_type'),
+    path('available-amenities-list/<str:hlcit_code>', views.MunicipalityAvailableAmenitiesList.as_view(),
+         name='municipality_available_amenities_list'),
 
     path('available_ameni_list/<str:title>', views.AvailableAmenityFacilityList.as_view(), name='available_ameni_list'),
     path('amenity_type_add/', views.AvailableAmenityCreate.as_view(), name='amenity_type_add'),

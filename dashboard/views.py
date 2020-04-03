@@ -9,6 +9,9 @@ from core.models import OpenSpace, AvailableFacility, Report, QuestionList, Ques
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
+import pandas as pd
+from django.contrib.gis.geos import Point
+
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
@@ -638,6 +641,56 @@ class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('resource-list')
+
+
+class AddMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
+    template_name = 'municipality_available_amenities_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(AddMunicipalityAvailableAmenities, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'available'
+        data['available_types'] = AvailableType.objects.all()
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        data["municipality"] = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
+
+        return data
+
+    def post(self, request, **kwargs):
+        my_data = request.POST
+        uploaded_file = request.FILES['upload_csv']
+        available_type = my_data['available_type']
+        mun = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
+        district = mun.district
+        province = mun.province
+        df = pd.read_csv(uploaded_file).fillna('')
+        upper_range = len(df)
+
+        available_facilities_objs = []
+
+        for row in range(0, upper_range):
+
+            obj = AvailableFacility(
+                province=province,
+                district=district,
+                municipality=mun,
+                name=df['name'][row],
+                available_type_id=int(available_type),
+                operator_type=df['operator_t'][row],
+                location=Point(float(df['Log'][row]), float(df['Lat'][row])),
+            )
+            available_facilities_objs.append(obj)
+
+        AvailableFacility.objects.bulk_create(available_facilities_objs)
+
+        context = {}  # set your context
+        return reverse_lazy('available-list')
+    #
+    # def get_success_url(self):
+    #     return reverse_lazy('available-list')
 
 
 class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -1978,6 +2031,33 @@ class AmenityTypeList(LoginRequiredMixin, ListView):
         data['user'] = user_data
         data['active'] = 'amenity_type'
         pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class MunicipalityAvailableAmenitiesList(LoginRequiredMixin, ListView):
+    template_name = 'municipality_available_amenities_list.html'
+    model = AvailableFacility
+
+    def get_context_data(self, **kwargs):
+        data = super(MunicipalityAvailableAmenitiesList, self).get_context_data(**kwargs)
+        query_data = AvailableFacility.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).\
+            select_related('province', 'district', 'municipality').order_by('id')
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+
+        # url = 'available_ameni_list/' + self.kwargs['title']
+        # url_bytes = url.encode('ascii')
+        # base64_bytes = base64.b64encode(url_bytes)
+        # base64_url = base64_bytes.decode('ascii')
+        data['list'] = query_data
+        data['model'] = 'AvailableFacility'
+        # data['url'] = base64_url
+        data['user'] = user_data
+        data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['hlcit_code'] = self.kwargs['hlcit_code']
         data['pending'] = pen_count
 
         return data
