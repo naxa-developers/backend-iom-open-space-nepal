@@ -145,9 +145,13 @@ def importShapefile(request):
 
 def uploadOpenSpaceFile(request):
 
+    municipality = Municipality.objects.all()
+    province = Province.objects.all()
+    district = District.objects.all()
+
     if request.method == "GET":
         form = UploadNewOpenSpaceForm()
-        return render(request, "upload_open_space.html", {'form': form})
+        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality })
 
     elif request.method == "POST":
         form = UploadNewOpenSpaceForm(request.POST, request.FILES)
@@ -160,7 +164,7 @@ def uploadOpenSpaceFile(request):
             upload_openspace(eia_table)
             upload_openspace(nearby_amenities)
 
-        return render(request, "upload_open_space.html", {'form': form})
+        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):
