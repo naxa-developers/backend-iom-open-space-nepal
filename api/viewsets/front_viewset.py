@@ -115,6 +115,38 @@ class UniqueMunicipalityOfMessage(APIView):
         return Response({'data': data})
 
 
+class AboutCriteriaTypeViewSet(APIView):
+    permission_classes = []
+    authentication_classes = []
+
+    def get(self, request):
+        data = []
+        querysets = CriteriaType.objects.all()
+
+        for queryset in querysets:
+            queries = queryset.criteria_description.all()
+            i = []
+
+            for query in queries:
+                i.append({
+                    'description_id': query.id,
+                    'title': query.description,
+                    'title_nep': query.description_nep
+                })
+
+            data.append({
+                'id': queryset.id,
+                'title': queryset.title,
+                'title_nep': queryset.title_nep,
+                'criteria_description': i
+            })
+
+        return Response({'data': data})
+
+
+
+
+
 
 
 

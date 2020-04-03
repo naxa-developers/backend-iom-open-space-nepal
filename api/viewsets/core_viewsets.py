@@ -70,7 +70,6 @@ class CreateNewOpenSpaceViewSet(APIView):
         return Response({'data': data})
 
 
-
 class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     queryset = Resource.objects.all()
