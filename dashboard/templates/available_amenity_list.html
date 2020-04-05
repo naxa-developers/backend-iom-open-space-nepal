@@ -21,6 +21,9 @@
             </div>
         </div>
         <div class="container-fluid">
+              <div class="">
+                    <a class="btn float-right" href="{% url 'add_municipality_amenities' hlcit_code %}"><i class="la la-plus"></i> Add New Amenities</a>
+             </div>
             <div class="card project_list">
                 <div class="table-responsive">
                     {% if messages %}
@@ -52,10 +55,10 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ data.name }}</td>
-                                <td>{{ data.available_type.title }}</td>
-                                <td>{{ data.province }}</td>
-                                <td>{{ data.district }}</td>
-                                <td>{{ data.municipality }}</td>
+                                <td>{{ data.available_type__title }}</td>
+                                <td>{{ data.operator_type }}</td>
+                                <td>{{ data.district__name }}</td>
+                                <td>{{ data.municipality__name }}</td>
                                 <td>{{ data.address }}</td>
                                 <td>{{ data.email }}</td>
                                 <td>{{ data.phone_number }}</td>
@@ -72,10 +75,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="table-footer">
-                    <a class="btn float-right" href="/dashboard/available-add"><i class="la la-plus"></i> Add output</a>
+<!--                <div class="table-footer">-->
+<!--                    <a class="btn float-right" href="/dashboard/available-add"><i class="la la-plus"></i> Add output</a>-->
 
-                </div>
+<!--                </div>-->
             </div>
         </div>
     </div>

@@ -96,11 +96,14 @@ urlpatterns = [
 
     path('open_new_list/', views.OpenSpaceMuniList.as_view(), name='open_muni'),
 
-    path('amenity_type/', views.AmenityTypeList.as_view(), name='amenity_type'),
+    path('amenity-type/<str:hlcit_code>', views.AmenityTypeList.as_view(), name='amenity_type'),
 
-    path('available_ameni_list/<str:title>', views.AvailableAmenityFacilityList.as_view(), name='available_ameni_list'),
+    path('available_ameni_list/<str:title>/<str:hlcit_code>', views.AvailableAmenityFacilityList.as_view(),
+         name='available_ameni_list'),
     path('amenity_type_add/', views.AvailableAmenityCreate.as_view(), name='amenity_type_add'),
     path('amenity_type_update/<int:pk>', views.AvailableAmenityUpdate.as_view(), name='amenity_type_update'),
+    path('add-municipality-available-amenities/<str:hlcit_code>', views.AddMunicipalityAvailableAmenities.as_view(),
+         name='add_municipality_amenities'),
 
     path('create_agency/', views.create_agency, name='create_agency'),
     path('activate_agency/<int:id>/', views.activate_agency, name='activate_agency'),

@@ -460,6 +460,7 @@ class AvailableFacility(models.Model):
                                      related_name='facility_municipality',
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
+    ward_no = models.CharField(max_length=20, null=True, blank=True)
     opening_hours = models.CharField(max_length=200, null=True, blank=True)
     # education_type = models.CharField(choices=EDUCATION_TYPE_CHOICES,
     #                                   max_length=30, null=True, blank=True)

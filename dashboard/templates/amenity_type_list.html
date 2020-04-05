@@ -49,7 +49,7 @@
                                 <td>{{ data.id }}</td>
                                 <td>{{ data.title }}</td>
                                 <td>
-                                    <a href="/dashboard/available_ameni_list/{{data.title}}" class="btn"> <i
+                                    <a href="{% url 'available_ameni_list' data.title hlcit_code %}" class="btn"> <i
                                         class="la la-edit"> </i> Manage on site Amenities</a>
                                 </td>
                                 <td class="table-action">
