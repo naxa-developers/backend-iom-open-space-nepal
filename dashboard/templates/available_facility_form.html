@@ -47,6 +47,12 @@
                         <input type="text" name="name" class="form-control" id="id_name" {% if form.instance.name %} value={{form.instance.name}} {% endif %} required>
                     </div>
 
+
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" name="op_type" class="form-control" id="id_op_type" {% if form.instance.op_type %} value={{form.instance.op_type}} {% endif %}>
+                    </div>
+
                     <div class="form-group">
                         <label>Longitude</label>
                         <input type="text" name="longitude" class="form-control" id="id_longitude" {% if form.instance.location %} value={{form.instance.longitude}} {% endif %} required>

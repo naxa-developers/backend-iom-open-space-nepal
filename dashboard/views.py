@@ -714,7 +714,7 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
                     # address=df['Address'][row],
                     comments=df['Remarks'][row],
                     available_type_id=int(available_type),
-                    operator_type=df['Type'][row],
+                    op_type=df['Type'][row],
                     location=Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
                 )
                 available_facilities_objs.append(obj)
@@ -2115,7 +2115,7 @@ class MunicipalityAvailableAmenityFacilityList(LoginRequiredMixin, ListView):
         query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title'],
                                                       municipality__hlcit_code=self.kwargs['hlcit_code']).\
             values('id', 'name', 'available_type__title', 'district__name', 'municipality__name', 'ward_no',
-                   'phone_number', 'comments', 'operator_type', 'location').order_by('id')
+                   'phone_number', 'comments', 'op_type', 'location').order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
 

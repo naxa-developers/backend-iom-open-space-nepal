@@ -28,7 +28,7 @@ class AvailableFacilityCreateUpdateForm(ModelForm):
 
     class Meta:
         model = AvailableFacility
-        fields = ('name', 'ward_no', 'phone_number', 'comments', 'longitude', 'latitude')
+        fields = ('name', 'ward_no', 'phone_number', 'comments', 'longitude', 'latitude', 'op_type')
 
 
 class AvailableFacilityForm(ModelForm):

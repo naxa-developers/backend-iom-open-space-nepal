@@ -457,6 +457,7 @@ class AvailableFacility(models.Model):
                                            related_name='facility_avai_sub_type', blank=True, null=True)
     operator_type = models.CharField(choices=OPERATOR_TYPE,
                                      max_length=30, null=True, blank=True)
+    op_type = models.CharField(max_length=200, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     location = PointField(geography=True, srid=4326, blank=True, null=True)
     province = models.ForeignKey('Province', related_name='facility_province',
