@@ -2339,6 +2339,20 @@ def delete_municipality_available_type(request, id):
                                         kwargs={'hlcit_code': municipality.hlcit_code}))
 
 
+@login_required
+def edit_municipality_available_type(request, id):
+
+    municipality_available_type_obj = MunicipalityAvailableType.objects.get(id=id)
+
+    if request.method == 'POST':
+        data_source = request.POST['data_source']
+        MunicipalityAvailableType.objects.filter(id=id).update(data_source=data_source)
+        return HttpResponseRedirect(reverse('municipality_amenity_type', args=(),
+                                            kwargs={'hlcit_code': municipality_available_type_obj.municipality.hlcit_code}))
+
+    return render(request, 'edit_muni_available_type_form.html', {'obj': municipality_available_type_obj})
+
+
 class AddMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = AvailableFacility
     form_class = AvailableFacilityCreateUpdateForm

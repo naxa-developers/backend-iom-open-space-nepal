@@ -162,4 +162,7 @@ urlpatterns = [
     path('delete-municipality-available-type/<int:id>', views.delete_municipality_available_type,
          name='delete_municipality_available_type'),
 
+    path('edit-available-type/<int:id>', views.edit_municipality_available_type,
+         name='edit_municipality_available_type'),
+
 ]
