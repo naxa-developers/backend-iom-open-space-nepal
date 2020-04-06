@@ -21,6 +21,16 @@ class OpenSpaceForm(ModelForm):
         exclude = ('polygons', )
 
 
+class AvailableFacilityCreateUpdateForm(ModelForm):
+
+    longitude = forms.CharField()
+    latitude = forms.CharField()
+
+    class Meta:
+        model = AvailableFacility
+        fields = ('name', 'ward_no', 'phone_number', 'comments', 'longitude', 'latitude')
+
+
 class AvailableFacilityForm(ModelForm):
     class Meta:
         model = AvailableFacility

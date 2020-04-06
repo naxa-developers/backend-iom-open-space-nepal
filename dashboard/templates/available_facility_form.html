@@ -44,22 +44,33 @@
 
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" name="name" class="form-control" id="id_name" {% if form.instance.name %} value={{form.instance.name}} {% endif %}>
+                        <input type="text" name="name" class="form-control" id="id_name" {% if form.instance.name %} value={{form.instance.name}} {% endif %} required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" name="longitude" class="form-control" id="id_longitude" {% if form.instance.location %} value={{form.instance.longitude}} {% endif %} required>
                     </div>
 
                      <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" name="latitude" class="form-control" id="id_latitude" {% if form.instance.location %} value={{form.instance.latitude}} {% endif %} required>
+                    </div>
+
+
+                     <div class="form-group">
                         <label>Ward No.</label>
-                        <input type="text" name="ward_no" class="form-control" id="id_ward_no" {% if form.instance.name %} value={{form.instance.ward_no}} {% endif %}>
+                        <input type="text" name="ward_no" class="form-control" id="id_ward_no" {% if form.instance.ward_no %} value={{form.instance.ward_no}} {% endif %}>
                     </div>
 
                      <div class="form-group">
                         <label>Contact</label>
-                        <input type="text" name="phone_number" class="form-control" id="id_phone_number" {% if form.instance.name %} value={{form.instance.phone_number}} {% endif %}>
+                        <input type="text" name="phone_number" class="form-control" id="id_phone_number" {% if form.instance.phone_number %} value={{form.instance.phone_number}} {% endif %}>
                     </div>
 
                      <div class="form-group">
                         <label>Remarks</label>
-                        <input type="text" name="comments" class="form-control" id="id_comments" {% if form.instance.name %} value={{form.instance.comments}} {% endif %}>
+                        <input type="text" name="comments" class="form-control" id="id_comments" {% if form.instance.comments %} value={{form.instance.comments}} {% endif %}>
                     </div>
 
 
@@ -68,14 +79,6 @@
                         <button type="submit" class="btn" role="button">Save</button>
                     </div>
                 </form>
-
-                {% if object %}
-                    <a href="{% url 'municipality_available_ameni_list' object.available_type.title object.municipality.hlcit_code %}">View Template </a>
-
-                {% else %}
-                    <a href="{% url 'municipality_available_ameni_list' available_type hlcit_code %}">View Template </a>
-
-                {% endif %}
 
             </div>
         </div>

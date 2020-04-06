@@ -20,7 +20,7 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
-    CriteriaTypeForm, CreateOpenSpacePointsForm
+    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
@@ -678,7 +678,9 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'available'
-        data['available_types'] = AvailableType.objects.all()
+        muni_available_types = MunicipalityAvailableType.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).\
+            values_list('available_type__title', flat=True)
+        data['available_types'] = AvailableType.objects.exclude(title__in=muni_available_types)
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
         data["municipality"] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
@@ -712,7 +714,7 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
                     # address=df['Address'][row],
                     comments=df['Remarks'][row],
                     available_type_id=int(available_type),
-                    # operator_type=df['operator_t'][row],
+                    operator_type=df['Type'][row],
                     location=Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
                 )
                 available_facilities_objs.append(obj)
@@ -721,8 +723,7 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
 
             MunicipalityAvailableType.objects.create(available_type_id=available_type,
                                                      municipality=mun,
-                                                     data_source=my_data['data_source'],
-                                                     change_remarks=my_data['change_remarks']
+                                                     data_source=my_data['data_source']
                                                      )
         except Exception as e:
             return super(TemplateView, self).render_to_response(context={'error':
@@ -2114,7 +2115,7 @@ class MunicipalityAvailableAmenityFacilityList(LoginRequiredMixin, ListView):
         query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title'],
                                                       municipality__hlcit_code=self.kwargs['hlcit_code']).\
             values('id', 'name', 'available_type__title', 'district__name', 'municipality__name', 'ward_no',
-                   'phone_number', 'comments').order_by('id')
+                   'phone_number', 'comments', 'operator_type', 'location').order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
 
@@ -2340,7 +2341,7 @@ def delete_municipality_available_type(request, id):
 
 class AddMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = AvailableFacility
-    fields = ('name', 'ward_no', 'phone_number', 'comments')
+    form_class = AvailableFacilityCreateUpdateForm
     template_name = 'available_facility_form.html'
 
     def get_context_data(self, **kwargs):
@@ -2358,12 +2359,14 @@ class AddMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, C
 
     def form_valid(self, form):
         obj = form.save(commit=False)
+
         available_type = AvailableType.objects.get(title=self.kwargs['available_type'])
         muni = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
         obj.municipality = muni
         obj.province = muni.province
         obj.district = muni.district
         obj.available_type = available_type
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
         obj.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -2376,7 +2379,7 @@ class AddMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, C
 
 class UpdateMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = AvailableFacility
-    fields = ('name', 'ward_no', 'phone_number', 'comments')
+    form_class = AvailableFacilityCreateUpdateForm
     template_name = 'available_facility_form.html'
 
     def get_context_data(self, **kwargs):
@@ -2388,6 +2391,12 @@ class UpdateMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
         return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         obj = AvailableFacility.objects.get(id=self.kwargs['pk'])

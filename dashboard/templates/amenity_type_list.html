@@ -22,7 +22,7 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/amenity_type_add"><i class="la la-plus"></i> Add New Amenities Type</a>
+                    <a class="btn float-right" href="/dashboard/amenity_type_add"><i class="la la-plus"></i> Add New Amenity Type</a>
             </div>
             <div class="card project_list">
                 <div class="table-responsive">
@@ -39,7 +39,6 @@
                             <tr>
                                 <th>S.N</th>
                                 <th>Type</th>
-                                <th>Onsite Amenities</th>
                                 <th>Manage Amenity Type</th>
                             </tr>
                         </thead>
@@ -48,10 +47,6 @@
                             <tr>
                                 <td>{{ data.id }}</td>
                                 <td>{{ data.title }}</td>
-                                 <td>
-                                    <a href="/dashboard/available_ameni_list/{{data.title}}" class="btn"> <i
-                                        class="la la-edit"> </i> Manage on site Amenities</a>
-                                </td>
 
                                 <td class="table-action">
                                     <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
