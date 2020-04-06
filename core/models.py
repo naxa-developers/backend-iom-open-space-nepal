@@ -375,6 +375,16 @@ class AvailableType(models.Model):
         return self.title
 
 
+class MunicipalityAvailableType(models.Model):
+    available_type = models.ForeignKey(AvailableType, on_delete=models.CASCADE)
+    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    data_source = models.CharField(max_length=300, null=True, blank=True)
+    change_remarks = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.available_type.title
+
+
 class AvailableSubType(models.Model):
     title = models.CharField(max_length=100)
     type = models.ForeignKey('AvailableType', on_delete=models.CASCADE, related_name='available_sub_type',
@@ -460,6 +470,7 @@ class AvailableFacility(models.Model):
                                      related_name='facility_municipality',
                                      on_delete=models.SET_NULL,
                                      blank=True, null=True)
+    ward_no = models.CharField(max_length=20, null=True, blank=True)
     opening_hours = models.CharField(max_length=200, null=True, blank=True)
     # education_type = models.CharField(choices=EDUCATION_TYPE_CHOICES,
     #                                   max_length=30, null=True, blank=True)

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <ul class="breadcrumb">
+
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                        <li class="breadcrumb-item active">Edit form</li>
+
+                </ul>
+                <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+
+        <div class="card">
+            <div class="card-body">
+                <form enctype="multipart/form-data" action="" method="post">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Data Source</label>
+                        <input type="text" name="data_source" class="form-control" id="id_data_source" value={{obj.data_source|default_if_none:""}}>
+                    </div>
+
+
+                    <div class="form-footer pull-right">
+                        <button type="submit" class="btn" role="button">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

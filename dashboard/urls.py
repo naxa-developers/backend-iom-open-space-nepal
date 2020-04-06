@@ -96,11 +96,19 @@ urlpatterns = [
 
     path('open_new_list/', views.OpenSpaceMuniList.as_view(), name='open_muni'),
 
-    path('amenity_type/', views.AmenityTypeList.as_view(), name='amenity_type'),
+    path('amenity-type/<str:hlcit_code>', views.MunicipalityAmenityTypeList.as_view(),
+         name='municipality_amenity_type'),
+    path('amenity_type/', views.AmenityTypeList.as_view(),
+         name='amenity_type'),
 
-    path('available_ameni_list/<str:title>', views.AvailableAmenityFacilityList.as_view(), name='available_ameni_list'),
+    path('municipality-available-amenities-list/<str:title>/<str:hlcit_code>',
+         views.MunicipalityAvailableAmenityFacilityList.as_view(), name='municipality_available_ameni_list'),
+    path('available_ameni_list/<str:title>/', views.AvailableAmenityFacilityList.as_view(),
+         name='available_ameni_list'),
     path('amenity_type_add/', views.AvailableAmenityCreate.as_view(), name='amenity_type_add'),
     path('amenity_type_update/<int:pk>', views.AvailableAmenityUpdate.as_view(), name='amenity_type_update'),
+    path('add-municipality-available-amenities/<str:hlcit_code>', views.AddBulkMunicipalityAvailableAmenities.as_view(),
+         name='add_municipality_amenities'),
 
     path('create_agency/', views.create_agency, name='create_agency'),
     path('activate_agency/<int:id>/', views.activate_agency, name='activate_agency'),
@@ -144,5 +152,17 @@ urlpatterns = [
 
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
+    path('add-new-location', views.add_new_location, name='add_new_location'),
+    path('add-available-facility/<str:available_type>/<str:hlcit_code>', views.AddMunicipalityAvailableAmenity.as_view(),
+         name='add_available_facility'),
+    path('update-available-facility/<int:pk>', views.UpdateMunicipalityAvailableAmenity.as_view(),
+         name='update_available_facility'),
+
+
+    path('delete-municipality-available-type/<int:id>', views.delete_municipality_available_type,
+         name='delete_municipality_available_type'),
+
+    path('edit-available-type/<int:id>', views.edit_municipality_available_type,
+         name='edit_municipality_available_type'),
 
 ]

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <h2>Available Facility form</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active">Add form</li>
+                </ul>
+                <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn float-right right_icon_toggle_btn" type="button"><i class="la la-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+
+        <div class="card">
+            <div class="card-body">
+                <form enctype="multipart/form-data" action="" method="post">
+                    {% if error %}
+                     <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error !</strong> {{error}}
+                    </div>
+                    {% endif %}
+
+                    {% csrf_token %}
+                     <div class="form-group">
+                        <label>Available Type </label>
+                        <div class="select-option">
+                            <select name="available_type" id="id_available_type" class="custom-select show-tick ms select2"
+                                     data-placeholder="Select" required>
+                                {% for type in available_types %}
+                                    <option value="{{type.id}}">{{type.title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                         Amenity Data
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Data source</label>
+                        <input type="text" name="data_source" class="form-control" id="id_data_source">
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label>Change Remarks</label>-->
+<!--                        <input type="text" name="change_remarks" class="form-control" id="id_change_remarks">-->
+<!--                    </div>-->
+
+                       <div class="form-group">
+                        <label>Province </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" data-placeholder="Select">
+                                <option value="municipality.province_id">{{municipality.province__name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label>Municipality </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2" data-placeholder="Select">
+                                <option value="{{municipality.id}}">{{municipality.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Upload Data </label>
+                        <input type="file" name="upload_csv" id="id_upload_csv" required>
+                    </div>
+
+
+                    <div class="form-footer pull-right">
+                        <button type="submit" class="btn" role="button">Save</button>
+                    </div>
+                </form>
+
+                <a href="{% static 'NearbyAmenitiesTemplate.csv' %}">View Template </a>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

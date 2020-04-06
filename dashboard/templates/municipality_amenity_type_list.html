@@ -22,7 +22,7 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/amenity_type_add"><i class="la la-plus"></i> Add New Amenity Type</a>
+                    <a class="btn float-right" href="{% url 'add_municipality_amenities' hlcit_code %}"><i class="la la-plus"></i> Add New Amenity Data</a>
             </div>
             <div class="card project_list">
                 <div class="table-responsive">
@@ -39,20 +39,30 @@
                             <tr>
                                 <th>S.N</th>
                                 <th>Type</th>
-                                <th>Manage Amenity Type</th>
+                                <th>Nearby Amenities</th>
+                                <th>Data Source</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for data in list %}
                             <tr>
                                 <td>{{ data.id }}</td>
-                                <td>{{ data.title }}</td>
+                                <td>{{ data.available_type.title }}</td>
+                                <td>
+                                    <a href="{% url 'municipality_available_ameni_list' data.available_type.title hlcit_code %}" class="btn"> <i
+                                        class="la la-edit"> </i> Manage Nearby Amenities</a>
+                                </td>
+                                <td>{{ data.data_source|default_if_none:"" }}</td>
 
                                 <td class="table-action">
-                                    <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
-                                   onclick="return confirm('Are you sure you want to delete this item?');"
+                                     <a href="{% url 'edit_municipality_available_type' data.id%}"
+                                        class="btn"> <i class="la la-edit"></i> Edit</a>
+
+                                    <a href="{% url 'delete_municipality_available_type' data.id %}"
+                                   onclick="return confirm('Are you sure you want to delete this item ?All the Amenities under this municipality and Type will be deleted.');"
                                    class="btn remove"> <i class="la la-trash-o"></i> Delete</a>
-                                    <a href="/dashboard/amenity_type_update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
+<!--                                    <a href="/dashboard/amenity_type_update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>-->
                                 </td>
                             </tr>
                         {% endfor %}

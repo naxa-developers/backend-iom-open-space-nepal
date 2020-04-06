@@ -1,22 +1,26 @@
+from django.conf import settings
+from django.contrib.gis.geos import Point
+from django.db import transaction
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
-from django.urls import reverse_lazy
+import pandas as pd
+from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
     SuggestedDataForm, ServiceForm, ServiceDataForm, ResourceCategoryForm, HeaderForm, SliderForm, OpenSpaceDefForm, \
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
-    CriteriaTypeForm, CreateOpenSpacePointsForm
+    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
@@ -165,6 +169,31 @@ def uploadOpenSpaceFile(request):
             upload_openspace(nearby_amenities)
 
         return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
+
+
+def add_new_location(request):
+
+    municipality = Municipality.objects.all()
+    province = Province.objects.all()
+    district = District.objects.all()
+
+    if request.method == "GET":
+        form = UploadNewOpenSpaceForm()
+        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality })
+
+    elif request.method == "POST":
+        form = UploadNewOpenSpaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            open_space = request.FILES['open_space']
+            eia_table = request.FILES['eia_table']
+            nearby_amenities = request.FILES['nearby_amenities']
+
+            upload_openspace(open_space)
+            upload_openspace(eia_table)
+            upload_openspace(nearby_amenities)
+
+        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
+
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):
@@ -638,6 +667,78 @@ class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('resource-list')
+
+
+class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
+    template_name = 'municipality_available_amenities_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(AddBulkMunicipalityAvailableAmenities, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'available'
+        muni_available_types = MunicipalityAvailableType.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).\
+            values_list('available_type__title', flat=True)
+        data['available_types'] = AvailableType.objects.exclude(title__in=muni_available_types)
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        data["municipality"] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'province_id', 'province__name', 'hlcit_code').get()
+
+        return data
+
+    def post(self, request, **kwargs):
+        my_data = request.POST
+        uploaded_file = request.FILES['upload_csv']
+        available_type = my_data['available_type']
+        mun = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
+        district = mun.district
+        province = mun.province
+
+        df = pd.read_csv(uploaded_file).fillna('')
+        upper_range = len(df)
+
+        available_facilities_objs = []
+
+        try:
+            for row in range(0, upper_range):
+
+                obj = AvailableFacility(
+                    province=province,
+                    district=district,
+                    municipality=mun,
+                    name=df['Name'][row],
+                    ward_no=str(df['Ward No.'][row]),
+                    phone_number=df['Contact'][row],
+                    # address=df['Address'][row],
+                    comments=df['Remarks'][row],
+                    available_type_id=int(available_type),
+                    operator_type=df['Type'][row],
+                    location=Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
+                )
+                available_facilities_objs.append(obj)
+
+            AvailableFacility.objects.bulk_create(available_facilities_objs)
+
+            MunicipalityAvailableType.objects.create(available_type_id=available_type,
+                                                     municipality=mun,
+                                                     data_source=my_data['data_source']
+                                                     )
+        except Exception as e:
+            return super(TemplateView, self).render_to_response(context={'error':
+                                                                             'Please upload file with provided formats'})
+
+        context = {}  # set your context
+        # return reverse_lazy('available_ameni_list', kwargs={'title': available_type,
+        #                                                     'hlcit_code': self.kwargs['hlcit_code']})
+        available_type_obj = AvailableType.objects.get(id=available_type)
+        return HttpResponseRedirect(reverse('municipality_available_ameni_list', args=(),
+                                            kwargs={'title': available_type_obj.title,
+                                                    'hlcit_code': self.kwargs['hlcit_code']}))
+    #
+    # def get_success_url(self):
+    #     return reverse_lazy('available-list')
 
 
 class AvailableFacilityCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -1963,6 +2064,28 @@ def report_reply(request, **kwargs):
         return redirect('/dashboard/report-list')
 
 
+class MunicipalityAmenityTypeList(LoginRequiredMixin, ListView):
+    template_name = 'municipality_amenity_type_list.html'
+    model = AvailableType
+
+    def get_context_data(self, **kwargs):
+        data = super(MunicipalityAmenityTypeList, self).get_context_data(**kwargs)
+        query_data = MunicipalityAvailableType.objects.select_related('available_type').\
+            filter(municipality__hlcit_code=self.kwargs['hlcit_code'])
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['list'] = query_data
+        data['model'] = 'AvailableType'
+        data['url'] = 'amenity_type'
+        data['user'] = user_data
+        data['active'] = 'amenity_type'
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
 class AmenityTypeList(LoginRequiredMixin, ListView):
     template_name = 'amenity_type_list.html'
     model = AvailableType
@@ -1983,14 +2106,46 @@ class AmenityTypeList(LoginRequiredMixin, ListView):
         return data
 
 
+class MunicipalityAvailableAmenityFacilityList(LoginRequiredMixin, ListView):
+    template_name = 'muni_available_amenity_list.html'
+    model = AvailableFacility
+
+    def get_context_data(self, **kwargs):
+        data = super(MunicipalityAvailableAmenityFacilityList, self).get_context_data(**kwargs)
+        query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title'],
+                                                      municipality__hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'available_type__title', 'district__name', 'municipality__name', 'ward_no',
+                   'phone_number', 'comments', 'operator_type', 'location').order_by('id')
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+
+        url = 'municipality-available-amenities-list/' + self.kwargs['title'] + '/' + self.kwargs['hlcit_code']
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['list'] = query_data
+        data['model'] = 'AvailableFacility'
+        data['url'] = base64_url
+        data['user'] = user_data
+        data['active'] = 'available'
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+        data['available_type'] = self.kwargs['title']
+
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
 class AvailableAmenityFacilityList(LoginRequiredMixin, ListView):
     template_name = 'available_amenity_list.html'
     model = AvailableFacility
 
     def get_context_data(self, **kwargs):
-        print('aaaa')
         data = super(AvailableAmenityFacilityList, self).get_context_data(**kwargs)
-        query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title']).select_related('province', 'district', 'municipality').order_by('id')
+        query_data = AvailableFacility.objects.filter(available_type__title=self.kwargs['title']).\
+            values('id', 'name', 'available_type__title', 'district__name', 'municipality__name', 'ward_no',
+                   'phone_number', 'comments').order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
 
@@ -2169,3 +2324,97 @@ def aboutPageListView(request):
     pen_count = Report.objects.filter(status='pending').count()
     return render(request, 'about_page_list.html', {'user': user_data, 'pending': pen_count})
 
+
+@login_required
+def delete_municipality_available_type(request, id):
+
+    municipality_available_type_obj = MunicipalityAvailableType.objects.get(id=id)
+    municipality = municipality_available_type_obj.municipality
+    available_type = municipality_available_type_obj.available_type
+
+    AvailableFacility.objects.filter(municipality=municipality, available_type=available_type).delete()
+    municipality_available_type_obj.delete()
+
+    return HttpResponseRedirect(reverse('municipality_amenity_type', args=(),
+                                        kwargs={'hlcit_code': municipality.hlcit_code}))
+
+
+@login_required
+def edit_municipality_available_type(request, id):
+
+    municipality_available_type_obj = MunicipalityAvailableType.objects.get(id=id)
+
+    if request.method == 'POST':
+        data_source = request.POST['data_source']
+        MunicipalityAvailableType.objects.filter(id=id).update(data_source=data_source)
+        return HttpResponseRedirect(reverse('municipality_amenity_type', args=(),
+                                            kwargs={'hlcit_code': municipality_available_type_obj.municipality.hlcit_code}))
+
+    return render(request, 'edit_muni_available_type_form.html', {'obj': municipality_available_type_obj})
+
+
+class AddMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = AvailableFacility
+    form_class = AvailableFacilityCreateUpdateForm
+    template_name = 'available_facility_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(AddMunicipalityAvailableAmenity, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'available'
+        data['available_type'] = self.kwargs['available_type']
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        available_type = AvailableType.objects.get(title=self.kwargs['available_type'])
+        muni = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
+        obj.municipality = muni
+        obj.province = muni.province
+        obj.district = muni.district
+        obj.available_type = available_type
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('municipality_available_ameni_list', args=(),
+                                            kwargs={'title': self.kwargs['available_type'],
+                                                    'hlcit_code': self.kwargs['hlcit_code']
+                                                    })
+
+
+class UpdateMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = AvailableFacility
+    form_class = AvailableFacilityCreateUpdateForm
+    template_name = 'available_facility_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(UpdateMunicipalityAvailableAmenity, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'available'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        obj = AvailableFacility.objects.get(id=self.kwargs['pk'])
+        return reverse('municipality_available_ameni_list', args=(),
+                       kwargs={'title': obj.available_type.title,
+                               'hlcit_code': obj.municipality.hlcit_code
+                               })
