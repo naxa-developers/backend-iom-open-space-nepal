@@ -65,8 +65,8 @@ class OpenSpaceApp(models.Model):
 #about page models
 
 class AboutHeader(models.Model):
-    title = models.CharField(max_length=100, blank=True, null=True)
-    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=700, blank=True, null=True)
+    title_nep = models.CharField(max_length=700, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     description_nep = models.TextField(blank=True, null=True)
     image = models.ImageField(blank=True, null=True, upload_to='front')
@@ -83,8 +83,8 @@ class WhyMapOpenIcon(models.Model):
 
 
 class WhyMapOpenSpace(models.Model):
-    title = models.CharField(max_length=100, blank=True, null=True)
-    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=700, blank=True, null=True)
+    title_nep = models.CharField(max_length=700, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     description_nep = models.TextField(blank=True, null=True)
 
@@ -107,8 +107,8 @@ class CriteriaDescription(models.Model):
 
 
 class OpenSpaceCriteria(models.Model):
-    title = models.CharField(max_length=100, blank=True, null=True)
-    title_nep = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=700, blank=True, null=True)
+    title_nep = models.CharField(max_length=700, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     description_nep = models.TextField(blank=True, null=True)
 
