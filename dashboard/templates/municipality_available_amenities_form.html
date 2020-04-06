@@ -33,6 +33,22 @@
                     {% endif %}
 
                     {% csrf_token %}
+                     <div class="form-group">
+                        <label>Available Type </label>
+                        <div class="select-option">
+                            <select name="available_type" id="id_available_type" class="custom-select show-tick ms select2"
+                                     data-placeholder="Select" required>
+                                {% for type in available_types %}
+                                    <option value="{{type.id}}">{{type.title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                         Amenity Data
+                    </div>
+
 
                     <div class="form-group">
                         <label>Data source</label>
@@ -60,17 +76,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Available Type </label>
-                        <div class="select-option">
-                            <select name="available_type" id="id_available_type" class="custom-select show-tick ms select2"
-                                     data-placeholder="Select" required>
-                                {% for type in available_types %}
-                                    <option value="{{type.id}}">{{type.title}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+
 
                     <div class="form-group">
                         <label>Upload Data </label>
@@ -83,7 +89,7 @@
                     </div>
                 </form>
 
-                <a href="{% static 'NearbyAmenitiesTemplate.csv' %}">View Template </a>
+<!--                <a href="{% static 'NearbyAmenitiesTemplate.csv' %}">View Template </a>-->
 
 
             </div>

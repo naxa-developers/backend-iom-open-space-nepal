@@ -48,10 +48,11 @@
                             <tr>
                                 <td>{{ data.id }}</td>
                                 <td>{{ data.title }}</td>
-                                <td>
-                                    <a href="{% url 'available_ameni_list' data.title hlcit_code %}" class="btn"> <i
+                                 <td>
+                                    <a href="/dashboard/available_ameni_list/{{data.title}}" class="btn"> <i
                                         class="la la-edit"> </i> Manage on site Amenities</a>
                                 </td>
+
                                 <td class="table-action">
                                     <a href="/dashboard/delete/{{ model }}/{{ data.id }}/{{ url }}"
                                    onclick="return confirm('Are you sure you want to delete this item?');"

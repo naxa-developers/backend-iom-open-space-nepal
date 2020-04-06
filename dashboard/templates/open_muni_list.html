@@ -27,7 +27,7 @@
 <!--                    <a class="btn float-right" href="/dashboard/openspace-add"><i class="la la-plus"></i> Add Open Space</a>-->
                     <a class="btn float-right" href="/dashboard/bulk_open_space_upload"><i class="la la-plus"></i>Upload Open Space</a>
                     <a class="btn float-right" href="/dashboard/upload-shapefile"><i class="la la-plus"></i> Upload Shapefilee</a>
-<!--                    <a class="btn float-right" href="/dashboard/upload-shapefile"><i class="la la-plus"></i> Add New Location</a>-->
+<!--                    <a class="btn float-right" href="{% url 'add_new_location' %}"><i class="la la-plus"></i> Add New Location</a>-->
 
             </div>
             <div class="card project_list">
@@ -73,7 +73,7 @@
 <!--                            </td>-->
 <!--                            -->
                             <td>
-                                <a href="{% url 'amenity_type' municipality.municipality__hlcit_code %}" class="btn"> <i
+                                <a href="{% url 'municipality_amenity_type' municipality.municipality__hlcit_code %}" class="btn"> <i
                                     class="la la-edit"> </i> Manage Nearby Amenities</a>
                             </td>
 
