@@ -302,7 +302,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
     if upper_range == 0:
         return {'error': 'Please populate data in csv file.'}
     for row in range(0, upper_range):
-
+        try:
+            location = Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
+        except:
+            location = None
         try:
             open_space = OpenSpace.objects.create(
                 main_open_space=main_open_space,
@@ -333,6 +336,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 security=df['Security'][row],
                 helipad=df['Helipad'][row],
                 educational_infrastructures=df['Educational Infrastructures'][row],
+                location=location
 
             )
             suggested_uses = df['Suggested Use'][row]

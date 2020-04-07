@@ -193,6 +193,7 @@ class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         open_space = add_open_space(open_space_file, open_space_shp_file, municipality, obj)
 
         if not 'success' in open_space:
+            MainOpenSpace.objects.get(id=obj.id).delete()
             return render_to_response(self.template_name, {'error': open_space['error']}, )
 
         return HttpResponseRedirect(self.get_success_url())
