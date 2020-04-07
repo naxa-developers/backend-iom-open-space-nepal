@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType, \
+    MainOpenSpace
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
@@ -20,7 +21,7 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
-    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm
+    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm, MainOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
@@ -37,7 +38,7 @@ from fcm_django.models import FCMDevice
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .upload_functions import upload_eia, upload_amenities, upload_openspace
+from .upload_functions import upload_eia, upload_amenities, upload_openspace, add_open_space
 
 
 # Create your views here.
@@ -171,29 +172,33 @@ def uploadOpenSpaceFile(request):
         return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
 
 
-def add_new_location(request):
+class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = MainOpenSpace
+    form_class = MainOpenSpaceForm
+    template_name = 'new_location_form.html'
 
-    municipality = Municipality.objects.all()
-    province = Province.objects.all()
-    district = District.objects.all()
+    def get_context_data(self, **kwargs):
+        data = super(MainOpenSpaceView, self).get_context_data(**kwargs)
+        data['municipalities'] = Municipality.objects.all()
+        data['provinces'] = Province.objects.all()
+        data['districts'] = District.objects.all()
 
-    if request.method == "GET":
-        form = UploadNewOpenSpaceForm()
-        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality })
+        return data
 
-    elif request.method == "POST":
-        form = UploadNewOpenSpaceForm(request.POST, request.FILES)
-        if form.is_valid():
-            open_space = request.FILES['open_space']
-            eia_table = request.FILES['eia_table']
-            nearby_amenities = request.FILES['nearby_amenities']
+    def form_valid(self, form):
+        obj = form.save()
+        municipality = Municipality.objects.get(id=int(form.data['municipality']))
+        open_space_file = self.request.FILES['open_space']
+        open_space_shp_file = self.request.FILES['open_space_shp']
+        open_space = add_open_space(open_space_file, open_space_shp_file, municipality, obj)
 
-            upload_openspace(open_space)
-            upload_openspace(eia_table)
-            upload_openspace(nearby_amenities)
+        if not 'success' in open_space:
+            return render_to_response(self.template_name, {'error': open_space['error']}, )
 
-        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
+        return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse_lazy('open_muni')
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):

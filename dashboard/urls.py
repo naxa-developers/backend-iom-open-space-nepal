@@ -152,7 +152,7 @@ urlpatterns = [
 
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
-    path('add-new-location', views.add_new_location, name='add_new_location'),
+    path('add-new-location', views.MainOpenSpaceView.as_view(), name='add_new_location'),
     path('add-available-facility/<str:available_type>/<str:hlcit_code>', views.AddMunicipalityAvailableAmenity.as_view(),
          name='add_available_facility'),
     path('update-available-facility/<int:pk>', views.UpdateMunicipalityAvailableAmenity.as_view(),

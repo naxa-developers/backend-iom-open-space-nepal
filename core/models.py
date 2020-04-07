@@ -175,19 +175,41 @@ class Gallery(models.Model):
         return True
 
 
+class MainOpenSpace(models.Model):
+    project_title = models.CharField(max_length=200)
+    description = models.TextField()
+    municipality = models.ForeignKey(Municipality, related_name="main_open_spaces", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.project_title
+
+
 class OpenSpace(models.Model):
+    oid = models.CharField(max_length=100, null=True, blank=True)
     title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     issue = models.CharField(max_length=1000, blank=True, null=True)
     current_land_use = models.TextField(blank=True, null=True)
+    change_remarks = models.TextField(blank=True, null=True)
+    perimeter = models.FloatField(default=Decimal('0.0000'))
     catchment_area = models.CharField(max_length=1000, blank=True, null=True)
     ownership = models.CharField(max_length=1000, blank=True, null=True)
+    coordinates_elevation = models.CharField(max_length=200, null=True, blank=True)
+    usable_2013 = models.FloatField(default=Decimal('0.0000'))
+    area_change = models.FloatField(default=Decimal('0.0000'))
     elevation = models.CharField(max_length=1000,
                                  null=True, blank=True)
     access_to_site = models.CharField(max_length=1000, null=True, blank=True)
     special_feature = models.TextField(blank=True, null=True)
+    health_facilities = models.CharField(max_length=500, null=True, blank=True)
+    market = models.CharField(max_length=500, null=True, blank=True)
+    security = models.CharField(max_length=500, null=True, blank=True)
+    helipad = models.CharField(max_length=500, null=True, blank=True)
+    educational_infrastructures = models.CharField(max_length=500, null=True, blank=True)
 
     address = models.CharField(max_length=1000, blank=True, null=True)
+    main_open_space = models.ForeignKey(MainOpenSpace, on_delete=models.CASCADE, related_name="open_spaces",
+                                        null=True, blank=True)
     province = models.ForeignKey('Province', related_name='open_province',
                                  on_delete=models.SET_NULL, blank=True,
                                  null=True)
