@@ -16,6 +16,10 @@ class AgencyMessageForm(ModelForm):
 
 
 class OpenSpaceForm(ModelForm):
+
+    longitude = forms.CharField()
+    latitude = forms.CharField()
+
     class Meta:
         model = OpenSpace
         exclude = ('polygons', )

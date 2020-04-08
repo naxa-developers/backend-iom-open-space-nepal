@@ -211,7 +211,6 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         group = Group.objects.get(user=user)
-        print(user_data)
         url = 'openspace-list/'+self.kwargs['hlcit_code']
         if group.name == "admin":
             query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province',
@@ -236,6 +235,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'openspace'
+        data['hlcit_code'] = self.kwargs['hlcit_code']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -641,15 +641,26 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
-        data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         pen_count = Report.objects.filter(status='pending').count()
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
         data['pending'] = pen_count
 
         return data
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse_lazy('openspace-list')
+        return reverse('openspace-list', args=(),
+                                            kwargs={'hlcit_code': self.kwargs['hlcit_code']
+                                                    })
+
 
 
 class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -814,7 +825,7 @@ class ResourceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
 class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = OpenSpace
-    template_name = 'openspace_edit.html'
+    template_name = 'openspace_add.html'
     form_class = OpenSpaceForm
     success_message = 'Open successfully Updated'
 
@@ -825,13 +836,24 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
         return data
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse_lazy('openspace-list')
+        return reverse('openspace-list', args=(),
+                                            kwargs={'hlcit_code': self.object.municipality.hlcit_code
+                                                    })
 
 
 class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
