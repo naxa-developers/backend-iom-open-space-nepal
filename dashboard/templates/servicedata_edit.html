@@ -97,20 +97,8 @@
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2" name="service" id="id_service">
 
-                                {% for service in service %}
+                                <option value="{{ form.instance.service.id }}" selected>{{form.instance.service.name}}</option>
 
-                                {% if form.instance.service.id == service.id %}
-
-                                <option value="{{ service.id }}" selected>{{service.name}}</option>
-
-                                {% else %}
-
-                                <option value="{{ service.id }}">{{service.name}}</option>
-
-                                {% endif %}
-
-
-                                {% endfor %}
 
                             </select>
                         </div>

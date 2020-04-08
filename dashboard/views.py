@@ -9,7 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
     Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType, \
-    MainOpenSpace
+    MainOpenSpace, MunicipalityQuestionsData
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
@@ -21,7 +21,8 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
-    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm, MainOpenSpaceForm
+    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm, MainOpenSpaceForm, \
+    MunicipalityQuestionsDataForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
@@ -1114,7 +1115,8 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
                                                                                            'municipality').order_by(
             'id')
-        data['service'] = ServiceList.objects.order_by('id')
+        services_data = ServiceData.objects.filter(open_space_id=self.kwargs['id']).values('service__name')
+        data['service'] = ServiceList.objects.exclude(name__in=services_data).order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
@@ -1164,7 +1166,6 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['open_space'] = OpenSpace.objects.filter(id=self.kwargs['id']).select_related('province', 'district',
                                                                                            'municipality').order_by(
             'id')
-        data['service'] = ServiceList.objects.order_by('id')
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
@@ -2446,3 +2447,113 @@ class UpdateMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin
                        kwargs={'title': obj.available_type.title,
                                'hlcit_code': obj.municipality.hlcit_code
                                })
+
+
+class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = MunicipalityQuestionsData
+    form_class = MunicipalityQuestionsDataForm
+    template_name = 'bulk_add_eia_in_openspace.html'
+    success_message = 'Successfully uploaded'
+
+    def get_context_data(self, **kwargs):
+        data = super(BulkAddEiaFromMunicipalityView, self).get_context_data(**kwargs)
+        user = self.request.user
+        hlcit_code = self.kwargs['hlcit_code']
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'available'
+        data['hlcit_code'] = hlcit_code
+        data['municipality'] = Municipality.objects.filter(hlcit_code=hlcit_code).values('id', 'name').get()
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+        return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        muni = Municipality.objects.get(hlcit_code=self.kwargs['hlcit_code'])
+        obj.municipality = muni
+        obj.save()
+
+        eia_file = self.request.FILES['eia']
+
+        try:
+            df = pd.read_csv(eia_file).fillna('')
+            quest_datas = []
+            upper_range = len(df)
+
+            for row in range(0, upper_range):
+                for i in range(4, len(df.columns)-1):
+                    open_space = OpenSpace.objects.get(title=df['Name'][row])
+                    question = QuestionList.objects.get(title=df.columns[i])
+                    que_obj = QuestionsData(open_space=open_space,
+                                            question=question,
+                                            ans=df[df.columns[i]][row],
+                                            source=obj
+                                            )
+                    quest_datas.append(que_obj)
+        except Exception as e:
+            obj.delete()
+            return super(BulkAddEiaFromMunicipalityView, self).render_to_response(context={'error':
+                                                                                           'Please upload file with provided formats'})
+
+        QuestionsData.objects.bulk_create(quest_datas)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('list_eia_from_municipality', args=(), kwargs={'hlcit_code': self.kwargs['hlcit_code']})
+
+
+class BulkUpdateEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = MunicipalityQuestionsData
+    form_class = MunicipalityQuestionsDataForm
+    template_name = 'bulk_add_eia_in_openspace.html'
+    success_message = 'Successfully updated'
+
+    def form_valid(self, form):
+        obj = form.save()
+        eia_file = self.request.FILES['eia']
+
+        try:
+            df = pd.read_csv(eia_file).fillna('')
+            upper_range = len(df)
+
+            for row in range(0, upper_range):
+                for i in range(4, len(df.columns)-1):
+                    open_space = OpenSpace.objects.get(title=df['Name'][row])
+                    question = QuestionList.objects.get(title=df.columns[i])
+                    QuestionsData.objects.filter(open_space=open_space, question=question, source=obj).\
+                        update(ans=df[df.columns[i]][row])
+        except Exception as e:
+            return super(BulkUpdateEiaFromMunicipalityView, self).render_to_response(context={'error':
+                                                                                           'Please upload file with provided formats'})
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('list_eia_from_municipality', args=(), kwargs={'hlcit_code': self.object.municipality.hlcit_code})
+
+
+class EiaFromMunicipalityListView(LoginRequiredMixin, ListView):
+    model = MunicipalityQuestionsData
+    template_name = 'municipailty_bulk_uploaded_eia_list.html'
+    context_object_name = 'list'
+
+    def get_queryset(self):
+        return MunicipalityQuestionsData.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code'])
+
+    def get_context_data(self, **kwargs):
+        data = super(EiaFromMunicipalityListView, self).get_context_data(**kwargs)
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+
+        return data
+
+@login_required
+def delete_municipality_eia(request, id):
+
+    municipality_municipality_eia_obj = MunicipalityQuestionsData.objects.get(id=id)
+
+    municipality_municipality_eia_obj.delete()
+
+    return HttpResponseRedirect(reverse('list_eia_from_municipality', args=(),
+                                        kwargs={'hlcit_code': municipality_municipality_eia_obj.municipality.hlcit_code}))
+

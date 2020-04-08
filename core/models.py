@@ -110,9 +110,22 @@ class QuestionList(models.Model):
         return self.title
 
 
+class MunicipalityQuestionsData(models.Model):
+    """
+        Use for bulk upload only
+    """
+    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    data_source = models.CharField(max_length=300, null=True, blank=True)
+
+    def __str__(self):
+        return self.municipality.name
+
+
 class QuestionsData(models.Model):
     question = models.ForeignKey('QuestionList', on_delete=models.CASCADE,
                                  blank=True, null=True)
+    source = models.ForeignKey(MunicipalityQuestionsData, on_delete=models.CASCADE, null=True, blank=True,
+                               related_name="question_data")
     ans = models.CharField(blank=True, null=True, max_length=100)
     open_space = models.ForeignKey('OpenSpace', on_delete=models.CASCADE,
                                    blank=True, null=True,
@@ -176,6 +189,9 @@ class Gallery(models.Model):
 
 
 class MainOpenSpace(models.Model):
+    """
+         Use for bulk upload only
+    """
     project_title = models.CharField(max_length=200)
     description = models.TextField()
     municipality = models.ForeignKey(Municipality, related_name="main_open_spaces", on_delete=models.CASCADE)
@@ -398,6 +414,11 @@ class AvailableType(models.Model):
 
 
 class MunicipalityAvailableType(models.Model):
+
+    """
+         Use for bulk upload only
+    """
+
     available_type = models.ForeignKey(AvailableType, on_delete=models.CASCADE)
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     data_source = models.CharField(max_length=300, null=True, blank=True)

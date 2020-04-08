@@ -158,11 +158,21 @@ urlpatterns = [
     path('update-available-facility/<int:pk>', views.UpdateMunicipalityAvailableAmenity.as_view(),
          name='update_available_facility'),
 
+    path('eia/<str:hlcit_code>', views.EiaFromMunicipalityListView.as_view(),
+         name='list_eia_from_municipality'),
+
+    path('add-eia/<str:hlcit_code>', views.BulkAddEiaFromMunicipalityView.as_view(),
+         name='add_eia_from_municipality'),
+
+    path('update-eia/<int:pk>', views.BulkUpdateEiaFromMunicipalityView.as_view(),
+         name='update_eia_from_municipality'),
 
     path('delete-municipality-available-type/<int:id>', views.delete_municipality_available_type,
          name='delete_municipality_available_type'),
 
     path('edit-available-type/<int:id>', views.edit_municipality_available_type,
          name='edit_municipality_available_type'),
+
+    path('delete-municipality-eia/<int:id>', views.delete_municipality_eia, name='delete_municipality_eia'),
 
 ]

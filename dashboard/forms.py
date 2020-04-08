@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery, Resource, ResourceDocumentType, \
-    AvailableType, CreateOpenSpacePoints, MainOpenSpace
+    AvailableType, CreateOpenSpacePoints, MainOpenSpace, MunicipalityQuestionsData
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon, \
     AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
@@ -215,6 +215,14 @@ class UploadNewOpenSpaceForm(forms.Form):
     open_space = forms.FileField()
     eia_table = forms.FileField()
     nearby_amenities = forms.FileField()
+
+
+class MunicipalityQuestionsDataForm(forms.ModelForm):
+    eia = forms.FileField()
+
+    class Meta:
+        model = MunicipalityQuestionsData
+        exclude = ()
 
 
 class MainOpenSpaceForm(forms.ModelForm):
