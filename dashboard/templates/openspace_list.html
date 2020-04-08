@@ -24,7 +24,7 @@
         </div>
         <div class="container-fluid">
             <div class="">
-                    <a class="btn float-right" href="/dashboard/openspace-add"><i class="la la-plus"></i> Add Open Space</a>
+                    <a class="btn float-right" href="{% url 'openspace-add' hlcit_code %}"><i class="la la-plus"></i> Add Open Space</a>
                     <a class="btn float-right" href="/dashboard/upload-shapefile"><i class="la la-plus"></i> Upload Shapefilee</a>
 
                 </div>
@@ -65,6 +65,19 @@
                             <th>Capacity</th>
                             <th>Total area</th>
                             <th>Usable area</th>
+
+                            <th>Coordinates,Elevation</th>
+                            <th>Longitude</th>
+                            <th>Latitude</th>
+                            <th>Usable-2013</th>
+                            <th>Area Change</th>
+                            <th>Health Facilities</th>
+                            <th>Market</th>
+                            <th>Security</th>
+                            <th>Helipad</th>
+                            <th>Educational Infrastructures</th>
+                            <th>Change Remarks</th>
+                            <th>Perimeter</th>
 
                         </tr>
                         </thead>
@@ -141,6 +154,19 @@
                             <td>{{ open.capacity }}</td>
                             <td>{{ open.total_area }}</td>
                             <td>{{ open.usable_area }}</td>
+
+                            <td>{{ open.coordinates_elevation }}</td>
+                            <td>{{ open.location.x }}</td>
+                            <td>{{ open.location.y }}</td>
+                            <td>{{ open.usable_2013 }}</td>
+                            <td>{{ open.area_change }}</td>
+                            <td>{{ open.health_facilities }}</td>
+                            <td>{{ open.market }}</td>
+                            <td>{{ open.security }}</td>
+                            <td>{{ open.helipad }}</td>
+                            <td>{{ open.educational_infrastructures }}</td>
+                            <td>{{ open.change_remarks }}</td>
+                            <td>{{ open.perimeter }}</td>
 
 
                         </tr>

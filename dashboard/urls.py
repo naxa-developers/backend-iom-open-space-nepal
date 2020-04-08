@@ -14,7 +14,7 @@ urlpatterns = [
 
     path('upload-shapefile/', views.importShapefile, name='upload-shapefile'),
     path('openspace-list/<str:hlcit_code>', views.OpenSpaceList.as_view(), name='openspace-list'),
-    path('openspace-add/', views.OpenSpaceCreate.as_view(), name='openspace-add'),
+    path('openspace-add/<str:hlcit_code>', views.OpenSpaceCreate.as_view(), name='openspace-add'),
     path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
 
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
@@ -152,7 +152,7 @@ urlpatterns = [
 
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
-    path('add-new-location', views.add_new_location, name='add_new_location'),
+    path('add-new-location', views.MainOpenSpaceView.as_view(), name='add_new_location'),
     path('add-available-facility/<str:available_type>/<str:hlcit_code>', views.AddMunicipalityAvailableAmenity.as_view(),
          name='add_available_facility'),
     path('update-available-facility/<int:pk>', views.UpdateMunicipalityAvailableAmenity.as_view(),

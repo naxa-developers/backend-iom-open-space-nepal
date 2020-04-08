@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery, Resource, ResourceDocumentType, \
-    AvailableType, CreateOpenSpacePoints
+    AvailableType, CreateOpenSpacePoints, MainOpenSpace
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon, \
     AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
@@ -16,6 +16,10 @@ class AgencyMessageForm(ModelForm):
 
 
 class OpenSpaceForm(ModelForm):
+
+    longitude = forms.CharField()
+    latitude = forms.CharField()
+
     class Meta:
         model = OpenSpace
         exclude = ('polygons', )
@@ -211,4 +215,13 @@ class UploadNewOpenSpaceForm(forms.Form):
     open_space = forms.FileField()
     eia_table = forms.FileField()
     nearby_amenities = forms.FileField()
+
+
+class MainOpenSpaceForm(forms.ModelForm):
+    open_space = forms.FileField()
+    open_space_shp = forms.FileField()
+
+    class Meta:
+        model = MainOpenSpace
+        fields = ('project_title', 'description', 'municipality', 'open_space', 'open_space_shp')
 

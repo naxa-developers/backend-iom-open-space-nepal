@@ -3,9 +3,10 @@ from django.core.management.base import BaseCommand
 import pandas as pd
 
 from core.models import QuestionList, QuestionsData, OpenSpace, ServiceData, ServiceList, Municipality, \
-    District, Province, AvailableFacility, AvailableType, AvailableSubType
+    District, Province, AvailableFacility, AvailableType, AvailableSubType, SuggestedUseList, SuggestedUseData
 
 from django.contrib.gis.geos import GEOSGeometry, Point
+from dashboard import shapefileIO
 
 
 def upload_eia(path):
@@ -287,6 +288,110 @@ def upload_openspace(path):
 
         except Exception as e:
             print(e)
+
+
+def add_open_space(open_space_file, open_space_shp_file, municipality, main_open_space):
+    try:
+        df = pd.read_csv(open_space_file, encoding='unicode_escape').fillna('')
+    except:
+        return {'error': 'Please upload file with provided formats.'}
+    upper_range = len(df)
+    municipality_obj = municipality
+    province = municipality_obj.province
+    district = municipality_obj.district
+    if upper_range == 0:
+        return {'error': 'Please populate data in csv file.'}
+    for row in range(0, upper_range):
+        try:
+            location = Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
+        except:
+            location = None
+        try:
+            open_space = OpenSpace.objects.create(
+                main_open_space=main_open_space,
+                oid=df['OID'][row],
+                title=df['Name'][row],
+                province=province,
+                district=district,
+                municipality=municipality_obj,
+                ward=df['Ward'][row],
+                address=df['Address'][row],
+                elevation=df['Elevation'][row],
+                total_area=df['Total Area'],
+                usable_area=df['Usable Open Space Area'][row],
+                current_land_use=df['Current Land Use'][row],
+                catchment_area=df['Catchment Area'][row],
+                access_to_site=df['Access to Site'][row],
+                ownership=df['Ownership'][row],
+                special_feature=df['Special features'][row],
+                capacity=df['Capacity'][row],
+                issue=df['Issues'][row],
+                change_remarks=df['Change_Remarks'][row],
+                perimeter=df['Perimeter'][row],
+                coordinates_elevation=df['Coordinates,Elevation'][row],
+                usable_2013=df['Usable-2013'][row],
+                area_change=df['Area Change'][row],
+                health_facilities=df['Health Facilities'][row],
+                market=df['Market'][row],
+                security=df['Security'][row],
+                helipad=df['Helipad'][row],
+                educational_infrastructures=df['Educational Infrastructures'][row],
+                location=location
+
+            )
+            suggested_uses = df['Suggested Use'][row]
+            if len(suggested_uses > 0):
+                suggested_uses = df['Suggested Use'][row].split(',')
+                for suggest in suggested_uses:
+
+                    suggest_obj = SuggestedUseList.objects.get_or_create(name=suggest)
+                    sug_data = SuggestedUseData.objects.create(open_space=open_space,
+                                                               suggested_use=suggest_obj[0])
+            else:
+                pass
+        except Exception as e:
+            return {'error': str(e)}
+        try:
+
+            description = df['WASH Facilities'][row]
+            wash_facility = ServiceList.objects.get(name='WASH Facilities')
+            w_data = ServiceData.objects.create(description=description,
+                                                open_space=open_space,
+                                                service=wash_facility)
+
+            wifi_des = df['Internet'][row]
+            wifi_facility = ServiceList.objects.get(name='Internet')
+            wi_data = ServiceData.objects.create(description=wifi_des,
+                                                 open_space=open_space,
+                                                 service=wifi_facility)
+
+            boundry_wall_des = df['Boundary Wall'][row]
+            boundry_facility = ServiceList.objects.get(name='Boundary Wall')
+            bo_data = ServiceData.objects.create(description=boundry_wall_des,
+                                                 open_space=open_space,
+                                                 service=boundry_facility)
+
+            electricity_des = df['Electricity Line'][row]
+            electricity_facility = ServiceList.objects.get(name='Electricity Line')
+            el_data = ServiceData.objects.create(description=electricity_des,
+                                                 open_space=open_space,
+                                                 service=electricity_facility)
+
+            tree = df['Trees & Vegetation'][row]
+            wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
+            el_data = ServiceData.objects.create(description=tree,
+                                                 open_space=open_space,
+                                                 service=wash_facility)
+            print(open_space, row)
+
+        except Exception as e:
+            return {'error': str(e)}
+
+        try:
+            shapefileIO.importData(open_space_shp_file)
+        except Exception as e:
+            return {'error': str(e)}
+        return {'success': 'Added successfully.'}
 
 
 def upload_amenities(path):

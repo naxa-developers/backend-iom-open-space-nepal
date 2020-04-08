@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
     SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType, \
+    MainOpenSpace
 from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
@@ -20,7 +21,7 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     OpenSpaceIdeForm, OpenSpaceAppForm, ContactForm, CreateOpenSpaceForm, GalleryForm, ImportShapefileForm, \
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
-    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm
+    CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm, MainOpenSpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
@@ -37,7 +38,7 @@ from fcm_django.models import FCMDevice
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .upload_functions import upload_eia, upload_amenities, upload_openspace
+from .upload_functions import upload_eia, upload_amenities, upload_openspace, add_open_space
 
 
 # Create your views here.
@@ -171,29 +172,34 @@ def uploadOpenSpaceFile(request):
         return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
 
 
-def add_new_location(request):
+class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = MainOpenSpace
+    form_class = MainOpenSpaceForm
+    template_name = 'new_location_form.html'
 
-    municipality = Municipality.objects.all()
-    province = Province.objects.all()
-    district = District.objects.all()
+    def get_context_data(self, **kwargs):
+        data = super(MainOpenSpaceView, self).get_context_data(**kwargs)
+        data['municipalities'] = Municipality.objects.all()
+        data['provinces'] = Province.objects.all()
+        data['districts'] = District.objects.all()
 
-    if request.method == "GET":
-        form = UploadNewOpenSpaceForm()
-        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality })
+        return data
 
-    elif request.method == "POST":
-        form = UploadNewOpenSpaceForm(request.POST, request.FILES)
-        if form.is_valid():
-            open_space = request.FILES['open_space']
-            eia_table = request.FILES['eia_table']
-            nearby_amenities = request.FILES['nearby_amenities']
+    def form_valid(self, form):
+        obj = form.save()
+        municipality = Municipality.objects.get(id=int(form.data['municipality']))
+        open_space_file = self.request.FILES['open_space']
+        open_space_shp_file = self.request.FILES['open_space_shp']
+        open_space = add_open_space(open_space_file, open_space_shp_file, municipality, obj)
 
-            upload_openspace(open_space)
-            upload_openspace(eia_table)
-            upload_openspace(nearby_amenities)
+        if not 'success' in open_space:
+            MainOpenSpace.objects.get(id=obj.id).delete()
+            return render_to_response(self.template_name, {'error': open_space['error']}, )
 
-        return render(request, "upload_open_space.html", {'form': form, 'provinces': province, 'districts':district, 'municipalities': municipality})
+        return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse_lazy('open_muni')
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):
@@ -205,7 +211,6 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         group = Group.objects.get(user=user)
-        print(user_data)
         url = 'openspace-list/'+self.kwargs['hlcit_code']
         if group.name == "admin":
             query_data = OpenSpace.objects.filter(municipality__id=user_data.municipality.id).select_related('province',
@@ -230,6 +235,7 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'openspace'
+        data['hlcit_code'] = self.kwargs['hlcit_code']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -635,15 +641,26 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user = self.request.user
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
-        data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         pen_count = Report.objects.filter(status='pending').count()
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
         data['pending'] = pen_count
 
         return data
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse_lazy('openspace-list')
+        return reverse('openspace-list', args=(),
+                                            kwargs={'hlcit_code': self.kwargs['hlcit_code']
+                                                    })
+
 
 
 class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -808,7 +825,7 @@ class ResourceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 
 class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = OpenSpace
-    template_name = 'openspace_edit.html'
+    template_name = 'openspace_add.html'
     form_class = OpenSpaceForm
     success_message = 'Open successfully Updated'
 
@@ -819,13 +836,24 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['user'] = user_data
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
         return data
 
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_success_url(self):
-        return reverse_lazy('openspace-list')
+        return reverse('openspace-list', args=(),
+                                            kwargs={'hlcit_code': self.object.municipality.hlcit_code
+                                                    })
 
 
 class QuestionUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
