@@ -29,7 +29,7 @@
                             <tr>
                                 <th>S.N</th>
                                 <th>Title</th>
-                                <th>Description</th>
+<!--                                <th>Description</th>-->
                                 <th>action</th>
                             </tr>
                         </thead>
@@ -38,12 +38,21 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ data.title }}</td>
-                                <td>{{ data.description }}</td>
+<!--                                <td>{{ data.description }}</td>-->
                                 <td class="table-action">
                                     <a href="/dashboard/open_criteria_update/{{ data.id }}" class="btn"> <i class="la la-edit"> </i> Edit</a>
                                 </td>
                             </tr>
-                        {% endfor %}
+                            {% endfor %}
+
+                            <tr>
+                                <td>2</td>
+                                <td>Open Space Selection Criteria Features Types</td>
+<!--                                <td></td>-->
+                                <td class="table-action">
+                                    <a href="/dashboard/about_criteria_type_list" class="btn"> <i class="la la-edit"> </i> Edit</a>
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>
