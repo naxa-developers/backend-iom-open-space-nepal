@@ -11,8 +11,15 @@
             <div class="col-lg-7 col-md-6 col-sm-12">
 <!--                <h2>New Location </h2>-->
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> iom</a></li>
-                    <li class="breadcrumb-item active">Bulk upload</li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="la la-home"></i>IOM</a></li>
+                    {% if object %}
+                        <li class="breadcrumb-item"><a href="{% url 'list_eia_from_municipality' object.municipality.hlcit_code %}">Manage EIA</a></li>
+                        <li class="breadcrumb-item active">Bulk Edit EIA in openspace</li>
+                    {% else %}
+                    <li class="breadcrumb-item"><a href="{% url 'list_eia_from_municipality' hlcit_code %}">Manage EIA</a></li>
+                    <li class="breadcrumb-item active">Bulk Add EIA in openspace</li>
+                    {% endif %}
+
                 </ul>
                 <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
                 </button>

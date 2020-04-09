@@ -427,6 +427,7 @@ class QuestionData(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         # data['user'] = user_data
         data['active'] = 'question'
+        data['hlcit_code'] = OpenSpace.objects.get(id=self.kwargs['id']).municipality.hlcit_code
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -478,6 +479,7 @@ class SuggestedUseDataList(LoginRequiredMixin, ListView):
         data['url'] = base64_url
         data['user'] = user_data
         data['active'] = 'available'
+        data['hlcit_code'] = OpenSpace.objects.get(id=self.kwargs['id']).municipality.hlcit_code
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -555,6 +557,7 @@ class ServiceDataList(LoginRequiredMixin, ListView):
         data['active'] = 'available'
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
+        data['hlcit_code'] = OpenSpace.objects.get(id=self.kwargs['id']).municipality.hlcit_code
 
         return data
 
@@ -645,7 +648,7 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         data['active'] = 'openspace'
         pen_count = Report.objects.filter(status='pending').count()
         data['municipality'] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
-            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name', 'hlcit_code').get()
         data['pending'] = pen_count
 
         return data
@@ -840,7 +843,7 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['provinces'] = Province.objects.all().order_by('id')
         data['active'] = 'openspace'
         data['municipality'] = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
-            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name', 'hlcit_code').get()
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -900,6 +903,7 @@ class QuestionDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        data['open_space_id'] = self.kwargs['id']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -926,6 +930,7 @@ class QuestionDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'question'
+        data['open_space_id'] = self.kwargs['id']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -994,6 +999,7 @@ class SuggestedDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'suggest'
+        data['openspace_id'] = self.kwargs['id']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -1067,6 +1073,7 @@ class GalleryCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        data['hlcit_code'] = OpenSpace.objects.get(id=self.kwargs['id']).municipality.hlcit_code
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -1127,6 +1134,7 @@ class ServiceDataCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         user_data = UserProfile.objects.get(user=user)
         data['user'] = user_data
         data['active'] = 'service'
+        data['open_space_id'] = self.kwargs['id']
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
 
@@ -1177,6 +1185,7 @@ class ServiceDataUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         data['user'] = user_data
         data['active'] = 'service'
         pen_count = Report.objects.filter(status='pending').count()
+        data['open_space_id'] = self.kwargs['id']
         data['pending'] = pen_count
 
         return data
@@ -2439,6 +2448,10 @@ class UpdateMunicipalityAvailableAmenity(SuccessMessageMixin, LoginRequiredMixin
         data['active'] = 'available'
         pen_count = Report.objects.filter(status='pending').count()
         data['pending'] = pen_count
+        data['hlcit_code'] = self.object.municipality.hlcit_code
+        data['available_type'] = self.object.available_type.title
+
+
         return data
 
     def form_valid(self, form):

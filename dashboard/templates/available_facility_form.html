@@ -7,15 +7,16 @@
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Available Facility form</h2>
+                <h2>Nearby Amenities form</h2>
                 <ul class="breadcrumb">
 
                     <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active"><a href="{% url 'municipality_available_ameni_list' available_type hlcit_code %}">Nearby Amenities</a></li>
                     {% if object %}
                         <li class="breadcrumb-item active">Edit form</li>
 
                         {% else %}
-                        <li class="breadcrumb-item active">Add form</li>
+                        <li class="breadcrumb-item active">Add Nearby Amenity</li>
 
                     {% endif %}
 

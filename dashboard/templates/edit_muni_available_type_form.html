@@ -9,8 +9,9 @@
             <div class="col-lg-7 col-md-6 col-sm-12">
                 <ul class="breadcrumb">
 
-                    <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item active">Edit form</li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'municipality_amenity_type' obj.municipality.hlcit_code %}">Nearby Amenities Types</a></li>
+                    <li class="breadcrumb-item active">Edit form</li>
 
                 </ul>
                 <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
