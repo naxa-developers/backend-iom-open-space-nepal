@@ -11,7 +11,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from core.models import OpenSpace
 
 
-def importData(shapefile, characterEncoding=None):
+def importData(shapefile,  oid=None, characterEncoding=None):
     fd, fname = tempfile.mkstemp(suffix=".zip")
     os.close(fd)
 
@@ -90,8 +90,15 @@ def importData(shapefile, characterEncoding=None):
         geometry = GEOSGeometry(srcGeometry.ExportToWkt())
         geometry = utils.wrapGEOSGeometry(geometry)
         geometryField = utils.calcGeometryField(geometryName)
-        print(geometry)
-        print(geometryField)
+        if oid and oid == srcFeature.OID:
+            open_space = OpenSpace.objects.get(oid=srcFeature.OID)
+            open_space.polygons = geometry
+            open_space.save()
+            return
+
         open_space = OpenSpace.objects.get(oid=srcFeature.OID)
         open_space.polygons = geometry
         open_space.save()
+
+
+
