@@ -7,11 +7,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Available Facility list</h2>
+                    <h2>Nearby Amenities</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/dashboard/home"><i class="la la-home"></i> IOM</a></li>
-                        <li class="breadcrumb-item">Available Facility</li>
-                        <li class="breadcrumb-item active">Available Facility list</li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="la la-home"></i> IOM</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'municipality_amenity_type' hlcit_code%}">Nearby Amenities Types</a></li>
+                        <li class="breadcrumb-item active">Nearby Amenities</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
                 </div>
