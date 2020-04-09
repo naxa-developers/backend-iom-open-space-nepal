@@ -2018,7 +2018,9 @@ def CreateUser(request, **kwargs):
             UserProfile.objects.create(user=user, name=request.POST['name'], email=request.POST['email'],
                                        municipality_id=int(request.POST['municipality']), )
 
-            return render(request, 'registered_message.html', {'user': request.POST['name'], 'pending': pen_count,})
+            redirect('user-list')
+
+            # return render(request, 'registered_message.html', {'user': request.POST['name'], 'pending': pen_count,})
         else:
 
             municipality = Municipality.objects.select_related('province', 'district', ).all()
