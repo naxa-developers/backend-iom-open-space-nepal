@@ -652,16 +652,18 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         obj = form.save(commit=False)
-
-        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        if form.data['latitude'] and form.data['longitude']:
+            obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
         obj.save()
+        if 'polygon_shp' in self.request.FILES:
+            shape_file = self.request.FILES['polygon_shp']
+            shapefileIO.importData(shape_file, oid=obj.oid)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('openspace-list', args=(),
                                             kwargs={'hlcit_code': self.kwargs['hlcit_code']
                                                     })
-
 
 
 class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -847,8 +849,12 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         obj = form.save(commit=False)
 
-        obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        if form.data['latitude'] and form.data['longitude']:
+            obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
         obj.save()
+        if 'polygon_shp' in self.request.FILES:
+            shape_file = self.request.FILES['polygon_shp']
+            shapefileIO.importData(shape_file, oid=obj.oid)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

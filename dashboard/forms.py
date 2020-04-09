@@ -17,8 +17,9 @@ class AgencyMessageForm(ModelForm):
 
 class OpenSpaceForm(ModelForm):
 
-    longitude = forms.CharField()
-    latitude = forms.CharField()
+    longitude = forms.CharField(required=False)
+    latitude = forms.CharField(required=False)
+    polygon_shp = forms.FileField(required=False)
 
     class Meta:
         model = OpenSpace

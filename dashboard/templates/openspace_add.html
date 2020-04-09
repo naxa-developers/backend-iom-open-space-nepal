@@ -217,6 +217,10 @@
                         <input  class="form-control" type="number" name="perimeter" value="0" step="any" id="id_perimeter" {% if form.instance.perimeter %} value={{form.instance.perimeter}} {% endif %}>
                     </div>
 
+                      <label for="id_image">Add Boundary shape file (zip shape file):</label>
+
+                            <input class="form-control" id="id_polygon_shp" name="polygon_shp" type="file">
+
 
                     <label for="id_image">Image:</label>
 
