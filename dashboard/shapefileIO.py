@@ -84,18 +84,22 @@ def importData(shapefile,  oid=None, characterEncoding=None):
 
     for i in range(layer.GetFeatureCount()):
         srcFeature = layer.GetFeature(i)
-        print(srcFeature.Name)
         srcGeometry = srcFeature.GetGeometryRef()
         srcGeometry.Transform(coordTransform)
         geometry = GEOSGeometry(srcGeometry.ExportToWkt())
         geometry = utils.wrapGEOSGeometry(geometry)
         geometryField = utils.calcGeometryField(geometryName)
-        if oid and oid == srcFeature.OID:
-            open_space = OpenSpace.objects.get(oid=srcFeature.OID)
+        print('check keys', srcFeature.keys())
+        try:
+            feature_oid = srcFeature.GetField('OID')
+        except:
+            raise ValueError('OID does not exist in shape file.')
+        if oid and oid == feature_oid:
+            open_space = OpenSpace.objects.get(oid=feature_oid)
             open_space.polygons = geometry
             open_space.save()
             return
-        open_space = OpenSpace.objects.get(oid=srcFeature.OID)
+        open_space = OpenSpace.objects.get(oid=feature_oid)
         open_space.polygons = geometry
         open_space.save()
 
