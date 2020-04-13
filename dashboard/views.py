@@ -2496,12 +2496,12 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
         eia_file = self.request.FILES['eia']
 
         try:
-            df = pd.read_csv(eia_file).fillna('')
+            df = pd.read_excel(eia_file).fillna('')
             quest_datas = []
             upper_range = len(df)
 
             for row in range(0, upper_range):
-                for i in range(4, len(df.columns)-1):
+                for i in range(5, len(df.columns)-1):
                     open_space = OpenSpace.objects.get(title=df['Name'][row])
                     question = QuestionList.objects.get(title=df.columns[i])
                     que_obj = QuestionsData(open_space=open_space,
@@ -2513,7 +2513,9 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
         except Exception as e:
             obj.delete()
             return super(BulkAddEiaFromMunicipalityView, self).render_to_response(context={'error':
-                                                                                           'Please upload file with provided formats'})
+                                                                                           'Please upload file with provided formats',
+                                                                                           'hlcit_code': self.kwargs['hlcit_code']},
+                                                                                  )
 
         QuestionsData.objects.bulk_create(quest_datas)
         return HttpResponseRedirect(self.get_success_url())
@@ -2533,18 +2535,20 @@ class BulkUpdateEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin,
         eia_file = self.request.FILES['eia']
 
         try:
-            df = pd.read_csv(eia_file).fillna('')
+            df = pd.read_excel(eia_file).fillna('')
             upper_range = len(df)
 
             for row in range(0, upper_range):
-                for i in range(4, len(df.columns)-1):
+                for i in range(5, len(df.columns)-1):
                     open_space = OpenSpace.objects.get(title=df['Name'][row])
                     question = QuestionList.objects.get(title=df.columns[i])
                     QuestionsData.objects.filter(open_space=open_space, question=question, source=obj).\
                         update(ans=df[df.columns[i]][row])
         except Exception as e:
             return super(BulkUpdateEiaFromMunicipalityView, self).render_to_response(context={'error':
-                                                                                           'Please upload file with provided formats'})
+                                                                                           'Please upload file with provided formats',
+                                                                                              'hlcit_code': self.object.municipality.hlcit_code
+                                                                                              })
 
         return HttpResponseRedirect(self.get_success_url())
 
