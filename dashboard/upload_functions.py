@@ -381,11 +381,9 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                                                  is_available=is_available_boundry_wall
                                                  )
 
-            electricity_des = df['Electricity Line'][row]
             is_available_electricity = df['Electricity Line_YN'][row].upper()
             electricity_facility = ServiceList.objects.get(name='Electricity Line')
-            el_data = ServiceData.objects.create(description=electricity_des,
-                                                 open_space=open_space,
+            el_data = ServiceData.objects.create(open_space=open_space,
                                                  service=electricity_facility,
                                                  is_available=is_available_electricity)
 
