@@ -719,7 +719,7 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
         district = mun.district
         province = mun.province
 
-        df = pd.read_csv(uploaded_file).fillna('')
+        df = pd.read_excel(uploaded_file).fillna('')
         upper_range = len(df)
 
         available_facilities_objs = []
