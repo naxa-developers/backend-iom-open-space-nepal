@@ -292,7 +292,7 @@ def upload_openspace(path):
 
 def add_open_space(open_space_file, open_space_shp_file, municipality, main_open_space):
     try:
-        df = pd.read_csv(open_space_file, encoding='unicode_escape').fillna('')
+        df = pd.read_excel(open_space_file, encoding='unicode_escape').fillna('')
     except:
         return {'error': 'Please upload file with provided formats.'}
     upper_range = len(df)
@@ -300,10 +300,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
     province = municipality_obj.province
     district = municipality_obj.district
     if upper_range == 0:
-        return {'error': 'Please populate data in csv file.'}
+        return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
         try:
-            location = Point(float(df['Longitude'][row]), float(df['Latitude'][row])),
+            location = Point(float(df['Longitude'][row]), float(df['Latitude'][row]))
         except:
             location = None
         try:
@@ -316,9 +316,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 municipality=municipality_obj,
                 ward=df['Ward'][row],
                 address=df['Address'][row],
+                coordinates_elevation=df['Coordinate, Elevation'][row],
                 elevation=df['Elevation'][row],
-                total_area=df['Total Area'],
-                usable_area=df['Usable Open Space Area'][row],
+                total_area=df['Total_Area'][row],
+                usable_area=df['Usable_Area'][row],
                 current_land_use=df['Current Land Use'][row],
                 catchment_area=df['Catchment Area'][row],
                 access_to_site=df['Access to Site'][row],
@@ -326,21 +327,20 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 special_feature=df['Special features'][row],
                 capacity=df['Capacity'][row],
                 issue=df['Issues'][row],
-                change_remarks=df['Change_Remarks'][row],
+                change_remarks=df['Change_remarks'][row],
                 perimeter=df['Perimeter'][row],
-                coordinates_elevation=df['Coordinates,Elevation'][row],
                 usable_2013=df['Usable-2013'][row],
                 area_change=df['Area Change'][row],
-                health_facilities=df['Health Facilities'][row],
-                market=df['Market'][row],
+                health_facilities=df['Health_Facilities'][row],
+                market=df['Market_Access'][row],
                 security=df['Security'][row],
                 helipad=df['Helipad'][row],
-                educational_infrastructures=df['Educational Infrastructures'][row],
+                educational_infrastructures=df['Educational_Infrastructures'][row],
                 location=location
 
             )
             suggested_uses = df['Suggested Use'][row]
-            if len(suggested_uses > 0):
+            if len(suggested_uses) > 0:
                 suggested_uses = df['Suggested Use'][row].split(',')
                 for suggest in suggested_uses:
 
@@ -353,37 +353,50 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
             return {'error': str(e)}
         try:
 
-            description = df['WASH Facilities'][row]
-            wash_facility = ServiceList.objects.get(name='WASH Facilities')
+            description = df['WASH_Facility'][row]
+            is_available_wash_facility = df['WASH Facilities_YN'][row].upper()
+            wash_facility = ServiceList.objects.get(name='WASH Facilities_YN')
             w_data = ServiceData.objects.create(description=description,
                                                 open_space=open_space,
-                                                service=wash_facility)
+                                                service=wash_facility,
+                                                is_available=is_available_wash_facility
+                                                )
 
             wifi_des = df['Internet'][row]
+            is_available_wifi = df['Internet_YN'][row].upper()
             wifi_facility = ServiceList.objects.get(name='Internet')
             wi_data = ServiceData.objects.create(description=wifi_des,
                                                  open_space=open_space,
-                                                 service=wifi_facility)
+                                                 service=wifi_facility,
+                                                 is_available=is_available_wifi
+
+                                                 )
 
             boundry_wall_des = df['Boundary Wall'][row]
+            is_available_boundry_wall = df['Boundary Wall_YN'][row].upper()
             boundry_facility = ServiceList.objects.get(name='Boundary Wall')
             bo_data = ServiceData.objects.create(description=boundry_wall_des,
                                                  open_space=open_space,
-                                                 service=boundry_facility)
+                                                 service=boundry_facility,
+                                                 is_available=is_available_boundry_wall
+                                                 )
 
             electricity_des = df['Electricity Line'][row]
+            is_available_electricity = df['Electricity Line_YN'][row].upper()
             electricity_facility = ServiceList.objects.get(name='Electricity Line')
             el_data = ServiceData.objects.create(description=electricity_des,
                                                  open_space=open_space,
-                                                 service=electricity_facility)
+                                                 service=electricity_facility,
+                                                 is_available=is_available_electricity)
 
             tree = df['Trees & Vegetation'][row]
+            is_available_tree = df['Trees & Vegetation_YN'][row].upper()
             wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
             el_data = ServiceData.objects.create(description=tree,
                                                  open_space=open_space,
-                                                 service=wash_facility)
-            print(open_space, row)
-
+                                                 service=wash_facility,
+                                                 is_available=is_available_tree
+                                                 )
         except Exception as e:
             return {'error': str(e)}
 

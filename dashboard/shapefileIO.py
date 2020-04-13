@@ -95,7 +95,6 @@ def importData(shapefile,  oid=None, characterEncoding=None):
             open_space.polygons = geometry
             open_space.save()
             return
-
         open_space = OpenSpace.objects.get(oid=srcFeature.OID)
         open_space.polygons = geometry
         open_space.save()
