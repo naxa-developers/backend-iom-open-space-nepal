@@ -2501,9 +2501,21 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
             upper_range = len(df)
 
             for row in range(0, upper_range):
-                for i in range(5, len(df.columns)-1):
-                    open_space = OpenSpace.objects.get(title=df['Name'][row])
-                    question = QuestionList.objects.get(title=df.columns[i])
+                for i in range(5, len(df.columns)):
+                    try:
+                        open_space = OpenSpace.objects.get(title=df['Name'][row])
+                    except :
+                        return super(BulkAddEiaFromMunicipalityView, self).\
+                            render_to_response(context={'error': 'Openspace does not exist.',
+                                                        'hlcit_code': self.kwargs['hlcit_code']}
+                                               )
+                    try:
+                        question = QuestionList.objects.get(title=df.columns[i])
+                    except:
+                        return super(BulkAddEiaFromMunicipalityView, self).\
+                            render_to_response(context={'error': 'QuestionList does not exist',
+                                                        'hlcit_code': self.kwargs['hlcit_code']},
+                                               )
                     que_obj = QuestionsData(open_space=open_space,
                                             question=question,
                                             ans=df[df.columns[i]][row],
@@ -2539,16 +2551,28 @@ class BulkUpdateEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin,
             upper_range = len(df)
 
             for row in range(0, upper_range):
-                for i in range(5, len(df.columns)-1):
-                    open_space = OpenSpace.objects.get(title=df['Name'][row])
-                    question = QuestionList.objects.get(title=df.columns[i])
+                for i in range(5, len(df.columns)):
+                    try:
+                        open_space = OpenSpace.objects.get(title=df['Name'][row])
+                    except:
+                        return super(BulkUpdateEiaFromMunicipalityView, self). \
+                            render_to_response(context={'error': 'Openspace does not exist.',
+                                                        'hlcit_code': self.kwargs['hlcit_code']}
+                                               )
+                    try:
+                        question = QuestionList.objects.get(title=df.columns[i])
+                    except:
+                        return super(BulkUpdateEiaFromMunicipalityView, self). \
+                            render_to_response(context={'error': 'QuestionList does not exist',
+                                                        'hlcit_code': self.kwargs['hlcit_code']},
+                                               )
                     QuestionsData.objects.filter(open_space=open_space, question=question, source=obj).\
                         update(ans=df[df.columns[i]][row])
         except Exception as e:
-            return super(BulkUpdateEiaFromMunicipalityView, self).render_to_response(context={'error':
-                                                                                           'Please upload file with provided formats',
-                                                                                              'hlcit_code': self.object.municipality.hlcit_code
-                                                                                              })
+            return super(BulkUpdateEiaFromMunicipalityView, self).\
+                render_to_response(context={'error': 'Please upload file with provided formats',
+                                            'hlcit_code': self.object.municipality.hlcit_code
+                                            })
 
         return HttpResponseRedirect(self.get_success_url())
 
