@@ -1,4 +1,3 @@
-from core.models import OpenSpace
 from osgeo import ogr, osr
 import os
 import tempfile
@@ -8,10 +7,10 @@ import shutil
 import os.path
 from dashboard import utils
 from django.contrib.gis.geos import GEOSGeometry
-from core.models import OpenSpace
+from core.models import OpenSpace, CommunitySpace
 
 
-def importData(shapefile,  oid=None, characterEncoding=None):
+def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEncoding=None):
     fd, fname = tempfile.mkstemp(suffix=".zip")
     os.close(fd)
 
@@ -94,14 +93,29 @@ def importData(shapefile,  oid=None, characterEncoding=None):
             feature_oid = srcFeature.GetField('OID')
         except:
             raise ValueError('OID does not exist in shape file.')
+
+        try:
+            feature_cid = srcFeature.GetField('CID')
+        except:
+            raise ValueError('CID does not exist in shape file.')
+
         if oid and oid == feature_oid:
             open_space = OpenSpace.objects.get(oid=feature_oid)
             open_space.polygons = geometry
             open_space.save()
             return
-        open_space = OpenSpace.objects.get(oid=feature_oid)
-        open_space.polygons = geometry
-        open_space.save()
+        elif cid and cid == feature_cid:
+            open_space = CommunitySpace.objects.get(cid=feature_cid)
+            open_space.polygons = geometry
+            open_space.save()
+            return
+        if from_openspace:
+            obj = OpenSpace.objects.get(oid=feature_oid)
+        else:
+            obj = CommunitySpace.objects.get(cid=feature_cid)
+
+        obj.polygons = geometry
+        obj.save()
 
 
 

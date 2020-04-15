@@ -14,8 +14,13 @@ urlpatterns = [
 
     path('upload-shapefile/', views.importShapefile, name='upload-shapefile'),
     path('openspace-list/<str:hlcit_code>', views.OpenSpaceList.as_view(), name='openspace-list'),
+    path('community-space-list/<str:hlcit_code>', views.CommunitySpaceList.as_view(), name='community_space_list'),
+    path('add-community-space-options/<str:hlcit_code>', views.AddCommunitySpaceOptions.as_view(),
+         name='add_community_space_options'),
     path('openspace-add/<str:hlcit_code>', views.OpenSpaceCreate.as_view(), name='openspace-add'),
     path('openspace-edit/<int:pk>', views.OpenSpaceUpdate.as_view(), name='openspace-edit'),
+    path('community-space-add/<str:hlcit_code>', views.CommunitySpaceCreate.as_view(), name='community_space_add'),
+    path('community-space-edit/<int:pk>', views.CommunitySpaceUpdate.as_view(), name='community_space_update'),
 
     path('available-list/', views.AvailableFacilityList.as_view(), name='available-list'),
     path('available-add/', views.AvailableFacilityCreate.as_view(), name='available-add'),
@@ -153,6 +158,9 @@ urlpatterns = [
 
     path('bulk_open_space_upload', views.uploadOpenSpaceFile, name='about_page'),
     path('add-new-location', views.MainOpenSpaceView.as_view(), name='add_new_location'),
+    path('bulk-upload-community-space/<str:hlcit_code>', views.BulkUploadCommunitySpaceView.as_view(),
+         name='bulk_upload_community_space'),
+
     path('add-available-facility/<str:available_type>/<str:hlcit_code>', views.AddMunicipalityAvailableAmenity.as_view(),
          name='add_available_facility'),
     path('update-available-facility/<int:pk>', views.UpdateMunicipalityAvailableAmenity.as_view(),

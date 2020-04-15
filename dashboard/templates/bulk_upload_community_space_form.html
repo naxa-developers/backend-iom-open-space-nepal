@@ -9,11 +9,10 @@
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-<!--                <h2>New Location </h2>-->
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="la la-home"></i> IOM</a></li>
-                    <li class="breadcrumb-item active"><a href="{% url 'open_muni' %}">View Openspace</a></li>
-                    <li class="breadcrumb-item active">New Location</li>
+                    <li class="breadcrumb-item active"><a href="{% url 'add_community_space_options' municipality.hlcit_code %}">Upload Options</a></li>
+                    <li class="breadcrumb-item active">Bulk Upload Community Space</li>
                 </ul>
                 <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
                 </button>
@@ -40,10 +39,7 @@
                         <label for="id_province">Province </label>
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 province_class" name="province" id="id_province"  data-placeholder="Select">
-                                <option selected>--- Select Province  ---</option>
-                                {% for province in provinces %}
-                                <option value="{{ province.id }}">{{ province.name }}</option>
-                                {% endfor %}
+                                <option value="{{ municipality.province_id }}">{{ municipality.province__name }}</option>
                             </select>
                         </div>
                     </div>
@@ -51,10 +47,7 @@
                         <label for="id_district">District </label>
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 district_class" name="district" id="id_district"  data-placeholder="Select">
-                                <option>--- Select District First ---</option>
-                                {% for district in districts %}
-                                <option value="{{ district.id }}">{{ district.name }}</option>
-                                {% endfor %}
+                                <option value="{{ municipality.district_id }}">{{ municipality.district__name }}</option>
                             </select>
                         </div>
                     </div>
@@ -62,9 +55,7 @@
                         <label for="id_municipality">municipality </label>
                         <div class="select-option">
                             <select class="custom-select show-tick ms select2 mun_class" name="municipality" id="id_municipality"  required data-placeholder="Select">
-                                {% for municipality in municipalities %}
                                 <option value="{{ municipality.id }}">{{ municipality.name }}</option>
-                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -79,18 +70,18 @@
                     </div>
 
                     <div class="form-group">
-                        <h5>Upload Open Space Data (Point location)</h5>
-                        <input type="file" name="open_space" required id="id_open_space"
+                        <h5>Upload Community Space Data (Point location)</h5>
+                        <input type="file" name="community_space" required id="id_community_space"
                                data-behaviour="custom-upload-input" />
 
-                         <a href="{% static 'openspace.xlsx' %}" class="btn"> <i
+                         <a href="{% static 'community_space.xlsx' %}" class="btn"> <i
                                     class="la la-edit"> </i> View Templates</a>
 
                     </div>
 
                      <div class="form-group">
-                        <h5>Upload Open Space Data (Boundary Zip Shapefile)</h5>
-                        <input type="file" name="open_space_shp" required id="id_open_space_shp"
+                        <h5>Upload Community Space Data (Boundary Zip Shapefile)</h5>
+                        <input type="file" name="community_space_shp" required id="id_community_space_shp"
                                data-behaviour="custom-upload-input" />
                      </div>
 

@@ -1,19 +1,20 @@
-from django.conf import settings
-from django.contrib.gis.geos import Point
-from django.db import transaction
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
-    SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
-    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType, \
-    MainOpenSpace, MunicipalityQuestionsData
-from .models import UserProfile, UserAgency, AgencyMessage
 import json
 import random
 import pandas as pd
+import base64
+import os
+
+from django.contrib.gis.geos import Point
+from django.shortcuts import redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, CreateView, UpdateView
+from core.models import OpenSpace, AvailableFacility, Report, QuestionList, QuestionsData, ServiceData, ServiceList, \
+    SuggestedUseList, SuggestedUseData, Resource, ResourceCategory, ResourceDocumentType, Province, District, \
+    Municipality, Slider, CreateOpenSpace, Gallery, AvailableType, CreateOpenSpacePoints, MunicipalityAvailableType, \
+    MainOpenSpace, MunicipalityQuestionsData, CommunitySpace, MainCommunitySpace
+from .models import UserProfile, UserAgency, AgencyMessage
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionDataForm, SuggestedForm, \
@@ -22,16 +23,13 @@ from .forms import OpenSpaceForm, AvailableFacilityForm, QuestionForm, QuestionD
     ResourceDocumentTypeForm, ResourceForm, AvailableTypeForm, AgencyMessageForm, UploadNewOpenSpaceForm, \
     WhyMapOpenSpaceForm, WhyMapOpenSpaceIconForm, AboutHeaderForm, OpenSpaceCriteriaForm, CriteriaDescriptionForm, \
     CriteriaTypeForm, CreateOpenSpacePointsForm, AvailableFacilityCreateUpdateForm, MainOpenSpaceForm, \
-    MunicipalityQuestionsDataForm
+    MunicipalityQuestionsDataForm, CommunitySpaceForm, MainCommunitySpaceForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from front.models import Header, OpenSpaceDef, OpenSpaceIde, OpenSpaceApp, Contact, WhyMapOpenSpace, WhyMapOpenIcon, \
     AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
 from django.apps import apps
 from django.contrib import messages
-import base64
-import os
-from django.contrib.gis.utils import LayerMapping
 from django.shortcuts import render_to_response
 from dashboard import shapefileIO
 from django.contrib.gis.gdal import DataSource
@@ -39,7 +37,7 @@ from fcm_django.models import FCMDevice
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .upload_functions import upload_eia, upload_amenities, upload_openspace, add_open_space
+from .upload_functions import upload_openspace, add_open_space, add_community_space
 
 
 # Create your views here.
@@ -192,10 +190,38 @@ class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         open_space_file = self.request.FILES['open_space']
         open_space_shp_file = self.request.FILES['open_space_shp']
         open_space = add_open_space(open_space_file, open_space_shp_file, municipality, obj)
-
         if not 'success' in open_space:
             MainOpenSpace.objects.get(id=obj.id).delete()
             return render_to_response(self.template_name, {'error': open_space['error']}, )
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy('open_muni')
+
+
+class BulkUploadCommunitySpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CommunitySpace
+    form_class = MainCommunitySpaceForm
+    template_name = 'bulk_upload_community_space_form.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(BulkUploadCommunitySpaceView, self).get_context_data(**kwargs)
+        data['municipality'] = Municipality.objects.\
+            filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'hlcit_code', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
+        return data
+
+    def form_valid(self, form):
+        obj = form.save()
+        municipality = Municipality.objects.get(id=int(form.data['municipality']))
+        community_space_file = self.request.FILES['community_space']
+        community_space_shp_file = self.request.FILES['community_space_shp']
+        community_space = add_community_space(community_space_file, community_space_shp_file, municipality,
+                                              obj)
+        if not 'success' in community_space:
+            MainCommunitySpace.objects.get(id=obj.id).delete()
+            return render_to_response(self.template_name, {'error': community_space['error']}, )
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -242,6 +268,50 @@ class OpenSpaceList(LoginRequiredMixin, ListView):
 
         return data
 
+
+class CommunitySpaceList(LoginRequiredMixin, ListView):
+    template_name = 'community_space_list.html'
+    model = CommunitySpace
+
+    def get_context_data(self, **kwargs):
+        data = super(CommunitySpaceList, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        group = Group.objects.get(user=user)
+        if group.name == "admin":
+            query_data = CommunitySpace.objects.filter(municipality__id=user_data.municipality.id).\
+                select_related('province', 'district', 'municipality').order_by('id')
+
+        elif group.name == 'municipality_admin':
+            query_data = CommunitySpace.objects.filter(municipality__hlcit_code=user_data.municipality.hlcit_code).\
+                select_related('province', 'district', 'municipality').order_by('id')
+
+        else:
+            query_data = CommunitySpace.objects.filter(municipality__hlcit_code=self.kwargs['hlcit_code']).\
+                select_related('province', 'district', 'municipality').order_by('id')
+        url = 'community-space-list/'+self.kwargs['hlcit_code']
+        url_bytes = url.encode('ascii')
+        base64_bytes = base64.b64encode(url_bytes)
+        base64_url = base64_bytes.decode('ascii')
+        data['list'] = query_data
+        data['model'] = 'CommunitySpace'
+        data['url'] = base64_url
+        data['user'] = user_data
+        data['list'] = query_data
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+
+class AddCommunitySpaceOptions(LoginRequiredMixin, TemplateView):
+    template_name = 'community_space_options.html'
+
+    def get_context_data(self, **kwargs):
+        data = super(AddCommunitySpaceOptions, self).get_context_data(**kwargs)
+        data['hlcit_code'] = self.kwargs['hlcit_code']
+        return data
 
 # class OpenSpaceListMunicipality(LoginRequiredMixin, ListView):
 #     template_name = 'openspace_municipality_list.html'
@@ -638,7 +708,7 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = OpenSpace
     template_name = 'openspace_add.html'
     form_class = OpenSpaceForm
-    success_message = 'Open successfully Created'
+    success_message = 'Open Space successfully Created'
 
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceCreate, self).get_context_data(**kwargs)
@@ -661,12 +731,48 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
             shapefileIO.importData(shape_file, oid=obj.oid)
+        messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('openspace-list', args=(),
                                             kwargs={'hlcit_code': self.kwargs['hlcit_code']
                                                     })
+
+
+class CommunitySpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = CommunitySpace
+    template_name = 'community_space_form.html'
+    form_class = CommunitySpaceForm
+    success_message = 'Community Space successfully Created'
+
+    def get_context_data(self, **kwargs):
+        data = super(CommunitySpaceCreate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['active'] = 'openspace'
+        pen_count = Report.objects.filter(status='pending').count()
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name', 'hlcit_code').get()
+        data['pending'] = pen_count
+
+        return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        if form.data['latitude'] and form.data['longitude']:
+            obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        if 'polygon_shp' in self.request.FILES:
+            shape_file = self.request.FILES['polygon_shp']
+            shapefileIO.importData(shape_file, cid=obj.cid)
+        messages.success(self.request, self.success_message)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('community_space_list', args=(),
+                       kwargs={'hlcit_code': self.kwargs['hlcit_code']})
 
 
 class ResourceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -833,7 +939,7 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = OpenSpace
     template_name = 'openspace_add.html'
     form_class = OpenSpaceForm
-    success_message = 'Open successfully Updated'
+    success_message = 'Open Space successfully Updated'
 
     def get_context_data(self, **kwargs):
         data = super(OpenSpaceUpdate, self).get_context_data(**kwargs)
@@ -858,10 +964,49 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
             shapefileIO.importData(shape_file, oid=obj.oid)
+        messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('openspace-list', args=(),
+                                            kwargs={'hlcit_code': self.object.municipality.hlcit_code
+                                                    })
+
+
+class CommunitySpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = CommunitySpace
+    template_name = 'community_space_form.html'
+    form_class = OpenSpaceForm
+    success_message = 'Community successfully Updated'
+
+    def get_context_data(self, **kwargs):
+        data = super(CommunitySpaceUpdate, self).get_context_data(**kwargs)
+        user = self.request.user
+        user_data = UserProfile.objects.get(user=user)
+        data['user'] = user_data
+        data['provinces'] = Province.objects.all().order_by('id')
+        data['active'] = 'openspace'
+        data['municipality'] = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
+            values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name', 'hlcit_code').get()
+        pen_count = Report.objects.filter(status='pending').count()
+        data['pending'] = pen_count
+
+        return data
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+
+        if form.data['latitude'] and form.data['longitude']:
+            obj.location = Point(float(form.data['longitude']), float(form.data['latitude']))
+        obj.save()
+        if 'polygon_shp' in self.request.FILES:
+            shape_file = self.request.FILES['polygon_shp']
+            shapefileIO.importData(shape_file, oid=obj.oid)
+        messages.success(self.request, self.success_message)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('community_space_list', args=(),
                                             kwargs={'hlcit_code': self.object.municipality.hlcit_code
                                                     })
 

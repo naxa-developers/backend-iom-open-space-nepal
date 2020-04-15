@@ -48,6 +48,7 @@
                             <th>Province</th>
                             <th>Municipality</th>
                             <th>Open Space Data</th>
+                            <th>Community Space Data</th>
                             <th>EIA Table</th>
                             <th>Nearby Amenities</th>
 
@@ -62,6 +63,10 @@
                             <td>
                                 <a href="/dashboard/openspace-list/{{ municipality.municipality__hlcit_code }}" class="btn "> <i
                                         class="la la-edit"> </i> Manage Open Space Data</a>
+                            </td>
+                            <td>
+                                <a href="/dashboard/community-space-list/{{ municipality.municipality__hlcit_code }}" class="btn "> <i
+                                        class="la la-edit"> </i> Manage Community Space Data</a>
                             </td>
                             <td>
                                 <a href="{% url 'list_eia_from_municipality' municipality.municipality__hlcit_code %}" class="btn "> <i

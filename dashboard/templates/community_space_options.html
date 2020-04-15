@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Main Content -->
+
+<section class="content">
+    <div class="block-header">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+<!--                <h2>New Location </h2>-->
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="la la-home"></i> IOM</a></li>
+                    <li class="breadcrumb-item active"><a href="{% url 'community_space_list' hlcit_code %}">Community Space List</a></li>
+                    <li class="breadcrumb-item active">Upload Options</li>
+                </ul>
+                <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="la la-navicon"></i>
+                </button>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <button class="btn btn-primary float-right right_icon_toggle_btn" type="button"><i
+                        class="la la-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="project-form">
+        <div class="card">
+                    <div class="form-group">
+                         <div class="">
+                            <a class="btn" href="{% url 'bulk_upload_community_space' hlcit_code %}"><i class="la la-plus"></i> Bulk Upload Community Space</a> OR
+                             <a class="btn" href="{% url 'community_space_add' hlcit_code %}"><i class="la la-plus"></i> Add Single Community Space</a>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

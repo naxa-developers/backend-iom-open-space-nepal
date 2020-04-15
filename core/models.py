@@ -200,6 +200,48 @@ class MainOpenSpace(models.Model):
         return self.project_title
 
 
+class MainCommunitySpace(models.Model):
+    """
+         Use for bulk upload only
+    """
+    project_title = models.CharField(max_length=200)
+    description = models.TextField()
+    municipality = models.ForeignKey(Municipality, related_name="main_community_spaces", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.project_title
+
+
+class CommunitySpace(models.Model):
+    province = models.ForeignKey('Province', related_name='community_spaces',
+                                 on_delete=models.CASCADE)
+    district = models.ForeignKey('District', related_name='community_spaces',
+                                 on_delete=models.CASCADE)
+    municipality = models.ForeignKey('Municipality',
+                                     related_name='community_spaces',
+                                     on_delete=models.CASCADE)
+    ward = models.CharField(max_length=100, blank=True, null=True)
+    cid = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=1000)
+    description = models.TextField(blank=True, null=True)
+    current_land_use = models.CharField(max_length=300, blank=True, null=True)
+    coordinates_elevation = models.CharField(max_length=200, null=True, blank=True)
+    usable_area = models.FloatField(default=Decimal('0.0000'), null=True, blank=True)
+    total_area = models.FloatField(default=Decimal('0.0000'), null=True, blank=True)
+    elevation = models.CharField(max_length=1000,
+                                 null=True, blank=True)
+    location = PointField(geography=True, srid=4326, blank=True, null=True)
+    capacity = models.FloatField(blank=True, null=True, default=Decimal('0.0000'))
+    type = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    main_community_space = models.ForeignKey(MainCommunitySpace, on_delete=models.CASCADE,
+                                             related_name="community_spaces", null=True, blank=True)
+    polygons = MultiPolygonField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 class OpenSpace(models.Model):
     oid = models.CharField(max_length=100, null=True, blank=True)
     title = models.CharField(max_length=1000)

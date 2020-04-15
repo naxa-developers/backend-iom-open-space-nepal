@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from core.models import OpenSpace, AvailableFacility, QuestionList, QuestionsData, SuggestedUseList, SuggestedUseData, \
     ServiceList, ServiceData, ResourceCategory, Slider, CreateOpenSpace, Gallery, Resource, ResourceDocumentType, \
-    AvailableType, CreateOpenSpacePoints, MainOpenSpace, MunicipalityQuestionsData
+    AvailableType, CreateOpenSpacePoints, MainOpenSpace, MunicipalityQuestionsData, CommunitySpace, MainCommunitySpace
 
 from front.models import Header, OpenSpaceApp, OpenSpaceIde, Contact, OpenSpaceDef, WhyMapOpenSpace, WhyMapOpenIcon, \
     AboutHeader, OpenSpaceCriteria, CriteriaType, CriteriaDescription
@@ -23,6 +23,17 @@ class OpenSpaceForm(ModelForm):
 
     class Meta:
         model = OpenSpace
+        exclude = ('polygons', )
+
+
+class CommunitySpaceForm(ModelForm):
+
+    longitude = forms.CharField(required=False)
+    latitude = forms.CharField(required=False)
+    polygon_shp = forms.FileField(required=False)
+
+    class Meta:
+        model = CommunitySpace
         exclude = ('polygons', )
 
 
@@ -234,3 +245,11 @@ class MainOpenSpaceForm(forms.ModelForm):
         model = MainOpenSpace
         fields = ('project_title', 'description', 'municipality', 'open_space', 'open_space_shp')
 
+
+class MainCommunitySpaceForm(forms.ModelForm):
+    community_space = forms.FileField()
+    community_space_shp = forms.FileField()
+
+    class Meta:
+        model = MainCommunitySpace
+        fields = ('project_title', 'description', 'municipality', 'community_space', 'community_space_shp')
