@@ -9,7 +9,7 @@
             <div class="col-lg-7 col-md-6 col-sm-12">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'community_space_list' municipality.hlcit_code %}"><i class="la la-home"></i> Community Space List</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'community_space_list' municipality.hlcit_code %}"> Community Space List</a></li>
                     <li class="breadcrumb-item active">{% if object %} Edit {{object.title}} {% else %}  Add Community Space {% endif %}</li>
                 </ul>
                 <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
@@ -24,6 +24,13 @@
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
+                     {% if error %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error !</strong> {{error}}
+                        </div>
+                    {% endif %}
+
                     {% csrf_token %}
                     {% if form.errors %}
                     {% for field in form %}

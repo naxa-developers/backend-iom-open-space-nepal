@@ -89,15 +89,16 @@ def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEnc
         geometry = utils.wrapGEOSGeometry(geometry)
         geometryField = utils.calcGeometryField(geometryName)
         print('check keys', srcFeature.keys())
-        try:
-            feature_oid = srcFeature.GetField('OID')
-        except:
-            raise ValueError('OID does not exist in shape file.')
-
-        try:
-            feature_cid = srcFeature.GetField('CID')
-        except:
-            raise ValueError('CID does not exist in shape file.')
+        if from_openspace:
+            try:
+                feature_oid = srcFeature.GetField('OID')
+            except:
+                raise ValueError('OID does not exist in shape file.')
+        else:
+            try:
+                feature_cid = srcFeature.GetField('CID')
+            except:
+                raise ValueError('CID does not exist in shape file.')
 
         if oid and oid == feature_oid:
             open_space = OpenSpace.objects.get(oid=feature_oid)

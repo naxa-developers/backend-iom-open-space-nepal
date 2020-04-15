@@ -201,7 +201,7 @@ class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 
 class BulkUploadCommunitySpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
-    model = CommunitySpace
+    model = MainCommunitySpace
     form_class = MainCommunitySpaceForm
     template_name = 'bulk_upload_community_space_form.html'
 
@@ -221,12 +221,19 @@ class BulkUploadCommunitySpaceView(SuccessMessageMixin, LoginRequiredMixin, Crea
                                               obj)
         if not 'success' in community_space:
             MainCommunitySpace.objects.get(id=obj.id).delete()
-            return render_to_response(self.template_name, {'error': community_space['error']}, )
+            municipality = Municipality.objects. \
+                filter(hlcit_code=self.kwargs['hlcit_code']). \
+                values('id', 'hlcit_code', 'name', 'province_id', 'province__name', 'district_id', 'district__name').get()
+            return render_to_response(self.template_name, {'error': community_space['error'],
+                                                           'hlcit_code': self.kwargs['hlcit_code'],
+                                                           'municipality': municipality
+                                                           }, )
 
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('open_muni')
+        return reverse('community_space_list', args=(),
+                       kwargs={'hlcit_code': self.kwargs['hlcit_code']})
 
 
 class OpenSpaceList(LoginRequiredMixin, ListView):
@@ -312,16 +319,6 @@ class AddCommunitySpaceOptions(LoginRequiredMixin, TemplateView):
         data = super(AddCommunitySpaceOptions, self).get_context_data(**kwargs)
         data['hlcit_code'] = self.kwargs['hlcit_code']
         return data
-
-# class OpenSpaceListMunicipality(LoginRequiredMixin, ListView):
-#     template_name = 'openspace_municipality_list.html'
-#     model = OpenSpace
-#
-#     def get_context_data(self, **kwargs):
-#         data = super(OpenSpaceList, self).get_context_data(**kwargs)
-#         user = self.request.user
-#         user_data = UserProfile.objects.get(user=user)
-#         que
 
 
 class UserList(LoginRequiredMixin, ListView):
@@ -730,7 +727,16 @@ class OpenSpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         obj.save()
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
-            shapefileIO.importData(shape_file, oid=obj.oid)
+            try:
+                shapefileIO.importData(shape_file, oid=obj.oid)
+            except Exception as e:
+                municipality = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']). \
+                    values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name',
+                           'hlcit_code').get()
+                return super(OpenSpaceCreate, self). \
+                    render_to_response(context={'error': str(e),
+                                                'hlcit_code': self.kwargs['hlcit_code'],
+                                                'municipality': municipality})
         messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -766,7 +772,16 @@ class CommunitySpaceCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         obj.save()
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
-            shapefileIO.importData(shape_file, cid=obj.cid)
+            try:
+                shapefileIO.importData(shape_file, cid=obj.cid, from_openspace=False)
+            except Exception as e:
+                municipality = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']). \
+                    values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name',
+                           'hlcit_code').get()
+                return super(CommunitySpaceCreate, self). \
+                    render_to_response(context={'error': str(e),
+                                                'hlcit_code': self.kwargs['hlcit_code'],
+                                                'municipality': municipality})
         messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -963,7 +978,17 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         obj.save()
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
-            shapefileIO.importData(shape_file, oid=obj.oid)
+            try:
+                shapefileIO.importData(shape_file, oid=obj.oid)
+            except Exception as e:
+                municipality = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
+                    values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name',
+                           'hlcit_code').get()
+                return super(OpenSpaceUpdate, self). \
+                    render_to_response(context={'error': str(e),
+                                                'pk': self.object.id,
+                                                'municipality': municipality})
+
         messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -976,7 +1001,7 @@ class OpenSpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
 class CommunitySpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = CommunitySpace
     template_name = 'community_space_form.html'
-    form_class = OpenSpaceForm
+    form_class = CommunitySpaceForm
     success_message = 'Community successfully Updated'
 
     def get_context_data(self, **kwargs):
@@ -1001,7 +1026,18 @@ class CommunitySpaceUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         obj.save()
         if 'polygon_shp' in self.request.FILES:
             shape_file = self.request.FILES['polygon_shp']
-            shapefileIO.importData(shape_file, oid=obj.oid)
+            try:
+                shapefileIO.importData(shape_file, cid=obj.cid, from_openspace=False)
+            except Exception as e:
+                municipality = Municipality.objects.filter(hlcit_code=self.object.municipality.hlcit_code). \
+                    values('id', 'name', 'province_id', 'province__name', 'district_id', 'district__name',
+                           'hlcit_code').get()
+                return super(CommunitySpaceUpdate, self).\
+                    render_to_response(context={'error': str(e),
+                                                'pk': self.object.id,
+
+                                                'municipality': municipality})
+
         messages.success(self.request, self.success_message)
         return HttpResponseRedirect(self.get_success_url())
 

@@ -9,7 +9,7 @@
             <div class="col-lg-7 col-md-6 col-sm-12">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/"><i class="la la-home"></i> IOM</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'openspace-list' municipality.hlcit_code %}"><i class="la la-home"></i> Openspace List</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'openspace-list' municipality.hlcit_code %}"> Openspace List</a></li>
                     <li class="breadcrumb-item active">{% if object %} Edit {{object.title}} {% else %}  Add Openspace {% endif %}</li>
                 </ul>
                 <button class="btn btn-icon mobile_menu" type="button"><i class="la la-navicon"></i></button>
@@ -24,6 +24,12 @@
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST" enctype="multipart/form-data">
+                      {% if error %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error !</strong> {{error}}
+                        </div>
+                      {% endif %}
                     {% csrf_token %}
                     {% if form.errors %}
                     {% for field in form %}
@@ -39,6 +45,30 @@
                     </div>
                     {% endfor %}
                     {% endif %}
+                       <div class="form-group">
+                        <label for="id_province">Province </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2 province_class" name="province" id="id_province"  data-placeholder="Select">
+                                    <option value="{{ municipality.province_id }}">{{ municipality.province__name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_district">District </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2 district_class" name="district" id="id_district"  data-placeholder="Select">
+                                    <option value="{{ municipality.district_id }}">{{ municipality.district__name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_municipality">municipality </label>
+                        <div class="select-option">
+                            <select class="custom-select show-tick ms select2 mun_class" name="municipality" id="id_municipality"  data-placeholder="Select">
+                                    <option value="{{ municipality.id }}">{{ municipality.name }}</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="id_oid">OID</label>
@@ -94,34 +124,6 @@
                         <label for="id_address">Address</label>
                         <input  class="form-control" type="text" name="address" maxlength="1000" id="id_address" {% if form.instance.address %} value={{form.instance.address}} {% endif %}>
                     </div>
-
-
-
-                    <div class="form-group">
-                        <label for="id_province">Province </label>
-                        <div class="select-option">
-                            <select class="custom-select show-tick ms select2 province_class" name="province" id="id_province"  data-placeholder="Select">
-                                    <option value="{{ municipality.province_id }}">{{ municipality.province__name }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_district">District </label>
-                        <div class="select-option">
-                            <select class="custom-select show-tick ms select2 district_class" name="district" id="id_district"  data-placeholder="Select">
-                                    <option value="{{ municipality.district_id }}">{{ municipality.district__name }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_municipality">municipality </label>
-                        <div class="select-option">
-                            <select class="custom-select show-tick ms select2 mun_class" name="municipality" id="id_municipality"  data-placeholder="Select">
-                                    <option value="{{ municipality.id }}">{{ municipality.name }}</option>
-                            </select>
-                        </div>
-                    </div>
-
 
                     <div class="form-group">
                         <label for="id_ward">Ward</label>
