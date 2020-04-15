@@ -2688,9 +2688,8 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
 
             for row in range(0, upper_range):
                 for i in range(5, len(df.columns)):
-                    print('EIAAA', df['Name'][row])
                     try:
-                        open_space = OpenSpace.objects.get(title=df['Name'][row])
+                        open_space = OpenSpace.objects.get(oid=df['OID'][row])
                     except :
                         obj.delete()
 
