@@ -396,11 +396,11 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
         except Exception as e:
             return {'error': str(e)}
 
-        try:
-            shapefileIO.importData(open_space_shp_file)
-        except Exception as e:
-            return {'error': str(e)}
-        return {'success': 'Added successfully.'}
+    try:
+        shapefileIO.importData(open_space_shp_file)
+    except Exception as e:
+        return {'error': str(e)}
+    return {'success': 'Added successfully.'}
 
 
 def add_community_space(community_space_file, community_space_shp_file, municipality, main_community_space):
@@ -412,6 +412,7 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
     municipality_obj = municipality
     province = municipality_obj.province
     district = municipality_obj.district
+    community_space_objs = []
     if upper_range == 0:
         return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
@@ -420,7 +421,7 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
         except:
             location = None
         try:
-            community_space = CommunitySpace.objects.create(
+            community_space = CommunitySpace(
                 main_community_space=main_community_space,
                 cid=df['CID'][row],
                 title=df['Name'][row],
@@ -439,13 +440,15 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
                 capacity=df['Capacity'][row],
                 location=location
             )
+            community_space_objs.append(community_space)
         except Exception as e:
             return {'error': str(e)}
-        try:
-            shapefileIO.importData(community_space_shp_file, from_openspace=False)
-        except Exception as e:
-            return {'error': str(e)}
-        return {'success': 'Added successfully.'}
+    CommunitySpace.objects.bulk_create(community_space_objs)
+    try:
+        shapefileIO.importData(community_space_shp_file, from_openspace=False)
+    except Exception as e:
+        return {'error': str(e)}
+    return {'success': 'Added successfully.'}
 
 
 def upload_amenities(path):

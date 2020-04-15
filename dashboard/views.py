@@ -228,7 +228,7 @@ class BulkUploadCommunitySpaceView(SuccessMessageMixin, LoginRequiredMixin, Crea
                                                            'hlcit_code': self.kwargs['hlcit_code'],
                                                            'municipality': municipality
                                                            }, )
-
+        messages.success(self.request, 'Successfully uploaded Community Spaces. ')
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
