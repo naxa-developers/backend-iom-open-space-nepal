@@ -297,6 +297,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
     municipality_obj = municipality
     province = municipality_obj.province
     district = municipality_obj.district
+    open_space_ids = []
     if upper_range == 0:
         return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
@@ -337,6 +338,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 location=location
 
             )
+            open_space_ids.append(open_space.id)
             suggested_uses = df['Suggested Use'][row]
             if len(suggested_uses) > 0:
                 suggested_uses = df['Suggested Use'][row].split(',')
@@ -353,7 +355,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
 
             description = df['WASH_Facility'][row]
             is_available_wash_facility = df['WASH Facilities_YN'][row].upper()
-            wash_facility = ServiceList.objects.get(name='WASH Facilities_YN')
+            try:
+                wash_facility = ServiceList.objects.get(name='WASH_Facility')
+            except Exception as e:
+                return {'error': 'WASH_Facility does not exist in database.'}
             w_data = ServiceData.objects.create(description=description,
                                                 open_space=open_space,
                                                 service=wash_facility,
@@ -362,7 +367,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
 
             wifi_des = df['Internet'][row]
             is_available_wifi = df['Internet_YN'][row].upper()
-            wifi_facility = ServiceList.objects.get(name='Internet')
+            try:
+                wifi_facility = ServiceList.objects.get(name='Internet')
+            except Exception as e:
+                return {'error': 'Internet does not exist in database.'}
             wi_data = ServiceData.objects.create(description=wifi_des,
                                                  open_space=open_space,
                                                  service=wifi_facility,
@@ -372,7 +380,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
 
             boundry_wall_des = df['Boundary Wall'][row]
             is_available_boundry_wall = df['Boundary Wall_YN'][row].upper()
-            boundry_facility = ServiceList.objects.get(name='Boundary Wall')
+            try:
+                boundry_facility = ServiceList.objects.get(name='Boundary Wall')
+            except Exception as e:
+                return {'error': 'Boundary Wall does not exist in database.'}
             bo_data = ServiceData.objects.create(description=boundry_wall_des,
                                                  open_space=open_space,
                                                  service=boundry_facility,
@@ -380,14 +391,20 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                                                  )
 
             is_available_electricity = df['Electricity Line_YN'][row].upper()
-            electricity_facility = ServiceList.objects.get(name='Electricity Line')
+            try:
+                electricity_facility = ServiceList.objects.get(name='Electricity Line')
+            except Exception as e:
+                return {'error': 'Electricity Line does not exist in database.'}
             el_data = ServiceData.objects.create(open_space=open_space,
                                                  service=electricity_facility,
                                                  is_available=is_available_electricity)
 
             tree = df['Trees & Vegetation'][row]
             is_available_tree = df['Trees & Vegetation_YN'][row].upper()
-            wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
+            try:
+                wash_facility = ServiceList.objects.get(name='Trees & Vegetation')
+            except Exception as e:
+                return {'error': 'Trees & Vegetation does not exist in database.'}
             el_data = ServiceData.objects.create(description=tree,
                                                  open_space=open_space,
                                                  service=wash_facility,
@@ -397,7 +414,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
             return {'error': str(e)}
 
     try:
-        shapefileIO.importData(open_space_shp_file)
+        shapefileIO.importData(open_space_shp_file, data=open_space_ids)
     except Exception as e:
         return {'error': str(e)}
     return {'success': 'Added successfully.'}
@@ -413,6 +430,7 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
     province = municipality_obj.province
     district = municipality_obj.district
     community_space_objs = []
+    community_space_ids = []
     if upper_range == 0:
         return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
@@ -441,11 +459,12 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
                 location=location
             )
             community_space_objs.append(community_space)
+            community_space_ids.append(community_space.id)
         except Exception as e:
             return {'error': str(e)}
     CommunitySpace.objects.bulk_create(community_space_objs)
     try:
-        shapefileIO.importData(community_space_shp_file, from_openspace=False)
+        shapefileIO.importData(community_space_shp_file, from_openspace=False, data=community_space_ids)
     except Exception as e:
         return {'error': str(e)}
     return {'success': 'Added successfully.'}

@@ -11,7 +11,7 @@ questions = [
     'Is it a buffer zone of protected area?',
     'Is it a cultural heritage Site?',
     'Densely populated area?',
-    'Special area for protection of biodiversity',
+    'Special area for protection of biodiversity?',
     'Will project require temporary or permanent support facilities?',
     'Are ecosystems related to project fragile or degraded?',
     'Will project cause impairment of ecological opportunities?',
@@ -23,7 +23,8 @@ questions = [
     'Will project cause Greenhouse Gas Emissions?',
     'Will project cause use of pesticides?',
     'Does the project encourage the use of environmentally friendly technologies?',
-    'Other environmental issues, e.g. noise and traffic'
+    'Other environmental issues, e.g. noise and traffic?',
+    'Will the project cause increase in peak and flows? (Including from temporary or permanent water)'
 ]
 
 

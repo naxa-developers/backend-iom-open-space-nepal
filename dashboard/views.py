@@ -194,6 +194,7 @@ class MainOpenSpaceView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             MainOpenSpace.objects.get(id=obj.id).delete()
             return render_to_response(self.template_name, {'error': open_space['error']}, )
 
+        messages.success(self.request, 'Successfully uploaded Open Spaces. ')
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -870,8 +871,12 @@ class AddBulkMunicipalityAvailableAmenities(LoginRequiredMixin, TemplateView):
                                                      data_source=my_data['data_source']
                                                      )
         except Exception as e:
-            return super(TemplateView, self).render_to_response(context={'error':
-                                                                             'Please upload file with provided formats'})
+            municipality = Municipality.objects.filter(hlcit_code=self.kwargs['hlcit_code']).\
+            values('id', 'name', 'province_id', 'province__name', 'hlcit_code').get()
+            return super(TemplateView, self).\
+                render_to_response(context={'error': 'Please upload file with provided formats',
+                                            'municipality': municipality
+                                            })
 
         context = {}  # set your context
         # return reverse_lazy('available_ameni_list', kwargs={'title': available_type,
@@ -2683,16 +2688,22 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
 
             for row in range(0, upper_range):
                 for i in range(5, len(df.columns)):
+                    print('EIAAA', df['Name'][row])
                     try:
                         open_space = OpenSpace.objects.get(title=df['Name'][row])
                     except :
+                        obj.delete()
+
                         return super(BulkAddEiaFromMunicipalityView, self).\
                             render_to_response(context={'error': 'Openspace does not exist.',
                                                         'hlcit_code': self.kwargs['hlcit_code']}
                                                )
                     try:
-                        question = QuestionList.objects.get(title=df.columns[i])
+                        question = QuestionList.objects.get(title__icontains=df.columns[i])
                     except:
+                        obj.delete()
+                        print('questionnn list', df.columns[i])
+
                         return super(BulkAddEiaFromMunicipalityView, self).\
                             render_to_response(context={'error': 'QuestionList does not exist',
                                                         'hlcit_code': self.kwargs['hlcit_code']},

@@ -7,7 +7,7 @@ from core.models import ServiceList
 from django.contrib.gis.geos import Point
 
 services = [
-    'WASH Facilities',
+    'WASH_Facility',
     'Internet',
     'Boundary Wall',
     'Electricity Line',

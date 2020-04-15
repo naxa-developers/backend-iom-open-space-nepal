@@ -10,7 +10,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from core.models import OpenSpace, CommunitySpace
 
 
-def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEncoding=None):
+def importData(shapefile,  oid=None, cid=None, from_openspace=True, data=[], characterEncoding=None):
     fd, fname = tempfile.mkstemp(suffix=".zip")
     os.close(fd)
 
@@ -72,7 +72,6 @@ def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEnc
     # Import the data from the opened shapefile.
 
     geometryType = layer.GetLayerDefn().GetGeomType()
-    print(geometryType)
     geometryName = utils.ogrTypeToGeometryName(geometryType)
     srcSpatialRef = layer.GetSpatialRef()
     dstSpatialRef = osr.SpatialReference()
@@ -88,10 +87,10 @@ def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEnc
         geometry = GEOSGeometry(srcGeometry.ExportToWkt())
         geometry = utils.wrapGEOSGeometry(geometry)
         geometryField = utils.calcGeometryField(geometryName)
-        print('check keys', srcFeature.keys())
+        # print('check keys', srcFeature.keys())
         if from_openspace:
             try:
-                feature_oid = srcFeature.GetField('OID')
+                feature_oid = srcFeature.GetField('OID_')
             except:
                 raise ValueError('OID does not exist in shape file.')
         else:
@@ -111,12 +110,16 @@ def importData(shapefile,  oid=None, cid=None, from_openspace=True, characterEnc
             open_space.save()
             return
         if from_openspace:
-            obj = OpenSpace.objects.get(oid=feature_oid)
+            if feature_oid in data:
+                print('feature_oid', feature_oid)
+                obj = OpenSpace.objects.get(oid=feature_oid)
+                obj.polygons = geometry
+                obj.save()
         else:
-            obj = CommunitySpace.objects.get(cid=feature_cid)
-
-        obj.polygons = geometry
-        obj.save()
+            if feature_cid in data:
+                obj = CommunitySpace.objects.get(cid=feature_cid)
+                obj.polygons = geometry
+                obj.save()
 
 
 
