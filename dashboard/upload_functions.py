@@ -306,6 +306,10 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
         except:
             location = None
         try:
+            try:
+                OpenSpace.objects.get(oid=df['OID'][row])
+            except:
+                return {'error': 'Open Space with this name {} already exists.' .format(str(df['OID'][row]))}
             open_space = OpenSpace.objects.create(
                 main_open_space=main_open_space,
                 oid=df['OID'][row],
