@@ -2690,21 +2690,20 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
                 for i in range(5, len(df.columns)):
                     try:
                         open_space = OpenSpace.objects.get(oid=df['OID'][row])
-                    except :
+                    except Exception as e:
                         obj.delete()
 
                         return super(BulkAddEiaFromMunicipalityView, self).\
-                            render_to_response(context={'error': 'Openspace does not exist.',
+                            render_to_response(context={'error': str(e),
                                                         'hlcit_code': self.kwargs['hlcit_code']}
                                                )
                     try:
                         question = QuestionList.objects.get(title__icontains=df.columns[i])
-                    except:
+                    except Exception as e:
                         obj.delete()
-                        print('questionnn list', df.columns[i])
 
                         return super(BulkAddEiaFromMunicipalityView, self).\
-                            render_to_response(context={'error': 'QuestionList does not exist',
+                            render_to_response(context={'error': str(e),
                                                         'hlcit_code': self.kwargs['hlcit_code']},
                                                )
                     que_obj = QuestionsData(open_space=open_space,
