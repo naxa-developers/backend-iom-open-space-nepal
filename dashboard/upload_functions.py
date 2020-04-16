@@ -297,7 +297,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
     municipality_obj = municipality
     province = municipality_obj.province
     district = municipality_obj.district
-    open_space_ids = []
+    open_space_oids = []
     if upper_range == 0:
         return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
@@ -306,10 +306,6 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
         except:
             location = None
         try:
-            try:
-                OpenSpace.objects.get(oid=df['OID'][row])
-            except:
-                return {'error': 'Open Space with this name {} already exists.' .format(str(df['OID'][row]))}
             open_space = OpenSpace.objects.create(
                 main_open_space=main_open_space,
                 oid=df['OID'][row],
@@ -342,7 +338,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 location=location
 
             )
-            open_space_ids.append(open_space.id)
+            open_space_oids.append(open_space.oid)
             suggested_uses = df['Suggested Use'][row]
             if len(suggested_uses) > 0:
                 suggested_uses = df['Suggested Use'][row].split(',')
@@ -418,7 +414,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
             return {'error': str(e)}
 
     try:
-        shapefileIO.importData(open_space_shp_file, data=open_space_ids)
+        shapefileIO.importData(open_space_shp_file, data=open_space_oids)
     except Exception as e:
         return {'error': str(e)}
     return {'success': 'Added successfully.'}
@@ -434,7 +430,7 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
     province = municipality_obj.province
     district = municipality_obj.district
     community_space_objs = []
-    community_space_ids = []
+    community_space_cids = []
     if upper_range == 0:
         return {'error': 'Please populate data in excel file.'}
     for row in range(0, upper_range):
@@ -463,12 +459,12 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
                 location=location
             )
             community_space_objs.append(community_space)
-            community_space_ids.append(community_space.id)
+            community_space_cids.append(community_space.cid)
         except Exception as e:
             return {'error': str(e)}
     CommunitySpace.objects.bulk_create(community_space_objs)
     try:
-        shapefileIO.importData(community_space_shp_file, from_openspace=False, data=community_space_ids)
+        shapefileIO.importData(community_space_shp_file, from_openspace=False, data=community_space_cids)
     except Exception as e:
         return {'error': str(e)}
     return {'success': 'Added successfully.'}

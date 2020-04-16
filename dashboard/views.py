@@ -2711,7 +2711,8 @@ class BulkAddEiaFromMunicipalityView(SuccessMessageMixin, LoginRequiredMixin, Cr
                     except:
                         obj.delete()
                         return super(BulkAddEiaFromMunicipalityView, self). \
-                            render_to_response(context={'error': 'Answer for this question already exist.',
+                            render_to_response(context={'error': 'Answer for this {} in {} already exist.'.\
+                                               format(question.title, open_space.title),
                                                         'hlcit_code': self.kwargs['hlcit_code']},
                                                )
                     que_obj = QuestionsData(open_space=open_space,
