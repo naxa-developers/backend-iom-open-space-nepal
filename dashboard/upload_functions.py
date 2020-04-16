@@ -441,30 +441,35 @@ def add_community_space(community_space_file, community_space_shp_file, municipa
             location = Point(float(df['Longitude'][row]), float(df['Latitude'][row]))
         except:
             location = None
-        try:
-            community_space = CommunitySpace(
-                main_community_space=main_community_space,
-                cid=df['CID'][row],
-                title=df['Name'][row],
-                description=df['Description'][row],
-                province=province,
-                district=district,
-                municipality=municipality_obj,
-                ward=df['Ward'][row],
-                type=df['Type'][row],
-                address=df['Address'][row],
-                coordinates_elevation=df['Coordinate, Elevation'][row],
-                elevation=df['Elevation'][row],
-                total_area=df['Total_Area'][row],
-                usable_area=df['Usable_Area'][row],
-                current_land_use=df['Current Land Use'][row],
-                capacity=df['Capacity'][row],
-                location=location
-            )
-            community_space_objs.append(community_space)
-            community_space_cids.append(community_space.cid)
-        except Exception as e:
-            return {'error': str(e)}
+        if CommunitySpace.objects.filter(cid=df['CID'][row]).exists():
+            return {'error': 'Community Space with this cid {} already exist in the database'.format(df['CID'][row])}
+
+        else:
+            try:
+                community_space = CommunitySpace(
+                    main_community_space=main_community_space,
+                    cid=df['CID'][row],
+                    title=df['Name'][row],
+                    description=df['Description'][row],
+                    province=province,
+                    district=district,
+                    municipality=municipality_obj,
+                    ward=df['Ward'][row],
+                    type=df['Type'][row],
+                    address=df['Address'][row],
+                    coordinates_elevation=df['Coordinate, Elevation'][row],
+                    elevation=df['Elevation'][row],
+                    total_area=df['Total_Area'][row],
+                    usable_area=df['Usable_Area'][row],
+                    current_land_use=df['Current Land Use'][row],
+                    capacity=df['Capacity'][row],
+                    location=location
+                )
+                community_space_objs.append(community_space)
+                community_space_cids.append(community_space.cid)
+
+            except Exception as e:
+                return {'error': str(e)}
     CommunitySpace.objects.bulk_create(community_space_objs)
     try:
         shapefileIO.importData(community_space_shp_file, from_openspace=False, data=community_space_cids)
