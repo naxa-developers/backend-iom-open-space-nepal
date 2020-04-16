@@ -110,7 +110,6 @@ def importData(shapefile,  oid=None, cid=None, from_openspace=True, data=[], cha
             open_space.save()
             return
         if from_openspace:
-            print('geommmmmmmm', geometry)
             if feature_oid in data:
                 print('feature_oid', feature_oid)
                 obj = OpenSpace.objects.get(oid=feature_oid)
