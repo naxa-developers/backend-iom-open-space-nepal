@@ -22,6 +22,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
+    path('api/v2/', include('api.v2_urls')),
     path('dashboard/', include('dashboard.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', LoginView.as_view(), name='login'),
@@ -30,7 +31,7 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+#
 # if settings.DEBUG:
 #     import debug_toolbar
 #     urlpatterns = [
