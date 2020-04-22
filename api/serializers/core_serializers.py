@@ -211,3 +211,52 @@ class ReportSerializer(serializers.ModelSerializer):
         return instance.open_space.address
 
 
+class OpenSpaceSuggestedUseSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SuggestedUseData
+        fields = ('id', 'name')
+
+    def get_name(self, obj):
+        return obj.suggested_use.name
+
+
+class OpenSpaceServiceDataSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ServiceData
+        fields = ('id', 'name', 'is_available', 'description')
+
+    def get_name(self, obj):
+        return obj.service.name
+
+
+class OpenSpaceQuestionDataSerializer(serializers.ModelSerializer):
+    question = serializers.SerializerMethodField()
+
+    class Meta:
+        model = QuestionsData
+        fields = ('question', 'ans')
+
+    def get_question(self, obj):
+        return obj.question.title
+
+
+class AllOpenSpaceSerializer(serializers.ModelSerializer):
+    suggested_use = OpenSpaceSuggestedUseSerializer(many=True)
+    onsite_amenities = OpenSpaceServiceDataSerializer(source='services', many=True)
+    eia = OpenSpaceQuestionDataSerializer(source='question_data', many=True)
+    municipality_id = serializers.SerializerMethodField()
+    municipality_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = OpenSpace
+        exclude = ('polygons', 'main_open_space', 'location', 'municipality', 'province', 'district')
+
+    def get_municipality_name(self, obj):
+        return obj.municipality.name
+
+    def get_municipality_id(self, obj):
+        return obj.municipality_id

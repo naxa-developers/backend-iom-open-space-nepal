@@ -68,6 +68,6 @@ urlpatterns = [
     path('unique_municipality', front_viewset.UniqueMunicipalityOfMessage.as_view()),
     path('district-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.district_tile),
     path('municipality-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.municipality_tile),
-    path('province-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.municipality_tile)
+    path('province-tile/<int:zoom>/<int:x>/<int:y>', core_viewsets.municipality_tile),
 
 ]

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from core.models import Slider, CreateOpenSpace, Resource, Province, District, \
     Municipality, SuggestedUseList, ServiceList, OpenSpace, Report, AvailableFacility, \
     Gallery, SuggestedUseData, ServiceData, ServiceList
@@ -7,7 +8,7 @@ from api.serializers.core_serializers import SliderSerializer, \
     DistrictSerializer, MunicipalitySerializer, SuggestedUseSerializer, \
     ServiceSerializer, OpenSpaceSerializer, \
     ReportSerializer, AvailableFacilitySerializer, \
-    GallerySerializer, OpenSpaceAttributeSerializer, ServiceListSerializer
+    GallerySerializer, OpenSpaceAttributeSerializer, ServiceListSerializer, AllOpenSpaceSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count, Sum
@@ -557,9 +558,15 @@ class GlimpseOfOpenSpace(APIView):
 
 class OpenSpaceGeojsonViewSet(APIView):
     permission_classes = []
+    renderer_classes = [JSONRenderer]
 
     def get(self, request, *args, **kwargs):
-        serializers = serialize('geojson', OpenSpace.objects.all(),
+        municipality_id = self.request.query_params.get('municipality_id', None)
+        queryset = OpenSpace.objects.all()
+        if municipality_id:
+            queryset = queryset.filter(municipality_id=municipality_id)
+
+        serializers = serialize('geojson', queryset,
                                 geometry_field='polygons',
                                 fields=('pk', 'title', 'description', 'status',
                                         'catchment_area', 'ownership',
@@ -571,10 +578,6 @@ class OpenSpaceGeojsonViewSet(APIView):
                                         'maps', 'location', 'centroid', 'latitude', 'geoserver_url',
                                         'layername', 'workspace'))
 
-        # print(serializers)
-        # a = OpenSpace.objects.filter(id=4)
-        # print(a[0].polygons.centroid.x)
-
         OpenSpaceGeoJson = json.loads(serializers)
         return Response(OpenSpaceGeoJson)
 
@@ -585,8 +588,6 @@ class SingleOpenSpaceGeojsonViewSet(APIView):
     def get(self, request, *args, **kwargs):
         open_id = self.request.query_params.get('id')
         mun_id = self.request.query_params.get('mun')
-        # print(open_id);
-
         if open_id == None:
             serializers = serialize('geojson',
                                     OpenSpace.objects.filter(municipality=mun_id),
@@ -859,3 +860,26 @@ def municipality_tile(request, zoom, x, y):
         if not len(tile):
             raise Http404()
     return HttpResponse(tile, content_type="application/x-protobuf")
+
+
+class OpenSpacePagination(PageNumberPagination):
+    page_size = 30
+    page_size_query_param = 'page_size'
+
+
+class OpenSpaceView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = AllOpenSpaceSerializer
+    queryset = OpenSpace.objects.all().prefetch_related('suggested_use', 'suggested_use__suggested_use',
+                                                        'services', 'services__service', 'question_data',
+                                                        'question_data__question', 'municipality')
+    pagination_class = OpenSpacePagination
+    renderer_classes = [JSONRenderer]
+
+    def filter_queryset(self, queryset):
+        municipality_id = self.request.query_params.get('municipality_id', None)
+        if municipality_id:
+            queryset = queryset.filter(municipality_id=municipality_id)
+        return queryset
+
+
+
