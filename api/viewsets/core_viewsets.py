@@ -143,6 +143,13 @@ class OpenSpaceViewSet(viewsets.ModelViewSet):
     serializer_class = OpenSpaceSerializer
     queryset = OpenSpace.objects.all()
     permission_classes = []
+    renderer_classes = [JSONRenderer]
+
+    def filter_queryset(self, queryset):
+        municipality_id = self.request.query_params.get('municipality_id', None)
+        if municipality_id:
+            queryset = queryset.filter(municipality_id=municipality_id)
+        return queryset
 
     # def perform_create(self, serializer):
     #     if self.ward:
