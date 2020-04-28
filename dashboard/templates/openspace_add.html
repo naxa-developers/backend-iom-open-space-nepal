@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group">
                         <label for="id_description">Description</label>
-                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description" {% if form.instance.description %} value="{{form.instance.description}}" {% endif %}"></textarea>
+                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description">{% if form.instance.description %} {{form.instance.description}} {% endif %}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -92,7 +92,7 @@
 
                     <div class="form-group">
                         <label for="id_current_land_use">Current land use:</label>
-                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use" {% if form.instance.current_land_use %} value="{{form.instance.current_land_use}}" {% endif %}></textarea>
+                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use"> {% if form.instance.current_land_use %} {{form.instance.current_land_use}} {% endif %}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -117,7 +117,7 @@
 
                      <div class="form-group">
                         <label for="id_special_feature">Special feature</label>
-                        <textarea class="form-control" name="special_feature" cols="40" rows="10" id="id_special_feature" {% if form.instance.special_feature %} value="{{form.instance.special_feature}}" {% endif %}></textarea>
+                        <textarea class="form-control" name="special_feature" cols="40" rows="10" id="id_special_feature"> {% if form.instance.special_feature %} {{form.instance.special_feature}} {% endif %}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -132,7 +132,7 @@
 
                     <div class="form-group">
                         <label for="id_capacity">Capacity</label>
-                        <input  class="form-control" type="number" name="capacity" value="0" step="any" id="id_capacity" {% if form.instance.capacity %} value="{{form.instance.capacity}}" {% endif %}>
+                        <input  class="form-control" type="number" name="capacity" step="any" id="id_capacity" {% if form.instance.capacity %} value="{{form.instance.capacity}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
@@ -179,12 +179,12 @@
 
                     <div class="form-group">
                         <label for="id_capacity">Usable-2013</label>
-                        <input  class="form-control" type="number" name="usable_2013" value="0" step="any" id="id_usable_2013" {% if form.instance.usable_2013 %} value="{{form.instance.usable_2013}}" {% endif %}>
+                        <input  class="form-control" type="number" name="usable_2013"step="any" id="id_usable_2013" {% if form.instance.usable_2013 %} value="{{form.instance.usable_2013}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_capacity">Area Change</label>
-                        <input  class="form-control" type="number" name="area_change" value="0" step="any" id="id_area_change" {% if form.instance.area_change %} value="{{form.instance.area_change}}" {% endif %}>
+                        <input  class="form-control" type="number" name="area_change"step="any" id="id_area_change" {% if form.instance.area_change %} value="{{form.instance.area_change}}" {% endif %}>
                     </div>
 
 
@@ -216,12 +216,12 @@
 
                     <div class="form-group">
                         <label for="id_current_land_use">Change Remarks</label>
-                        <textarea class="form-control" name="change_remarks" cols="40" rows="10" id="id_change_remarks" {% if form.instance.change_remarks %} value="{{form.instance.change_remarks}}" {% endif %}></textarea>
+                        <textarea class="form-control" name="change_remarks" cols="40" rows="10" id="id_change_remarks" >{% if form.instance.change_remarks %}{{form.instance.change_remarks}} {% endif %}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="id_capacity">Perimeter</label>
-                        <input  class="form-control" type="number" name="perimeter" value="0" step="any" id="id_perimeter" {% if form.instance.perimeter %} value="{{form.instance.perimeter}}" {% endif %}>
+                        <input  class="form-control" type="number" name="perimeter" step="any" id="id_perimeter" {% if form.instance.perimeter %} value="{{form.instance.perimeter}}" {% endif %}>
                     </div>
 
                       <label for="id_image">Add Boundary shape file (zip shape file):</label>
