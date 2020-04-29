@@ -83,7 +83,7 @@
                             <td>{{ community.address }}</td>
                             <td>{{ community.current_land_use }}</td>
                             <td>{{ community.elevation }}</td>
-                            <td>{{ community.capacity }}</td>
+                            <td>{{ community.capacity | stringformat:'d'}}</td>
                             <td>{{ community.total_area }}</td>
                             <td>{{ community.usable_area }}</td>
                             <td>{{ community.coordinates_elevation }}</td>

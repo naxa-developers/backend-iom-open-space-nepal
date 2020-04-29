@@ -112,7 +112,7 @@
 
                     <div class="form-group">
                         <label for="id_capacity">Capacity</label>
-                        <input  class="form-control" type="number" name="capacity" step="any" id="id_capacity" {% if form.instance.capacity %} value="{{form.instance.capacity}}" {% endif %}>
+                        <input  class="form-control" type="number" name="capacity" step="any" id="id_capacity" {% if form.instance.capacity %} value="{{form.instance.capacity | stringformat:'d'}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
