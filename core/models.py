@@ -241,6 +241,16 @@ class CommunitySpace(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def latitude(self):
+        if self.location:
+            return self.location.y
+
+    @property
+    def longitude(self):
+        if self.location:
+            return self.location.x
+
 
 class OpenSpace(models.Model):
     oid = models.CharField(max_length=100, null=True, blank=True)
