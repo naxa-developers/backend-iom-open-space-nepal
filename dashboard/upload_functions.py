@@ -223,7 +223,7 @@ def upload_openspace(path):
             title=df['Name'][row],
             province=Province.objects.get(
                 code=(df['Province'][row])),
-            #
+            description=df['Description'][row],
             district=District.objects.get(
                 code=(df['District'][row])),
 
