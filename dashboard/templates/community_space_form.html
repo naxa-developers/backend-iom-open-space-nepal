@@ -73,51 +73,51 @@
 
                     <div class="form-group">
                         <label for="id_ward">Ward</label>
-                        <input  class="form-control" type="text" name="ward" maxlength="1000" id="id_ward" {% if form.instance.ward %} value={{form.instance.ward}} {% endif %}>
+                        <input  class="form-control" type="text" name="ward" maxlength="1000" id="id_ward" {% if form.instance.ward %} value="{{form.instance.ward}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_cid">CID</label>
-                        <input  class="form-control" type="text" name="cid" maxlength="1000" required id="id_cid" {% if form.instance.cid %} value={{form.instance.cid}} {% endif %}>
+                        <input  class="form-control" type="text" name="cid" maxlength="1000" required id="id_cid" {% if form.instance.cid %} value="{{form.instance.cid}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_title">Title</label>
-                        <input  class="form-control" type="text" name="title" maxlength="1000" required id="id_title" {% if form.instance.title %} value={{form.instance.title}} {% endif %}>
+                        <input  class="form-control" type="text" name="title" maxlength="1000" required id="id_title" {% if form.instance.title %} value="{{form.instance.title}}" {% endif %}>
                     </div>
                     <div class="form-group">
                         <label for="id_description">Description</label>
-                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description" {% if form.instance.description %} value={{form.instance.description}} {% endif %}></textarea>
+                        <textarea class="form-control" name="description" cols="40" rows="10" id="id_description">{% if form.instance.description %} {{form.instance.description}} {% endif %}</textarea>
                     </div>
 
                       <div class="form-group">
                         <label for="id_type">Type</label>
-                        <input  class="form-control" type="text" name="type" maxlength="1000" required id="id_type" {% if form.instance.type %} value={{form.instance.type}} {% endif %}>
+                        <input  class="form-control" type="text" name="type" maxlength="1000" required id="id_type" {% if form.instance.type %} value="{{form.instance.type}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_current_land_use">Current land use:</label>
-                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use" {% if form.instance.current_land_use %} value={{form.instance.current_land_use}} {% endif %}></textarea>
+                        <textarea class="form-control" name="current_land_use" cols="40" rows="10" id="id_current_land_use"> {% if form.instance.current_land_use %} {{form.instance.current_land_use}} {% endif %}</textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="id_elevation">Elevation</label>
-                        <input  class="form-control" type="text" name="elevation" maxlength="1000" id="id_elevation" {% if form.instance.elevation %} value={{form.instance.elevation}} {% endif %}>
+                        <input  class="form-control" type="text" name="elevation" maxlength="1000" id="id_elevation" {% if form.instance.elevation %} value="{{form.instance.elevation}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_address">Address</label>
-                        <input  class="form-control" type="text" name="address" maxlength="1000" id="id_address" {% if form.instance.address %} value={{form.instance.address}} {% endif %}>
+                        <input  class="form-control" type="text" name="address" maxlength="1000" id="id_address" {% if form.instance.address %} value="{{form.instance.address}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_capacity">Capacity</label>
-                        <input  class="form-control" type="number" name="capacity" value="0" step="any" id="id_capacity" {% if form.instance.capacity %} value={{form.instance.capacity}} {% endif %}>
+                        <input  class="form-control" type="number" name="capacity" step="any" id="id_capacity" {% if form.instance.capacity %} value="{{form.instance.capacity}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_total_area">Total area</label>
-                        <input  class="form-control" type="number" name="total_area" step="any" id="id_total_area" {% if form.instance.total_area %} value={{form.instance.total_area}} {% endif %}>
+                        <input  class="form-control" type="number" name="total_area" step="any" id="id_total_area" {% if form.instance.total_area %} value="{{form.instance.total_area}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
@@ -128,17 +128,17 @@
                      <div class="form-group">
                         <label for="id_coordinates_elevation">Coordinates, Elevation</label>
                         <input  class="form-control" type="text" name="coordinates_elevation" maxlength="1000"
-                                id="id_coordinates_elevation" {% if form.instance.coordinates_elevation %} value={{form.instance.coordinates_elevation}} {% endif %}>
+                                id="id_coordinates_elevation" {% if form.instance.coordinates_elevation %} value="{{form.instance.coordinates_elevation}}" {% endif %}>
                     </div>
 
                      <div class="form-group">
                         <label for="id_longitude">Longitude</label>
-                        <input  class="form-control" type="text" name="longitude" maxlength="1000" id="id_longitude" {% if form.instance.longitude %} value={{form.instance.longitude}} {% endif %}>
+                        <input  class="form-control" type="text" name="longitude" maxlength="1000" id="id_longitude" {% if form.instance.longitude %} value="{{form.instance.longitude}}" {% endif %}>
                     </div>
 
                     <div class="form-group">
                         <label for="id_latitude">Latitude</label>
-                        <input  class="form-control" type="text" name="latitude" maxlength="1000" id="id_latitude" {% if form.instance.latitude %} value={{form.instance.latitude}} {% endif %}>
+                        <input  class="form-control" type="text" name="latitude" maxlength="1000" id="id_latitude" {% if form.instance.latitude %} value="{{form.instance.latitude}}" {% endif %}>
                     </div>
 
                       <label for="id_polygon_shp">Add Boundary shape file (zip shape file):</label>
