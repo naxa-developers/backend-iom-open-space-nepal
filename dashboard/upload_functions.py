@@ -313,6 +313,7 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                     main_open_space=main_open_space,
                     oid=df['OID'][row],
                     title=df['Name'][row],
+                    description=df['Description'][row],
                     province=province,
                     district=district,
                     municipality=municipality_obj,
