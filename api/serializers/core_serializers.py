@@ -106,7 +106,7 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableFacility
         fields = ('id', 'name', 'type', 'available_type', 'available_sub_type', 'operator_type', 'address', 'location',
-                  'province', 'district','sub_type', 'municipality', 'email', 'opening_hours',
+                  'province', 'district', 'sub_type', 'municipality', 'email', 'opening_hours',
                   'bank_type', 'phone_number', 'comments', 'website',
                   'bank_network', 'icon', 'latitude', 'longitude')
 
@@ -116,12 +116,11 @@ class AvailableFacilitySerializer(serializers.ModelSerializer):
     def get_longitude(self, instance):
         return instance.location.x
 
-    def get_sub_type(self,instance):
+    def get_sub_type(self, instance):
         if instance.available_sub_type is not None:
             return instance.available_sub_type.title
         else:
             return None
-
 
     # def get_distance(self, instance):
     #     open_space_id = self.context['request'].query_params.get('id')
@@ -152,6 +151,7 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
     municipality_name = serializers.ReadOnlyField(source='municipality.name')
     province_name = serializers.ReadOnlyField(source='province.name')
     district_name = serializers.ReadOnlyField(source='district.name')
+    address = serializers.SerializerMethodField()
 
     # centroid = serializers.SerializerMethodField()
 
@@ -163,6 +163,13 @@ class OpenSpaceSerializer(serializers.ModelSerializer):
                   'municipality', 'ward', 'capacity', 'total_area',
                   'usable_area', 'image', 'description', 'centroid', 'municipality_name',
                   'province_name', 'district_name', 'thumbnail', 'geoserver_url', 'layername', 'workspace')
+
+    def get_address(self, obj):
+        if obj.ward and obj.ward != '-':
+            address = 'Ward' + ' ' + obj.ward + ',' + ' ' + obj.municipality.name
+        else:
+            address = obj.municipality.name + ',' + ' ' + obj.district.name
+        return address
 
     # def get_centroid(self, obj):
     #     center = []
@@ -179,13 +186,14 @@ class OpenSpaceAttributeSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'current_land_use', 'ownership', 'elevation',
                   'access_to_site', 'special_feature', 'address', 'province',
                   'municipality', 'ward', 'capacity', 'total_area', 'district',
-                  'usable_area', 'image', 'description', 'centroid', )
+                  'usable_area', 'image', 'description', 'centroid',)
 
 
 class ReportSerializer(serializers.ModelSerializer):
     location = serializers.SerializerMethodField()
     count = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
+
     # date = serializers.DateTimeField("%Y-%m-%d %H:%M:%S")
 
     class Meta:
