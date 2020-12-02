@@ -246,6 +246,10 @@ class OpenSpaceLandingApi(APIView):
         open_spaces = OpenSpace.objects.all()
         for open_space in open_spaces:
             polygons = open_space.polygons
+            if open_space.ward and open_space.ward != '-':
+                address = 'Ward' + ' ' + open_space.ward + ',' + ' ' + open_space.municipality.name
+            else:
+                address = open_space.municipality.name + ',' + ' ' + open_space.district.name
 
             if polygons and open_space.image and open_space.thumbnail:
                 data.append(
@@ -255,7 +259,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": open_space.image.url,
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
@@ -272,7 +276,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": open_space.image.url,
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
@@ -289,7 +293,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": None,
                         "latitude": open_space.polygons.centroid.y,
                         "longitude": open_space.polygons.centroid.x,
@@ -306,7 +310,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": open_space.image.url,
                         "latitude": None,
                         "longitude": None,
@@ -323,7 +327,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": open_space.image.url,
                         "latitude": None,
                         "longitude": None,
@@ -340,7 +344,7 @@ class OpenSpaceLandingApi(APIView):
                         "province": open_space.province.id,
                         "district": open_space.district.id,
                         "municipality": open_space.municipality.id,
-                        "address": open_space.address,
+                        "address": address,
                         "image": None,
                         "latitude": None,
                         "longitude": None,
@@ -533,11 +537,12 @@ class GlimpseOfOpenSpace(APIView):
 
         print(district_list)
 
-        municipalities = OpenSpace.objects.values('municipality__id', 'municipality__name', 'municipality__hlcit_code').order_by('municipality__name').distinct()
+        municipalities = OpenSpace.objects.values('municipality__id', 'municipality__name',
+                                                  'municipality__hlcit_code').order_by('municipality__name').distinct()
 
         for i in range(0, municipality):
             municipality_list.append({municipalities[i]['municipality__name']:
-                                      municipalities[i]['municipality__hlcit_code']})
+                                          municipalities[i]['municipality__hlcit_code']})
 
             municipality_format.append({
                 'id': municipalities[i]['municipality__id'],
@@ -546,7 +551,8 @@ class GlimpseOfOpenSpace(APIView):
             })
 
         for municipality in municipalities:
-            open_space = OpenSpace.objects.filter(municipality__hlcit_code=municipality['municipality__hlcit_code']).count()
+            open_space = OpenSpace.objects.filter(
+                municipality__hlcit_code=municipality['municipality__hlcit_code']).count()
             open_count.append({municipality['municipality__name']: open_space})
 
         data = {
@@ -689,7 +695,8 @@ class NearByMeViewSet(APIView):
         latitude = open_space.centroid[1]
         openspace_location = GEOSGeometry('POINT({} {})'.format(longitude, latitude), srid=4326)
         resource_queryset = AvailableFacility.objects \
-                                .filter(location__distance_lte=(openspace_location, D(km=distance)), available_type__title=type) \
+                                .filter(location__distance_lte=(openspace_location, D(km=distance)),
+                                        available_type__title=type) \
                                 .annotate(distance=Distance('location', openspace_location)) \
                                 .order_by('distance')[0:count]
         print(resource_queryset)
@@ -888,6 +895,3 @@ class OpenSpaceView(viewsets.ReadOnlyModelViewSet):
         if municipality_id:
             queryset = queryset.filter(municipality_id=municipality_id)
         return queryset
-
-
-
