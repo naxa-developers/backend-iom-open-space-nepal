@@ -15,19 +15,19 @@ def upload_eia(path):
 
     for row in range(0, upper_range):
         open_spaces = OpenSpace.objects.get(
-                        title=(df['Name'][row]))
+            title=(df['Name'][row]))
 
         try:
             question1 = [
-                    QuestionsData.objects.create(
-                        question=QuestionList.objects.get(
-                            id=1),
-                        open_space=open_spaces,
-                        ans=df['Is it a protected area?'][row],
+                QuestionsData.objects.create(
+                    question=QuestionList.objects.get(
+                        id=1),
+                    open_space=open_spaces,
+                    ans=df['Is it a protected area?'][row],
 
-                    )
+                )
 
-                ]
+            ]
 
             question2 = [
                 QuestionsData.objects.create(
@@ -289,10 +289,8 @@ def upload_openspace(path):
 
 
 def add_open_space(open_space_file, open_space_shp_file, municipality, main_open_space):
-    try:
-        df = pd.read_excel(open_space_file, encoding='unicode_escape').fillna('')
-    except:
-        return {'error': 'Please upload file with provided formats.'}
+    df = pd.read_excel(open_space_file, encoding='unicode_escape').fillna('')
+
     upper_range = len(df)
     municipality_obj = municipality
     province = municipality_obj.province
@@ -347,7 +345,6 @@ def add_open_space(open_space_file, open_space_shp_file, municipality, main_open
                 if len(suggested_uses) > 0:
                     suggested_uses = df['Suggested Use'][row].split(',')
                     for suggest in suggested_uses:
-
                         suggest_obj = SuggestedUseList.objects.get_or_create(name=suggest)
                         sug_data = SuggestedUseData.objects.create(open_space=open_space,
                                                                    suggested_use=suggest_obj[0])
@@ -492,7 +489,7 @@ def upload_amenities(path):
             # print(float(df['Longitude'][row]))
             # print(Point(float(df['Latitude'][row]), float(df['Longitude'][row])))
 
-            q=AvailableFacility.objects.create(
+            q = AvailableFacility.objects.create(
                 name=df['name'][row],
                 type='education facility',
                 education_type=df['isced_leve'][row],
@@ -503,5 +500,3 @@ def upload_amenities(path):
 
         except Exception as e:
             print(e)
-
-
