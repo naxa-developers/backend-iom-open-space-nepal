@@ -80,7 +80,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceData
-        fields = ('description', 'open_space', 'service')
+        fields = ('description', 'open_space', 'service', 'is_available')
 
 
 class QuestionDataSerializer(serializers.ModelSerializer):
